@@ -5,10 +5,15 @@ from django.conf import settings
 from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
 from rest_framework import permissions
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path('super_secret_admin/', admin.site.urls, name='admin'),
-]
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('blog/', include('virtual_day.blog.urls')),
+    path('users/', include('virtual_day.users.urls')),
+    prefix_default_language=False,
+)
 
 if settings.IS_TEST:
     urlpatterns += [

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+        <style>
+            body{
+                font-family: 'Lato';
+                position: relative;
+            }
+            .welcome-table{
+                width: 800px;
+                margin: 0 auto;
+            }
+            .logo-photo-finish{
+                margin-top: 96px;
+                margin-bottom: 122px;
+            }
+            .start-button{
+                width: 336px;
+                height: 64px;
+                background-color: #277CF3;
+                border: none;
+                border-radius: 2px;
+                font-family: Lato;
+                font-size: 16px;
+                color: #FFFFFF;
+                margin-bottom: 48px;
+                cursor: pointer;
+            }
+            .inner-table{
+                width: 704px;
+                height: 583px;
+                color: #2E2E2E;
+                margin: 0px 48px 175px 48px;
+                text-align: center;
+                border: 2px solid #E3E8EE;
+                box-sizing: border-box;
+                background: #FFFFFF;
+            }
+            .hello-name{
+                font-weight: bold;
+                font-size: 48px;
+            }
+            .one-more-step{
+                font-size: 24px;
+            }
+            .text{
+                text-align: left;
+                padding: 16px 48px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="welcome-table">
+            <tbody> 
+                <tr>
+                    <td>
+                        <svg style="position:absolute; bottom: 0px; left: 0px; z-index: -1;" width="615" height="457" viewBox="0 0 615 457" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="-617" y="609.289" width="1218.58" height="352.485" rx="176.243" transform="rotate(-30 -617 609.289)" fill="url(#paint0_linear)"/>
+                            <defs>
+                            <linearGradient id="paint0_linear" x1="-440.865" y1="803.239" x2="676.808" y2="803.656" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#1C3FFD"/>
+                            <stop offset="1" stop-color="#2985F1"/>
+                            </linearGradient>
+                            </defs>
+                        </svg>
+                        <svg style="position:absolute; right: 0px; top: 0px; z-index: -1;" width="362" height="510" viewBox="0 0 362 510" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect y="204.745" width="725.047" height="351.987" rx="175.994" transform="rotate(-30 0 204.745)" fill="#68CA95"/>
+                        </svg>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="inner-table">
+                            <tr>
+                                <td class="hello-name">Дорогой пользователь!</td>
+                            </tr>
+                            <tr>
+                                <td class="one-more-step">Приветствуем Вас и поздравляем с успешным прохождением регистрации.
+                                    Уверяем, Вы шагнули на правильный путь!</td>
+                            </tr>
+                            <tr>
+                                <td class="text">Ваш логин: {{login}}</td>
+                                <td class="text">Ваше пароль: {{password}}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    <a href="{{link}}" style="text-decoration: none; text-transform: none;">
+                                        <button class="start-button">Начать</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

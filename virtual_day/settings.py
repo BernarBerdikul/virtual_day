@@ -15,18 +15,21 @@ class BaseConfiguration(Configuration):
 
     DEBUG = True
 
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
     INSTALLED_APPS = [
+        'modeltranslation',
+        'translations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-
+        'django.contrib.postgres',
         # Django Rest Framework
         'rest_framework',
+        'rest_framework_jwt',
         'rest_framework.authtoken',
 
         # DRF API logging
@@ -44,6 +47,7 @@ class BaseConfiguration(Configuration):
         'corsheaders.middleware.CorsMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'corsheaders.middleware.CorsPostCsrfMiddleware',
@@ -91,7 +95,7 @@ class BaseConfiguration(Configuration):
     # Channels
     # ASGI_APPLICATION = 'virtual_day'
 
-    # AUTH_USER_MODEL = 'users.User'
+    AUTH_USER_MODEL = 'users.User'
 
     DATABASES = {
         'default': {
@@ -108,11 +112,11 @@ class BaseConfiguration(Configuration):
     REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
-            'rest_framework.permissions.DjangoModelPermissions',
+            # 'rest_framework.permissions.DjangoModelPermissions',
         ),
         'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
         'DEFAULT_AUTHENTICATION_CLASSES': (
-
+            'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
             'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.BasicAuthentication',
         ),
@@ -125,6 +129,10 @@ class BaseConfiguration(Configuration):
             'user': '12/second',
         },
         'EXCEPTION_HANDLER': 'virtual_day.utils.exceptions.custom_exception_handler',
+    }
+
+    JWT_AUTH = {
+        'JWT_VERIFY_EXPIRATION': False
     }
 
     AUTH_PASSWORD_VALIDATORS = [
@@ -176,7 +184,20 @@ class BaseConfiguration(Configuration):
         'x-requested-with',
     ]
 
-    LANGUAGE_CODE = 'ru-RU'
+    LANGUAGE_CODE = 'ru'
+
+    gettext = lambda s: s  # noqa
+
+    LANGUAGES = [
+        ('ru', gettext('Russian')),
+        ('en', gettext('English')),
+        ('de', gettext('German')),
+        ('kk', gettext('Kazakh')),
+    ]
+
+    LOCALE_NAME = 'ru'
+
+    LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
     TIME_ZONE = 'UTC'
 
@@ -189,9 +210,9 @@ class BaseConfiguration(Configuration):
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
     STATICFILES_DIRS = (
-        # ('css', os.path.join(STATIC_ROOT, 'css')),
-        # ('js', os.path.join(STATIC_ROOT, 'js')),
-        # ('images', os.path.join(STATIC_ROOT, 'images')),
+        ('css', os.path.join(STATIC_ROOT, 'css')),
+        ('js', os.path.join(STATIC_ROOT, 'js')),
+        ('images', os.path.join(STATIC_ROOT, 'images')),
         # "/static",
     )
     STATICFILES_FINDERS = (
@@ -206,43 +227,55 @@ class BaseConfiguration(Configuration):
 
     LOGS_BASE_DIR = os.getenv('LOGS_BASE_DIR', os.getenv('LOGS_BASE_DIR'))
 
-    # LOGGING = {
-    #     'version': 1,
-    #     'disable_existing_loggers': False,
-    #     'formatters': {
-    #         'console': {
-    #             'format': '%(name)-12s %(levelname)-8s %(message)s'
-    #         },
-    #         'verbose': {
-    #             'format': '[%(levelname)s] %(asctime)s path: %(pathname)s module: %(module)s method: %(funcName)s  row: %(lineno)d message: %(message)s'
-    #         },
-    #     },
-    #     'handlers': {
-    #         'console': {
-    #             'class': 'logging.StreamHandler',
-    #             'formatter': 'console'
-    #         },
-    #         'file': {
-    #             'level': 'INFO',
-    #             'class': 'logging.FileHandler',
-    #             'filename': os.path.join(LOGS_BASE_DIR, 'info.log'),
-    #             'formatter': 'verbose',
-    #         },
-    #         'error': {
-    #             'level': 'ERROR',
-    #             'class': 'logging.FileHandler',
-    #             'filename': os.path.join(LOGS_BASE_DIR, 'error.log'),
-    #             'formatter': 'verbose',
-    #         },
-    #     },
-    #     'loggers': {
-    #         '': {
-    #             'handlers': ['console', 'file', 'error'],
-    #             'level': 'INFO',
-    #             'propagate': True
-    #         },
-    #     },
-    # }
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'console': {
+                'format': '%(name)-12s %(levelname)-8s %(message)s'
+            },
+            'verbose': {
+                'format': '[%(levelname)s] %(asctime)s path: %(pathname)s module: %(module)s method: %(funcName)s  row: %(lineno)d message: %(message)s'
+            },
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE_DIR, 'console.log'),
+                'formatter': 'console'
+            },
+            'file': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE_DIR, 'info.log'),
+                'formatter': 'verbose',
+            },
+            'error': {
+                'level': 'ERROR',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE_DIR, 'error.log'),
+                'formatter': 'verbose',
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['console', 'file', 'error'],
+                'level': 'INFO',
+                'propagate': True
+            },
+        },
+    }
+
+    EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+    EMAIL_HOST = os.getenv('EMAIL_HOST')
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    FROM_EMAIL = os.getenv('FROM_EMAIL')
+    EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+    EMAIL_USE_TLS = True
+    EMAIL_ACTIVATION_SEND = False
 
     IS_LOCAL = True
     IS_TEST = True
