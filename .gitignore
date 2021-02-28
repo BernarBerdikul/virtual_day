@@ -9,7 +9,6 @@ __pycache__/
 env/
 *.env
 *.hidden
-logs/*
 build/
 develop-eggs/
 dist/

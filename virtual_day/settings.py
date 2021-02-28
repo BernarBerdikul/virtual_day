@@ -18,8 +18,6 @@ class BaseConfiguration(Configuration):
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
     INSTALLED_APPS = [
-        'modeltranslation',
-        'translations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -186,19 +184,6 @@ class BaseConfiguration(Configuration):
 
     LANGUAGE_CODE = 'ru'
 
-    gettext = lambda s: s  # noqa
-
-    LANGUAGES = [
-        ('ru', gettext('Russian')),
-        ('en', gettext('English')),
-        ('de', gettext('German')),
-        ('kk', gettext('Kazakh')),
-    ]
-
-    LOCALE_NAME = 'ru'
-
-    LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
-
     TIME_ZONE = 'UTC'
 
     USE_I18N = True
@@ -225,7 +210,7 @@ class BaseConfiguration(Configuration):
 
     SITE_URL = 'http://127.0.0.1:8000'
 
-    LOGS_BASE_DIR = os.getenv('LOGS_BASE_DIR', os.getenv('LOGS_BASE_DIR'))
+    LOGS_BASE_DIR = os.getenv(BASE_DIR, os.getenv('LOGS_BASE_DIR'))
 
     LOGGING = {
         'version': 1,
@@ -280,6 +265,33 @@ class BaseConfiguration(Configuration):
     IS_LOCAL = True
     IS_TEST = True
 
+    # CELERY_BROKER_URL = 'pyamqp://{user}:{pwd}@{host}:{port}/{vhost}'.format(
+    #     user=os.getenv('RABBIT_USER', 'guest'),
+    #     pwd=os.getenv('RABBIT_PASSWORD', 'guest'),
+    #     host=os.getenv('RABBIT_HOST', 'localhost'),
+    #     port=os.getenv('RABBIT_PORT', '15672'),
+    #     vhost=os.getenv('RABBIT_VHOST', '/'))
+    # CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+    # CELERY_RESULT_BACKEND = 'django-db'
+    # CELERY_ACCEPT_CONTENT = ['json']
+    # CELERY_TASK_SERIALIZER = 'json'
+    # CELERY_RESULT_SERIALIZER = 'json'
+    # CELERY_TIMEZONE = 'Asia/Almaty'
+    #
+    # # Sensible settings for celery
+    # CELERY_ALWAYS_EAGER = False
+    # CELERY_ACKS_LATE = True
+    # CELERY_TASK_PUBLISH_RETRY = True
+    # CELERY_DISABLE_RATE_LIMITS = False
+    #
+    # # By default we will ignore result
+    # # If you want to see results and try out tasks interactively, change it to False
+    # # Or change this setting on tasks level
+    # CELERY_IGNORE_RESULT = True
+    # CELERY_SEND_TASK_ERROR_EMAILS = False
+    # CELERY_TASK_RESULT_EXPIRES = 600
+    #
+    # BROKER_URL = 'amqp://guest:guest@localhost:15672//'
 
 class Dev(BaseConfiguration):
     DEBUG = True
