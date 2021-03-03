@@ -38,7 +38,8 @@ class BaseConfiguration(Configuration):
 
         # Project apps
         'virtual_day.users',
-        'virtual_day.blog',
+        'virtual_day.core',
+        'virtual_day.mobile',
     ]
 
     MIDDLEWARE = [
@@ -106,7 +107,7 @@ class BaseConfiguration(Configuration):
             'CONN_MAX_AGE': 60 * 10,  # 10 minutes
         }
     }
-
+    # from rest_framework_jwt.authentication import JSONWebTokenAuthentication
     REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
@@ -292,6 +293,7 @@ class BaseConfiguration(Configuration):
     # CELERY_TASK_RESULT_EXPIRES = 600
     #
     # BROKER_URL = 'amqp://guest:guest@localhost:15672//'
+
 
 class Dev(BaseConfiguration):
     DEBUG = True

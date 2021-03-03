@@ -22,3 +22,6 @@ def __files_unique_path(instance, filename, folder_name='images'):
 def avatar_path(instance, filename):
     return __files_unique_path(instance, filename, folder_name='avatars')
 
+
+def billboard_image_path(instance, filename):
+    return __files_unique_path(instance, filename, folder_name='billboards')

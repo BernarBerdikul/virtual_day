@@ -17,3 +17,13 @@ class TimestampMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ValidateErrorMixin(models.Model):
+    """ class for check validation in Model fields """
+    def save(self, **kwargs):
+        self.full_clean()
+        super().save(**kwargs)
+
+    class Meta:
+        abstract = True
