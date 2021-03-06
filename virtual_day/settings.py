@@ -18,6 +18,9 @@ class BaseConfiguration(Configuration):
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
     INSTALLED_APPS = [
+        'modeltranslation',
+        'translations',
+        'channels',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -36,10 +39,14 @@ class BaseConfiguration(Configuration):
         # core header
         'corsheaders',
 
-        # Project apps
+        # project API apps
+        'api_client',
+        'api_console',
+
+        # project apps
         'virtual_day.users',
         'virtual_day.core',
-        'virtual_day.mobile',
+        'virtual_day.chat',
     ]
 
     MIDDLEWARE = [
@@ -92,7 +99,16 @@ class BaseConfiguration(Configuration):
     WSGI_APPLICATION = 'virtual_day.wsgi.application'
 
     # Channels
-    # ASGI_APPLICATION = 'virtual_day'
+    ASGI_APPLICATION = "virtual_day.asgi.application"
+
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('127.0.0.1', 6379)],
+            },
+        },
+    }
 
     AUTH_USER_MODEL = 'users.User'
 
@@ -111,7 +127,6 @@ class BaseConfiguration(Configuration):
     REST_FRAMEWORK = {
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
-            # 'rest_framework.permissions.DjangoModelPermissions',
         ),
         'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
         'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -184,6 +199,19 @@ class BaseConfiguration(Configuration):
     ]
 
     LANGUAGE_CODE = 'ru'
+
+    gettext = lambda s: s  # noqa
+
+    LANGUAGES = [
+        ('ru', gettext('Russian')),
+        ('en', gettext('English')),
+        ('kk', gettext('Kazakh')),
+        ('de', gettext('German')),
+    ]
+
+    LOCALE_NAME = 'ru'
+
+    LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
     TIME_ZONE = 'UTC'
 

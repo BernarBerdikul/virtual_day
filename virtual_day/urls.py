@@ -5,14 +5,21 @@ from django.conf import settings
 from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
 from rest_framework import permissions
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+
+urlpatterns = i18n_patterns(
     path('super_secret_admin/', admin.site.urls, name='admin'),
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('api_client/', include('api_business.urls')),
+    path('api_console/', include('api_tm.urls')),
     path('core/', include('virtual_day.core.urls')),
     path('users/', include('virtual_day.users.urls')),
-    path('mobile/', include('virtual_day.mobile.urls')),
-]
+    path('chat/', include('virtual_day.chat.urls')),
+    prefix_default_language=False,
+)
 
+# API Docs of DRF will be shown only on test mode
 if settings.IS_TEST:
     urlpatterns += [
         url(r'^api/docs/', include_docs_urls(title='virtual_day documentation',

@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
+ADMIN_CONSOLE_EMAIL = "akpayev.nadir@gmail.com"
+
 REGEX_FOR_FIRST_SYMBOL = r"^[a-z]"
 REGEX_FOR_LOGIN = r"^[a-zA-Z0-9_]+$"
 
@@ -11,10 +13,12 @@ LOGIN_MAX_LENGTH = 35
 
 STUDENT = 0
 ADMIN = 1
+MODERATOR = 2
 
 USER_TYPES = (
     (STUDENT, 'STUDENT'),
     (ADMIN, 'ADMIN'),
+    (MODERATOR, 'STUDENT'),
 )
 
 DAYS_OF_THE_WEEK = (
@@ -63,6 +67,27 @@ VIDEO = 0
 TEXT = 1
 
 COURSE_TYPES = (
-    (VIDEO, VIDEO),
-    (TEXT, TEXT),
+    (VIDEO, 'VIDEO'),
+    (TEXT, 'TEXT'),
 )
+
+MAJOR1 = 1
+MAJOR2 = 2
+MAJOR3 = 3
+MAJOR4 = 4
+MAJOR5 = 5
+MAJOR6 = 6
+MAJOR7 = 7
+
+UNIQUE_KEY_FOR_BILLBOARD = (
+    (MAJOR1, _("Информационные системы")),
+    (MAJOR2, _("Логистика")),
+    (MAJOR3, _("Энергетика")),
+    (MAJOR4, _("Финансы")),
+    (MAJOR5, _("Маркетинг")),
+    (MAJOR6, _("Менеджмент")),
+    (MAJOR7, _("Международные отношения")),
+)
+
+""" BILLBOARD """
+TITLE_LENGTH_MAX = 50

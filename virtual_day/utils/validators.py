@@ -12,6 +12,7 @@ def validate_phone_number(value):
         raise CommonException(code=codes.VALIDATION_ERROR, detail=messages.PHONE_INCORRECT)
     if not phonenumbers.is_valid_number(z):
         raise CommonException(code=codes.VALIDATION_ERROR, detail=messages.PHONE_INCORRECT)
+    return value
 
 
 def validate_password(value):
