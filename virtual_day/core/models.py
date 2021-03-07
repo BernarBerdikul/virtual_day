@@ -9,18 +9,18 @@ from translations.models import Translatable
 
 class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
-    title = models.CharField(max_length=constants.TITLE_LENGTH_MAX,
+    title = models.CharField(blank=True, null=True, max_length=constants.TITLE_LENGTH_MAX,
                              verbose_name=_("Заголовок билборда"))
     description = models.TextField(blank=True, null=True, verbose_name=_("Текст билборда"))
-    url_link = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Ссылка на видео"))
     image = models.ImageField(upload_to=billboard_image_path, blank=True, null=True, verbose_name=_("Фото"))
-    type = models.PositiveSmallIntegerField(choices=constants.COURSE_TYPES, default=constants.TEXT,
+    type = models.PositiveSmallIntegerField(choices=constants.BILLBOARD_TYPES, default=constants.TEXT,
                                             verbose_name=_("Тип билборда"))
     enable = models.BooleanField(default=True, verbose_name=_("Активен"))
     is_static = models.BooleanField(default=True, verbose_name=_("Статичный"))
     unique_key = models.PositiveSmallIntegerField(choices=constants.UNIQUE_KEY_FOR_BILLBOARD, blank=True,
                                                   null=True, verbose_name=_("ключ"))
     pdf_file = models.FileField(upload_to=pdf_file_image_path, blank=True, null=True, verbose_name=_("Презентация"))
+    url_link = models.CharField(max_length=500, null=True, blank=True, verbose_name=_("Ссылка на видео"))
 
     def billboard_image(self):
         if self.image:

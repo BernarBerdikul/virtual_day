@@ -125,8 +125,13 @@ class BaseConfiguration(Configuration):
     }
     # from rest_framework_jwt.authentication import JSONWebTokenAuthentication
     REST_FRAMEWORK = {
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+            'rest_framework.renderers.BrowsableAPIRenderer',
+        ),
         'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.IsAuthenticated',
+            'rest_framework.permissions.DjangoModelPermissions',
         ),
         'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
         'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -198,11 +203,12 @@ class BaseConfiguration(Configuration):
         'x-requested-with',
     ]
 
-    LANGUAGE_CODE = 'ru'
+    LANGUAGE_CODE = 'ru-RU'
 
     gettext = lambda s: s  # noqa
 
     LANGUAGES = [
+        ('ru-RU', gettext('Russian (Russia)')),
         ('ru', gettext('Russian')),
         ('en', gettext('English')),
         ('kk', gettext('Kazakh')),

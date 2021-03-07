@@ -11,10 +11,8 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = i18n_patterns(
     path('super_secret_admin/', admin.site.urls, name='admin'),
     path('i18n/', include('django.conf.urls.i18n')),
-    path('api_client/', include('api_business.urls')),
-    path('api_console/', include('api_tm.urls')),
-    path('core/', include('virtual_day.core.urls')),
-    path('users/', include('virtual_day.users.urls')),
+    path('api_client/', include('api_client.urls')),
+    path('api_console/', include('api_console.urls')),
     path('chat/', include('virtual_day.chat.urls')),
     prefix_default_language=False,
 )

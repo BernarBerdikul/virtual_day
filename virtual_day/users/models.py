@@ -27,7 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     avatar = models.ImageField(upload_to=avatar_path, blank=True, null=True, verbose_name=_("Фото"))
     first_name = models.CharField(max_length=255, verbose_name=_("Имя"))
     last_name = models.CharField(max_length=255, verbose_name=_("Фамилия"))
-    firebase_token = models.CharField(max_length=255, verbose_name=_("Токен firebase"))
+    firebase_token = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Токен firebase"))
     role = models.PositiveSmallIntegerField(choices=constants.USER_TYPES, default=0, verbose_name=_("Роль"))
     email = models.EmailField(max_length=255, null=True, blank=True, verbose_name=_("Почта"))
     phone = models.CharField(max_length=13, blank=True, null=True, validators=[validate_phone_number],

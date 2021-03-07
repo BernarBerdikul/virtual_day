@@ -12,6 +12,13 @@ class IsStudent(BasePermission):
 
 
 @permission_classes([IsAuthenticated])
+class IsModerator(BasePermission):
+    """ Permissions for Moderator """
+    def has_permission(self, request, view):
+        return User.objects.filter(id=request.user.id, role=constants.MODERATOR).exists()
+
+
+@permission_classes([IsAuthenticated])
 class IsAdmin(BasePermission):
     """ Permissions for Admin """
     def has_permission(self, request, view):

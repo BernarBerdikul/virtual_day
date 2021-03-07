@@ -66,7 +66,7 @@ ACTIVATION_SUBJECT = "Активация аккаунта"
 VIDEO = 0
 TEXT = 1
 
-COURSE_TYPES = (
+BILLBOARD_TYPES = (
     (VIDEO, 'VIDEO'),
     (TEXT, 'TEXT'),
 )
