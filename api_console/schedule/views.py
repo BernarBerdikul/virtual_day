@@ -36,7 +36,6 @@ class ScheduleViewSet(viewsets.ViewSet):
         return Response()
 
     @query_debugger
-    @except_data_error
     def destroy(self, request, pk=None):
         billboard = Schedule.objects.filter(id=pk, enable=True)
         get_object_or_404(billboard, pk=pk).delete()

@@ -1,7 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from translations.models import Translation
-
 from business_service.translation_service_serializer import TranslationSerializer
 from virtual_day.core.models import Billboard
 from virtual_day.utils.image_utils import get_full_url

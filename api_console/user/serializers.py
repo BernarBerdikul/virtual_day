@@ -42,6 +42,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'login', 'email', 'role')
 
+    def to_representation(self, instance):
+        representation = super(UserSerializer, self).to_representation(instance)
+        representation['role'] = constants.USER_TYPES[instance.role][1]
+        return representation
+
 
 class ChangePasswordSerializer(serializers.Serializer):
     """ change password for manager in both console """

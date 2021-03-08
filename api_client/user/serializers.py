@@ -23,7 +23,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         login = validate_login(validated_data.get("login"))
         email = validated_data.get("email")
         phone = validate_phone_number(validated_data.get("phone"))
-        print(phone)
         language = validated_data.get("language")
         """ generate password """
         password = BaseUserManager.make_random_password(self)
@@ -41,6 +40,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'login', 'email', 'role')
+
+    def to_representation(self, instance):
+        representation = super(UserSerializer, self).to_representation(instance)
+        representation['role'] = constants.USER_TYPES[instance.role][1]
+        return representation
 
 
 class ChangePasswordSerializer(serializers.Serializer):

@@ -41,7 +41,7 @@ class BillboardViewSet(viewsets.ViewSet):
             if "pdf_file" not in request.data:
                 Billboard.objects.filter(id=billboard.id).delete()
                 raise CommonException(code=codes.VALIDATION_ERROR,
-                                      detail=messages.WRONG_REQUEST_BODY)
+                                      detail=messages.WRONG_REQUEST_BODY_PDF)
             """ save billboard's pdf_file for text """
             serializer = BillboardCreateTextSerializer(billboard, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
@@ -50,7 +50,7 @@ class BillboardViewSet(viewsets.ViewSet):
             if "url_link" not in request.data:
                 Billboard.objects.filter(id=billboard.id).delete()
                 raise CommonException(code=codes.VALIDATION_ERROR,
-                                      detail=messages.WRONG_REQUEST_BODY)
+                                      detail=messages.WRONG_REQUEST_BODY_LINK)
             """ save billboard's url_link for video """
             serializer = BillboardCreateVideoSerializer(billboard, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
@@ -72,7 +72,7 @@ class BillboardViewSet(viewsets.ViewSet):
             if "pdf_file" not in request.data:
                 Billboard.objects.filter(id=billboard.id).delete()
                 raise CommonException(code=codes.VALIDATION_ERROR,
-                                      detail=messages.WRONG_REQUEST_BODY)
+                                      detail=messages.WRONG_REQUEST_BODY_PDF)
             """ save billboard's pdf_file for text """
             serializer = BillboardCreateTextSerializer(billboard, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
@@ -81,7 +81,7 @@ class BillboardViewSet(viewsets.ViewSet):
             if "url_link" not in request.data:
                 Billboard.objects.filter(id=billboard.id).delete()
                 raise CommonException(code=codes.VALIDATION_ERROR,
-                                      detail=messages.WRONG_REQUEST_BODY)
+                                      detail=messages.WRONG_REQUEST_BODY_LINK)
             """ save billboard's url_link for video """
             serializer = BillboardCreateVideoSerializer(billboard, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
@@ -92,7 +92,6 @@ class BillboardViewSet(viewsets.ViewSet):
         return Response(BillboardListSerializer(result_billboard).data)
 
     @query_debugger
-    @except_data_error
     def destroy(self, request, pk=None):
         billboard = Billboard.objects.filter(id=pk)
         get_object_or_404(billboard, pk=pk).delete()
