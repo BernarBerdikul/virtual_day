@@ -8,6 +8,7 @@ from virtual_day.utils import constants
 
 
 class BillboardListSerializer(serializers.ModelSerializer):
+    """ Billboard serializer for short information in list """
     class Meta:
         model = Billboard
         fields = ('id', 'title', 'image', 'type', 'enable', 'is_static')
@@ -20,6 +21,7 @@ class BillboardListSerializer(serializers.ModelSerializer):
 
 
 class BillboardDetailSerializer(serializers.ModelSerializer):
+    """ Billboard serializer for detail information """
     translations = serializers.SerializerMethodField()
 
     class Meta:

@@ -12,7 +12,6 @@ from virtual_day.utils.decorators import query_debugger
 
 class RegisterSerializer(serializers.ModelSerializer):
     """ Serializer for registration """
-
     class Meta:
         model = User
         fields = ('id', 'email', 'login', 'phone', 'language')
@@ -23,7 +22,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         login = validate_login(validated_data.get("login"))
         email = validated_data.get("email")
         phone = validate_phone_number(validated_data.get("phone"))
-        print(phone)
         language = validated_data.get("language")
         """ generate password """
         password = BaseUserManager.make_random_password(self)
@@ -31,12 +29,13 @@ class RegisterSerializer(serializers.ModelSerializer):
                                       role=constants.STUDENT, language=language)
         manager.set_password(password)
         manager.save()
+        """ send mail for user with generated password """
         send_email(manager.login, manager.email, password)
         return manager
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """ Manager Serializer in both console """
+    """ User Serializer in admin console """
 
     class Meta:
         model = User
@@ -49,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    """ change password for manager in both console """
+    """ change password for user in admin console """
     password = serializers.CharField()
     password_confirm = serializers.CharField()
 
@@ -69,7 +68,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 class EnterEmailSerializer(serializers.Serializer):
-    """ change email for manager in both console """
+    """ change email for user in admin console """
     email = serializers.EmailField()
 
     def validate(self, attrs):
@@ -88,14 +87,13 @@ class EnterEmailSerializer(serializers.Serializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    """ Login for manager in both console """
+    """ Login for user in admin console """
     login = serializers.CharField()
     password = serializers.CharField()
 
     @query_debugger
     def user_login(self):
-        """ after login check device and create new object in model ManagerDevice
-            (for each device generate new token) """
+        """ authentication and authorisation """
         try:
             user = User.objects.get(login=self.validated_data['login'])
             if not user.check_password(self.validated_data['password']):

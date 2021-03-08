@@ -16,17 +16,20 @@ from virtual_day.utils.exceptions import CommonException
 
 @method_decorator(response_wrapper(), name='dispatch')
 class BillboardViewSet(viewsets.ViewSet):
+    """ ViewSet provide CRUD methods to work with Billboard model """
     permission_classes = (IsAdmin,)
     parser_classes = (MultiPartParser, JSONParser)
 
     @query_debugger
     def list(self, request):
+        """ return all billboards """
         billboards = Billboard.objects.all().translate(request.user.language)
         return Response({"model": BillboardListSerializer(billboards, many=True).data,
                          "rules": billboard_rules_response})
 
     @query_debugger
     def retrieve(self, request, pk=None):
+        """ return billboard by id with translations """
         billboards = Billboard.objects.filter(id=pk).translate(request.user.language)
         billboard = get_object_or_404(billboards, pk=pk)
         return Response(BillboardDetailSerializer(billboard).data)
@@ -34,6 +37,7 @@ class BillboardViewSet(viewsets.ViewSet):
     @query_debugger
     @except_data_error
     def create(self, request):
+        """ create billboard with translations """
         serializer = BillboardDetailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         billboard = serializer.save()
@@ -63,9 +67,10 @@ class BillboardViewSet(viewsets.ViewSet):
     @query_debugger
     @except_data_error
     def partial_update(self, request, pk=None):
-        billboards = Billboard.objects.filter(id=pk, enable=True).translate(request.user.language)
+        """ update billboard with translations """
+        billboards = Billboard.objects.filter(id=pk, enable=True)
         instance = get_object_or_404(billboards, pk=pk)
-        serializer = BillboardDetailSerializer(instance, data=request.data)
+        serializer = BillboardDetailSerializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         billboard = serializer.save()
         if request.data['type'] == constants.TEXT:
@@ -93,6 +98,7 @@ class BillboardViewSet(viewsets.ViewSet):
 
     @query_debugger
     def destroy(self, request, pk=None):
+        """ delete object by id """
         billboard = Billboard.objects.filter(id=pk)
         get_object_or_404(billboard, pk=pk).delete()
         return Response()

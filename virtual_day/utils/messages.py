@@ -5,6 +5,7 @@ REQUIRED_FIELD = _("Поле обязательно для заполнения"
 WRONG_REQUEST_BODY_PDF = _("Ошибочное тело запроса, требуется файл с презентацией")
 WRONG_REQUEST_BODY_LINK = _("Ошибочное тело запроса, требуется ссылка на видео")
 TITLE_LENGTH_MAX = _(f"Максимальная длина заголовка {constants.TITLE_LENGTH_MAX} символов")
+EVENT_LENGTH_MAX = _(f"Максимальная длина события {constants.EVENT_LENGTH_MAX} символов")
 
 FORBIDDEN = _("Доступ запрещен")
 PASSWORD_NOT_EQUAL = _("Пароли не совпадают")

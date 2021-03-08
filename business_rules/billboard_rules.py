@@ -1,5 +1,7 @@
 from virtual_day.utils import constants, messages
 
+""" Rules for front forms """
+
 billboard_rules_response = {
         "title": {
             "rules": {

@@ -44,7 +44,7 @@ class Schedule(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     period_start = models.PositiveIntegerField(verbose_name=_("Время начала показа"))
     period_end = models.PositiveIntegerField(verbose_name=_("Время конца показа"))
-    event = models.CharField(max_length=255, verbose_name=_("Событие"))
+    event = models.CharField(blank=True, null=True, max_length=constants.EVENT_LENGTH_MAX, verbose_name=_("Событие"))
     billboard = models.ForeignKey(Billboard, on_delete=models.CASCADE, related_name='schedules',
                                   blank=True, null=True, verbose_name=_("Билборд"))
     speaker_id = models.PositiveIntegerField(blank=True, null=True, verbose_name=_("ID спикера"))
