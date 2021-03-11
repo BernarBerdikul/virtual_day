@@ -16,7 +16,10 @@ class BillboardViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         billboards = Billboard.objects.filter(enable=True).translate(request.user.language)
-        return Response(BillboardListSerializer(billboards, many=True).data)
+        static_billboards = billboards.filter(is_static=True)
+        dynamic_billboards = billboards.filter(is_static=False)
+        return Response({"static_billboards": BillboardListSerializer(static_billboards, many=True).data,
+                         "dynamic_billboards": BillboardListSerializer(dynamic_billboards, many=True).data})
 
     @query_debugger
     def retrieve(self, request, pk=None):

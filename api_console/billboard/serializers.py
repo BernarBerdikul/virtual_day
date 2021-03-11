@@ -36,7 +36,7 @@ class BillboardDetailSerializer(serializers.ModelSerializer):
         return representation
 
     def get_translations(self, obj):
-        """ return translations fields from model Translation for dish """
+        """ return translations fields from model Translation for billboard """
         model_type_id = ContentType.objects.get_for_model(Billboard).id
         translations = Translation.objects.filter(object_id=obj.id, content_type_id=model_type_id).distinct('language')
         return TranslationSerializer(translations, many=True,

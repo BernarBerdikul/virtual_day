@@ -1,6 +1,7 @@
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets, mixins, permissions
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 from virtual_day.users.models import User
 from virtual_day.users.permissions import IsStudent, AnyPermissions, IsModerator
@@ -17,6 +18,7 @@ class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.Gen
     serializer_class = UserSerializer
     permission_classes = (AnyPermissions,)
     any_permission_classes = [IsStudent, IsModerator]
+    parser_classes = (MultiPartParser, JSONParser)
 
     @action(methods=['POST'], permission_classes=(permissions.AllowAny,), detail=False)
     def register(self, request):

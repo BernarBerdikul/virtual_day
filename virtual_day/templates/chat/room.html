@@ -40,6 +40,7 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
+                'token': "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6ImJlcmRpa3VsIiwiZXhwIjoxNjE1MDUyNTk2LCJlbWFpbCI6ImJlcm5hci5iZXJkaWt1bEBtYWlsLnJ1IiwibG9naW4iOiJiZXJkaWt1bCJ9.D0Mkfe42TCVg3DWSnRWfLVnBAJnL1li1HqewU-hbSWk",
                 'message': message
             }));
             messageInputDom.value = '';
