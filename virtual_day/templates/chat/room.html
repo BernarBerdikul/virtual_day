@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load i18n static %}
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -8,28 +10,35 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
-    {{ room_name|json_script:"room-name" }}
+</body>
+    <script src="{% static '/js/reconnecting-websocket.js' %}"></script>
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
+        var roomName = '{{ room_name }}';
+        var username = '{{ username }}';
+        var chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/chat/' + roomName + '/'
         );
 
+        chatSocket.onopen = function(e) {
+            fetchMessages();
+        }
+
         chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            var data = JSON.parse(e.data);
+            if (data['command'] === 'messages') {
+              for (let i=0; i<data['messages'].length; i++) {
+                createMessage(data['messages'][i]);
+              }
+            } else if (data['command'] === 'new_message'){
+              createMessage(data['message']);
+            }
         };
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector('#chat-message-input').focus();
         document.querySelector('#chat-message-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#chat-message-submit').click();
@@ -40,11 +49,33 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'token': "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6ImJlcmRpa3VsIiwiZXhwIjoxNjE1MDUyNTk2LCJlbWFpbCI6ImJlcm5hci5iZXJkaWt1bEBtYWlsLnJ1IiwibG9naW4iOiJiZXJkaWt1bCJ9.D0Mkfe42TCVg3DWSnRWfLVnBAJnL1li1HqewU-hbSWk",
-                'message': message
+                'command': 'new_message',
+                'message': message,
+                'from': username
             }));
             messageInputDom.value = '';
         };
+
+        function fetchMessages() {
+          chatSocket.send(JSON.stringify({'command': 'fetch_messages' }));
+        }
+
+        function createMessage(data) {
+          var author = data['author'];
+          var msgListTag = document.createElement('li');
+          var imgTag = document.createElement('img');
+          var pTag = document.createElement('p');
+          pTag.textContent = data.content;
+          imgTag.src = 'http://emilcarlsson.se/assets/mikeross.png';
+
+          if (author === username) {
+            msgListTag.className = 'sent';
+          } else {
+            msgListTag.className = 'replies';
+          }
+          msgListTag.appendChild(imgTag);
+          msgListTag.appendChild(pTag);
+          document.querySelector('#chat-log').appendChild(msgListTag);
+        }
     </script>
-</body>
 </html>

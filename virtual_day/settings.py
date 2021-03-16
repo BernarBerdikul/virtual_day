@@ -107,7 +107,6 @@ class BaseConfiguration(Configuration):
             'CONFIG': {
                 "hosts": [('127.0.0.1', 6379)],
             },
-            # 'ROUTING': 'virtual_day.chat.routing',
         },
     }
 

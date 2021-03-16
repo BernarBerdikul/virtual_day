@@ -3,6 +3,8 @@ from .billboard.views import BillboardViewSet
 from .schedule.views import ScheduleViewSet
 from .user.views import UserViewSet
 
+app_name = 'api_console'
+
 router = DefaultRouter()
 
 router.register('user', UserViewSet, basename='user')
