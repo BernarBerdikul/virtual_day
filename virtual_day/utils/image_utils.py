@@ -29,3 +29,7 @@ def billboard_image_path(instance, filename):
 
 def pdf_file_image_path(instance, filename):
     return __files_unique_path(instance, filename, folder_name='pdf_files')
+
+
+def image_push_notification_path(instance, filename):
+    return __files_unique_path(instance, filename, folder_name='pushes')

@@ -1,7 +1,9 @@
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from translations.models import Translation
-from business_service.translation_service_serializer import TranslationSerializer
+from business_service.translation_service_serializer import (
+    TranslationSerializer
+)
 from virtual_day.core.models import Billboard
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils import constants
@@ -14,7 +16,8 @@ class BillboardListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'image', 'type', 'enable', 'is_static')
 
     def to_representation(self, instance):
-        representation = super(BillboardListSerializer, self).to_representation(instance)
+        representation = super(
+            BillboardListSerializer, self).to_representation(instance)
         representation['type'] = constants.BILLBOARD_TYPES[instance.type][1]
         representation['image'] = get_full_url(instance.image)
         return representation
@@ -30,7 +33,8 @@ class BillboardDetailSerializer(serializers.ModelSerializer):
                   'type', 'enable', 'translations')
 
     def to_representation(self, instance):
-        representation = super(BillboardDetailSerializer, self).to_representation(instance)
+        representation = super(
+            BillboardDetailSerializer, self).to_representation(instance)
         representation['type'] = constants.BILLBOARD_TYPES[instance.type][1]
         representation['image'] = get_full_url(instance.image)
         return representation
@@ -38,9 +42,12 @@ class BillboardDetailSerializer(serializers.ModelSerializer):
     def get_translations(self, obj):
         """ return translations fields from model Translation for billboard """
         model_type_id = ContentType.objects.get_for_model(Billboard).id
-        translations = Translation.objects.filter(object_id=obj.id, content_type_id=model_type_id).distinct('language')
-        return TranslationSerializer(translations, many=True,
-                                     context={"model_type_id": model_type_id}).data
+        translations = Translation.objects.filter(
+            object_id=obj.id, content_type_id=model_type_id
+        ).distinct('language')
+        return TranslationSerializer(
+            translations, many=True,
+            context={"model_type_id": model_type_id}).data
 
 
 class BillboardCreateVideoSerializer(serializers.ModelSerializer):

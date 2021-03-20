@@ -1,7 +1,9 @@
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from translations.models import Translation
-from business_service.translation_service_serializer import TranslationScheduleSerializer
+from business_service.translation_service_serializer import (
+    TranslationScheduleSerializer
+)
 from virtual_day.core.models import Schedule, Billboard
 
 
@@ -29,7 +31,8 @@ class ScheduleListSerializer(serializers.ModelSerializer):
         fields = ('id', 'period_start', 'period_end', 'event', 'speaker_id')
 
     def to_representation(self, instance):
-        representation = super(ScheduleListSerializer, self).to_representation(instance)
+        representation = super(
+            ScheduleListSerializer, self).to_representation(instance)
         return representation
 
 
@@ -43,12 +46,16 @@ class ScheduleDetailSerializer(serializers.ModelSerializer):
                   'billboard', 'speaker_id', 'translations',)
 
     def to_representation(self, instance):
-        representation = super(ScheduleDetailSerializer, self).to_representation(instance)
+        representation = super(
+            ScheduleDetailSerializer, self).to_representation(instance)
         return representation
 
     def get_translations(self, obj):
         """ return translations fields from model Translation for event """
         model_type_id = ContentType.objects.get_for_model(Schedule).id
-        translations = Translation.objects.filter(object_id=obj.id, content_type_id=model_type_id).distinct('language')
-        return TranslationScheduleSerializer(translations, many=True,
-                                             context={"model_type_id": model_type_id}).data
+        translations = Translation.objects.filter(
+            object_id=obj.id, content_type_id=model_type_id
+        ).distinct('language')
+        return TranslationScheduleSerializer(
+            translations, many=True,
+            context={"model_type_id": model_type_id}).data

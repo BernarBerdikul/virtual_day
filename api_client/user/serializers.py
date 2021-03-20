@@ -25,8 +25,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         language = validated_data.get("language")
         """ generate password """
         password = BaseUserManager.make_random_password(self)
-        manager = User.objects.create(login=login, email=email, phone=phone,
-                                      role=constants.STUDENT, language=language)
+        manager = User.objects.create(
+            login=login, email=email, phone=phone, role=constants.STUDENT,
+            language=language, is_active=True)
         manager.set_password(password)
         manager.save()
         """ send mail for user with generated password """

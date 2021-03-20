@@ -14,11 +14,13 @@ LOGIN_MAX_LENGTH = 35
 STUDENT = 0
 ADMIN = 1
 MODERATOR = 2
+SUPER_ADMIN = 3
 
 USER_TYPES = (
     (STUDENT, 'STUDENT'),
     (ADMIN, 'ADMIN'),
     (MODERATOR, 'MODERATOR'),
+    (SUPER_ADMIN, 'SUPER_ADMIN'),
 )
 
 DAYS_OF_THE_WEEK = (
@@ -61,7 +63,7 @@ MONTHS = (
 
 ACTIVATION_SUBJECT = "Активация аккаунта"
 
-########################################################################################################################
+###############################################################################
 """ MOBILE APP """
 VIDEO = 0
 TEXT = 1

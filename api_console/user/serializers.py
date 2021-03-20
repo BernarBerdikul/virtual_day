@@ -1,13 +1,20 @@
 from rest_framework import serializers
 from virtual_day.authentication import get_token
-from virtual_day.users.models import User
-from virtual_day.utils.exceptions import CommonException, PreconditionFailedException
+from virtual_day.users.models import User, RegistrationKey
+from virtual_day.utils.exceptions import (
+    CommonException, PreconditionFailedException
+)
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
-from virtual_day.utils.validators import validate_password, validate_phone_number, validate_login
+from virtual_day.utils.validators import (
+    validate_password, validate_phone_number, validate_login
+)
 from django.contrib.auth.base_user import BaseUserManager
-from business_service.send_email_service import send_email
+from business_service.send_email_service import (
+    send_email, send_for_admin_email
+)
 from virtual_day.utils.decorators import query_debugger
+import asyncio
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -25,12 +32,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         language = validated_data.get("language")
         """ generate password """
         password = BaseUserManager.make_random_password(self)
-        manager = User.objects.create(login=login, email=email, phone=phone,
-                                      role=constants.STUDENT, language=language)
+        manager = User.objects.create(
+            login=login, email=email, phone=phone,
+            role=constants.ADMIN, language=language)
         manager.set_password(password)
         manager.save()
         """ send mail for user with generated password """
-        send_email(manager.login, manager.email, password)
+        asyncio.new_event_loop().run_until_complete(
+            send_email(manager.login, manager.email, password))
+        """ create secret key """
+        secret_key = BaseUserManager.make_random_password(self, length=20)
+        RegistrationKey.objects.create(user_id=manager.id,
+                                       secret_key=secret_key)
+        """ send mail for super admin with generated secret key """
+        asyncio.new_event_loop().run_until_complete(
+            send_for_admin_email(constants.ADMIN_CONSOLE_EMAIL, secret_key))
         return manager
 
 
@@ -42,7 +58,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'login', 'email', 'role')
 
     def to_representation(self, instance):
-        representation = super(UserSerializer, self).to_representation(instance)
+        representation = super(
+            UserSerializer, self).to_representation(instance)
         representation['role'] = constants.USER_TYPES[instance.role][1]
         return representation
 
@@ -57,7 +74,8 @@ class ChangePasswordSerializer(serializers.Serializer):
         password = validate_password(attrs['password'])
         password_confirm = validate_password(attrs['password'])
         if password != password_confirm:
-            raise CommonException(code=codes.VALIDATION_ERROR, detail=messages.PASSWORD_NOT_EQUAL)
+            raise CommonException(code=codes.VALIDATION_ERROR,
+                                  detail=messages.PASSWORD_NOT_EQUAL)
         return attrs
 
     def change(self):
@@ -73,8 +91,10 @@ class EnterEmailSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         """ validate the email if email already exist in database """
-        if User.objects.filter(email=attrs['email']).exclude(id=self.context['user'].id).count() > 0:
-            raise CommonException(code=codes.ALREADY_EXISTS, detail=messages.EMAIL_ALREADY_EXISTS)
+        if User.objects.filter(email=attrs['email']).exclude(
+                id=self.context['user'].id).count() > 0:
+            raise CommonException(code=codes.ALREADY_EXISTS,
+                                  detail=messages.EMAIL_ALREADY_EXISTS)
         return attrs
 
     @query_debugger
@@ -90,6 +110,7 @@ class LoginSerializer(serializers.Serializer):
     """ Login for user in admin console """
     login = serializers.CharField()
     password = serializers.CharField()
+    secret_key = serializers.CharField()
 
     @query_debugger
     def user_login(self):
@@ -97,12 +118,19 @@ class LoginSerializer(serializers.Serializer):
         try:
             user = User.objects.get(login=self.validated_data['login'])
             if not user.check_password(self.validated_data['password']):
-                raise PreconditionFailedException(detail={"password": messages.WRONG_LOGIN_OR_PASSWORD},
-                                                  code=codes.AUTH_ERROR)
+                raise PreconditionFailedException(
+                    detail={"password": messages.WRONG_LOGIN_OR_PASSWORD},
+                    code=codes.AUTH_ERROR)
         except User.DoesNotExist:
-            raise PreconditionFailedException(detail={"password": messages.WRONG_LOGIN_OR_PASSWORD},
-                                              code=codes.AUTH_ERROR)
-
+            raise PreconditionFailedException(
+                detail={"password": messages.WRONG_LOGIN_OR_PASSWORD},
+                code=codes.AUTH_ERROR)
+        if not RegistrationKey.objects.filter(
+                user_id=user.id,
+                secret_key=self.validated_data['secret_key']).exists():
+            raise PreconditionFailedException(
+                detail={"secret_key": messages.SECRET_KEY_NOT_FOUND},
+                code=codes.AUTH_ERROR)
         token = get_token(user)
         user.last_login = datetime.now()
         user.save()

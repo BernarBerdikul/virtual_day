@@ -5,24 +5,35 @@ from .models import User
 
 
 @permission_classes([IsAuthenticated])
+class IsAdmin(BasePermission):
+    """ Permissions for Admin """
+    def has_permission(self, request, view):
+        return User.objects.filter(id=request.user.id, is_active=True,
+                                   role=constants.ADMIN).exists()
+
+
+@permission_classes([IsAuthenticated])
+class IsSuperAdmin(BasePermission):
+    """ Permissions for super Admin """
+    def has_permission(self, request, view):
+        return User.objects.filter(id=request.user.id, is_active=True,
+                                   role=constants.SUPER_ADMIN).exists()
+
+
+@permission_classes([IsAuthenticated])
 class IsStudent(BasePermission):
     """ Permissions for Student """
     def has_permission(self, request, view):
-        return User.objects.filter(id=request.user.id, role=constants.STUDENT).exists()
+        return User.objects.filter(id=request.user.id, is_active=True,
+                                   role=constants.STUDENT).exists()
 
 
 @permission_classes([IsAuthenticated])
 class IsModerator(BasePermission):
     """ Permissions for Moderator """
     def has_permission(self, request, view):
-        return User.objects.filter(id=request.user.id, role=constants.MODERATOR).exists()
-
-
-@permission_classes([IsAuthenticated])
-class IsAdmin(BasePermission):
-    """ Permissions for Admin """
-    def has_permission(self, request, view):
-        return User.objects.filter(id=request.user.id, role=constants.ADMIN).exists()
+        return User.objects.filter(id=request.user.id, is_active=True,
+                                   role=constants.MODERATOR).exists()
 
 
 class AnyPermissions(BasePermission):
