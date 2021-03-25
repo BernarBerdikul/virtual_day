@@ -1,2 +1,2 @@
-cp /root/project/*project_name*/configs/supervisor/*project_name*.conf /etc/supervisor/conf.d/
-cp /root/project/*project_name*/configs/nginx/nginx.conf /etc/nginx/sites-enabled/
+cp /root/project/virtual_day/configs/supervisor/virtual_day.conf /etc/supervisor/conf.d/
+cp /root/project/virtual_day/configs/nginx/nginx.conf /etc/nginx/sites-enabled/

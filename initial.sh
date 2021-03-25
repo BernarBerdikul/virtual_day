@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-#swap 'db' on our data
-createdb db;
-psql -c "create user db with password 'db'";
-psql -c 'grant all privileges on database menushka to menushka';
-sudo rabbitmqctl add_user db db
-sudo rabbitmqctl add_vhost db
-sudo rabbitmqctl set_user_tags db db_tag
-sudo rabbitmqctl set_permissions -p db db ".*" ".*" ".*"
-mkdir logs;
+#swap 'virtual_day' on our data
+createdb virtual_day;
+psql -c "create user virtual_day with password 'virtual_day'";
+psql -c 'grant all privileges on database virtual_day to virtual_day';
+#sudo rabbitmqctl add_user virtual_day virtual_day
+#sudo rabbitmqctl add_vhost virtual_day
+#sudo rabbitmqctl set_user_tags virtual_day virtual_day_tag
+#sudo rabbitmqctl set_permissions -p virtual_day virtual_day ".*" ".*" ".*"

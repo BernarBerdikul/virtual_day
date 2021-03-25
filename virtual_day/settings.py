@@ -15,7 +15,7 @@ class BaseConfiguration(Configuration):
 
     DEBUG = True
 
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "*"]
 
     INSTALLED_APPS = [
         'modeltranslation',
@@ -180,7 +180,7 @@ class BaseConfiguration(Configuration):
         "http://localhost:8000",
         "http://127.0.0.1:8000",
         "http://localhost:3000",
-        # "ip_address",
+        "http://78.140.223.130:8000",
     ]
 
     CORS_ALLOW_METHODS = [
@@ -300,51 +300,41 @@ class BaseConfiguration(Configuration):
     IS_LOCAL = True
     IS_TEST = True
 
-    # CELERY_BROKER_URL = 'pyamqp://{user}:{pwd}@{host}:{port}/{vhost}'.format(
-    #     user=os.getenv('RABBIT_USER', 'guest'),
-    #     pwd=os.getenv('RABBIT_PASSWORD', 'guest'),
-    #     host=os.getenv('RABBIT_HOST', 'localhost'),
-    #     port=os.getenv('RABBIT_PORT', '15672'),
-    #     vhost=os.getenv('RABBIT_VHOST', '/'))
-    # CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-    # CELERY_RESULT_BACKEND = 'django-db'
-    # CELERY_ACCEPT_CONTENT = ['json']
-    # CELERY_TASK_SERIALIZER = 'json'
-    # CELERY_RESULT_SERIALIZER = 'json'
-    # CELERY_TIMEZONE = 'Asia/Almaty'
-    #
-    # # Sensible settings for celery
-    # CELERY_ALWAYS_EAGER = False
-    # CELERY_ACKS_LATE = True
-    # CELERY_TASK_PUBLISH_RETRY = True
-    # CELERY_DISABLE_RATE_LIMITS = False
-    #
-    # # By default we will ignore result
-    # # If you want to see results and try out tasks interactively, change it to False
-    # # Or change this setting on tasks level
-    # CELERY_IGNORE_RESULT = True
-    # CELERY_SEND_TASK_ERROR_EMAILS = False
-    # CELERY_TASK_RESULT_EXPIRES = 600
-    #
-    # BROKER_URL = 'amqp://guest:guest@localhost:15672//'
-
 
 class Dev(BaseConfiguration):
     DEBUG = True
     IS_LOCAL = False
-    ALLOWED_HOSTS = ['*']
-    SITE_URL = ''
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "78.140.223.130"]
+    SITE_URL = "http://78.140.223.130:8000"
     STATIC_ROOT = '/virtual_day/static'
     MEDIA_ROOT = '/virtual_day/media'
     SECURE_SSL_REDIRECT = False
+
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('78.140.223.130', 6379)],
+            },
+        },
+    }
 
 
 class Prod(BaseConfiguration):
     DEBUG = False
     IS_LOCAL = False
     IS_TEST = False
-    ALLOWED_HOSTS = ['*']
-    SITE_URL = ''
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "78.140.223.130"]
+    SITE_URL = "http://78.140.223.130:8000"
     STATIC_ROOT = '/virtual_day/static'
     MEDIA_ROOT = '/virtual_day/media'
-    SECURE_SSL_REDIRECT = True
+    # SECURE_SSL_REDIRECT = True
+
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('78.140.223.130', 6379)],
+            },
+        },
+    }
