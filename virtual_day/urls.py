@@ -6,7 +6,7 @@ from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
 from rest_framework import permissions
 from django.conf.urls.i18n import i18n_patterns
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = i18n_patterns(
     path('super_secret_admin/', admin.site.urls, name='admin'),
@@ -17,7 +17,7 @@ urlpatterns = i18n_patterns(
 )
 
 urlpatterns += path('chat/', include('virtual_day.chat.urls')),
-
+urlpatterns += staticfiles_urlpatterns()
 # API Docs of DRF will be shown only on test mode
 if settings.IS_TEST:
     urlpatterns += [
