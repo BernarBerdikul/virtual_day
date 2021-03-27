@@ -95,7 +95,6 @@ sniffio==1.2.0
 sqlparse==0.4.1
 traitlets==5.0.5
 Twisted==21.2.0
-twisted-iocpsupport==1.0.1
 txaio==21.2.1
 ua-parser==0.10.0
 uritemplate==3.0.1
