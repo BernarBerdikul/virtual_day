@@ -7,7 +7,7 @@ from virtual_day.chat.middlewares import TokenAuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'virtual_day.settings')
-os.environ.setdefault('DJANGO_CONFIGURATION', 'BaseConfiguration')
+os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
