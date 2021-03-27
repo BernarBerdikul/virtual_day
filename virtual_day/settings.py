@@ -227,17 +227,17 @@ class BaseConfiguration(Configuration):
 
     USE_TZ = True
 
+    STATICFILES_FINDERS = (
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    )
     STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+    STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
     STATICFILES_DIRS = (
         ('css', os.path.join(STATIC_ROOT, 'css')),
         ('js', os.path.join(STATIC_ROOT, 'js')),
         ('images', os.path.join(STATIC_ROOT, 'images')),
         # "/static",
-    )
-    STATICFILES_FINDERS = (
-        'django.contrib.staticfiles.finders.FileSystemFinder',
-        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     )
 
     MEDIA_URL = '/media/'
