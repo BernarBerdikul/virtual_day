@@ -233,7 +233,6 @@ class BaseConfiguration(Configuration):
         ('css', os.path.join(STATIC_ROOT, 'css')),
         ('js', os.path.join(STATIC_ROOT, 'js')),
         ('images', os.path.join(STATIC_ROOT, 'images')),
-        "/root/project/virtual_day/static",
     )
     STATICFILES_FINDERS = (
         'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -306,8 +305,8 @@ class Dev(BaseConfiguration):
     IS_LOCAL = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
     SITE_URL = "http://37.18.30.203:8000"
-    STATIC_ROOT = '/virtual_day/static'
-    MEDIA_ROOT = '/virtual_day/media'
+    STATIC_ROOT = "/root/project/virtual_day/static",
+    MEDIA_ROOT = "/root/project/virtual_day/media",
     SECURE_SSL_REDIRECT = False
 
     CHANNEL_LAYERS = {
@@ -326,8 +325,8 @@ class Prod(BaseConfiguration):
     IS_TEST = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
     SITE_URL = "http://37.18.30.203:8000"
-    STATIC_ROOT = '/virtual_day/static'
-    MEDIA_ROOT = '/virtual_day/media'
+    STATIC_ROOT = "/root/project/virtual_day/static",
+    MEDIA_ROOT = "/root/project/virtual_day/media",
     # SECURE_SSL_REDIRECT = True
 
     CHANNEL_LAYERS = {
