@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-source '../env/bin/activate'
+source '/root/project/env/bin/activate'

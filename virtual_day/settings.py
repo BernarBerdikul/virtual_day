@@ -75,9 +75,6 @@ class BaseConfiguration(Configuration):
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 300
 
-    # SESSION_COOKIE_SECURE = True
-    # CSRF_COOKIE_SECURE = True
-
     ROOT_URLCONF = 'virtual_day.urls'
 
     TEMPLATES = [
@@ -245,8 +242,8 @@ class BaseConfiguration(Configuration):
 
     SITE_URL = 'http://127.0.0.1:8000'
 
-    # LOGS_BASE_DIR = os.getenv(BASE_DIR, os.getenv('LOGS_BASE_DIR'))
-    #
+    LOGS_BASE_DIR = os.getenv(BASE_DIR, os.getenv('LOGS_BASE_DIR'))
+
     # LOGGING = {
     #     'version': 1,
     #     'disable_existing_loggers': False,
