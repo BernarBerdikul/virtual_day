@@ -233,7 +233,7 @@ class BaseConfiguration(Configuration):
         ('css', os.path.join(STATIC_ROOT, 'css')),
         ('js', os.path.join(STATIC_ROOT, 'js')),
         ('images', os.path.join(STATIC_ROOT, 'images')),
-        # "/static",
+        "/root/project/virtual_day/static",
     )
     STATICFILES_FINDERS = (
         'django.contrib.staticfiles.finders.FileSystemFinder',
