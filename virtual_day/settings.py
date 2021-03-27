@@ -231,7 +231,7 @@ class BaseConfiguration(Configuration):
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     )
-    STATIC_URL = '/static/'
+    STATIC_URL = 'http://37.18.30.203/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
     STATICFILES_DIRS = (
         ('css', os.path.join(STATIC_ROOT, 'css')),
