@@ -304,8 +304,8 @@ class BaseConfiguration(Configuration):
 class Dev(BaseConfiguration):
     DEBUG = True
     IS_LOCAL = False
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "78.140.223.130"]
-    SITE_URL = "http://78.140.223.130:8000"
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
+    SITE_URL = "http://37.18.30.203:8000"
     STATIC_ROOT = '/virtual_day/static'
     MEDIA_ROOT = '/virtual_day/media'
     SECURE_SSL_REDIRECT = False
@@ -314,7 +314,7 @@ class Dev(BaseConfiguration):
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [('78.140.223.130', 6379)],
+                "hosts": [('37.18.30.203', 6379)],
             },
         },
     }
@@ -324,8 +324,8 @@ class Prod(BaseConfiguration):
     DEBUG = False
     IS_LOCAL = False
     IS_TEST = False
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "78.140.223.130"]
-    SITE_URL = "http://78.140.223.130:8000"
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
+    SITE_URL = "http://37.18.30.203:8000"
     STATIC_ROOT = '/virtual_day/static'
     MEDIA_ROOT = '/virtual_day/media'
     # SECURE_SSL_REDIRECT = True
@@ -334,7 +334,7 @@ class Prod(BaseConfiguration):
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [('78.140.223.130', 6379)],
+                "hosts": [('37.18.30.203', 6379)],
             },
         },
     }
