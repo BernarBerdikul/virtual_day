@@ -230,12 +230,12 @@ class BaseConfiguration(Configuration):
     )
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-    # STATICFILES_DIRS = (
-    #     ('css', os.path.join(STATIC_ROOT, 'css')),
-    #     ('js', os.path.join(STATIC_ROOT, 'js')),
-    #     ('images', os.path.join(STATIC_ROOT, 'images')),
-    #     # "/static",
-    # )
+    STATICFILES_DIRS = (
+        ('css', os.path.join(STATIC_ROOT, 'css')),
+        ('js', os.path.join(STATIC_ROOT, 'js')),
+        ('images', os.path.join(STATIC_ROOT, 'images')),
+        # "/static",
+    )
 
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
