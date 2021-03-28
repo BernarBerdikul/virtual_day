@@ -13,7 +13,6 @@ from virtual_day.utils.validators import (
 from django.contrib.auth.base_user import BaseUserManager
 from business_service.send_email_service import send_email
 from virtual_day.utils.decorators import query_debugger
-import asyncio
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -30,8 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         """ send mail for user with generated password """
-        asyncio.new_event_loop().run_until_complete(send_email(
-            user.first_name, user.email, password))
+        send_email(user.first_name, user.email, password)
         return user
 
 
