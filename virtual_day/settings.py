@@ -284,13 +284,20 @@ class BaseConfiguration(Configuration):
     #     },
     # }
 
-    EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
-    EMAIL_HOST = os.getenv('EMAIL_HOST')
-    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    # EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+    # EMAIL_HOST = os.getenv('EMAIL_HOST')
+    # EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    # EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    # FROM_EMAIL = os.getenv('FROM_EMAIL')
+    # EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = 'DaBEERman322@gmail.com'
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-    FROM_EMAIL = os.getenv('FROM_EMAIL')
-    EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+    EMAIL_HOST_PASSWORD = 'Aisultan12'
+    FROM_EMAIL = "default from emall"
+    EMAIL_PORT = 25
     EMAIL_USE_TLS = True
     EMAIL_ACTIVATION_SEND = False
 

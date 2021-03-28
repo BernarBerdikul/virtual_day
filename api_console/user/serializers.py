@@ -13,6 +13,7 @@ from business_service.send_email_service import (
     send_email
 )
 from virtual_day.utils.decorators import query_debugger
+import asyncio
 
 
 class CreateAdminSerializer(serializers.ModelSerializer):
@@ -31,7 +32,8 @@ class CreateAdminSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         """ send mail for admin with generated password """
-        send_email("Admin", user.email, password)
+        asyncio.new_event_loop().run_until_complete(
+            send_email("Admin", user.email, password))
         return user
 
 
