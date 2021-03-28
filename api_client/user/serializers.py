@@ -4,34 +4,33 @@ from virtual_day.users.models import User
 from virtual_day.utils.exceptions import CommonException, PreconditionFailedException
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
-from virtual_day.utils.validators import validate_password, validate_phone_number, validate_login
+from virtual_day.utils.image_utils import get_full_url
+from virtual_day.utils.validators import (
+    validate_password, validate_phone_number, validate_image
+)
 from django.contrib.auth.base_user import BaseUserManager
 from business_service.send_email_service import send_email
 from virtual_day.utils.decorators import query_debugger
+import asyncio
 
 
 class RegisterSerializer(serializers.ModelSerializer):
     """ Serializer for registration """
     class Meta:
         model = User
-        fields = ('id', 'email', 'login', 'phone', 'language')
+        fields = ('email', 'phone', 'address', 'first_name', 'last_name')
 
-    @query_debugger
     def register(self, validated_data):
         """ Register new user """
-        login = validate_login(validated_data.get("login"))
-        email = validated_data.get("email")
-        phone = validate_phone_number(validated_data.get("phone"))
-        language = validated_data.get("language")
         """ generate password """
         password = BaseUserManager.make_random_password(self)
         manager = User.objects.create(
-            login=login, email=email, phone=phone, role=constants.STUDENT,
-            language=language, is_active=True)
+            is_active=True, **validated_data)
         manager.set_password(password)
         manager.save()
         """ send mail for user with generated password """
-        send_email(manager.login, manager.email, password)
+        asyncio.new_event_loop().run_until_complete(send_email(
+            manager.first_name, manager.email, password))
         return manager
 
 
@@ -40,12 +39,25 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'login', 'email', 'role')
+        fields = ('email', 'role', 'avatar', 'phone', 'address',
+                  'first_name', 'last_name')
 
     def to_representation(self, instance):
         representation = super(UserSerializer, self).to_representation(instance)
         representation['role'] = constants.USER_TYPES[instance.role][1]
+        representation['avatar'] = get_full_url(instance.avatar)
         return representation
+
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    """ Serializer for update user's profile in client application """
+    avatar = serializers.ImageField(
+        max_length=None, use_url=True,
+        required=False, validators=[validate_image])
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'phone', 'address', 'first_name', 'last_name')
 
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -68,42 +80,44 @@ class ChangePasswordSerializer(serializers.Serializer):
         return user
 
 
-class EnterEmailSerializer(serializers.Serializer):
-    """ change email for user in client application """
-    email = serializers.EmailField()
-
-    def validate(self, attrs):
-        """ validate the email if email already exist in database """
-        if User.objects.filter(email=attrs['email']).exclude(id=self.context['user'].id).count() > 0:
-            raise CommonException(code=codes.ALREADY_EXISTS, detail=messages.EMAIL_ALREADY_EXISTS)
-        return attrs
-
-    @query_debugger
-    def update_email(self):
-        """ method get User and update his email """
-        manager = User.objects.get(id=self.context['user'].id)
-        manager.email = self.validated_data['email']
-        manager.save()
-        return manager
+# class EnterEmailSerializer(serializers.Serializer):
+#     """ change email for user in client application """
+#     email = serializers.EmailField()
+#
+#     def validate(self, attrs):
+#         """ validate the email if email already exist in database """
+#         if User.objects.filter(email=attrs['email']).exclude(
+#                 id=self.context['user'].id).count() > 0:
+#             raise CommonException(code=codes.ALREADY_EXISTS,
+#                                   detail=messages.EMAIL_ALREADY_EXISTS)
+#         return attrs
+#
+#     def update_email(self):
+#         """ method get User and update his email """
+#         manager = User.objects.get(id=self.context['user'].id)
+#         manager.email = self.validated_data['email']
+#         manager.save()
+#         return manager
 
 
 class LoginSerializer(serializers.Serializer):
     """ Login for user in client application """
-    login = serializers.CharField()
+    email = serializers.CharField()
     password = serializers.CharField()
 
     @query_debugger
     def user_login(self):
         """ authentication and authorisation """
         try:
-            user = User.objects.get(login=self.validated_data['login'])
+            user = User.objects.get(email=self.validated_data['email'])
             if not user.check_password(self.validated_data['password']):
-                raise PreconditionFailedException(detail={"password": messages.WRONG_LOGIN_OR_PASSWORD},
-                                                  code=codes.AUTH_ERROR)
+                raise PreconditionFailedException(
+                    detail={"password": messages.WRONG_EMAIL_OR_PASSWORD},
+                    code=codes.AUTH_ERROR)
         except User.DoesNotExist:
-            raise PreconditionFailedException(detail={"password": messages.WRONG_LOGIN_OR_PASSWORD},
-                                              code=codes.AUTH_ERROR)
-
+            raise PreconditionFailedException(
+                detail={"password": messages.WRONG_EMAIL_OR_PASSWORD},
+                code=codes.AUTH_ERROR)
         token = get_token(user)
         user.last_login = datetime.now()
         user.save()

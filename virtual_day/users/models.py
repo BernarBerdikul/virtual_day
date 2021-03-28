@@ -15,47 +15,49 @@ from django.utils.translation import gettext_lazy as _
 
 class UserManager(BaseUserManager):
     """ Django Manager class for model User """
-    def create_superuser(self, login, password):
+    def create_superuser(self, email, password):
         """ overwrite method for superuser creating """
-        user = self.model(login=login)
+        user = self.model(email=email)
         user.set_password(password)
         user.is_superuser = True
         user.is_active = True
         user.role = constants.SUPER_ADMIN
-        user.language = 'ru'
+        user.language = constants.SYSTEM_LANGUAGE
         user.save(using=self._db)
         return user
 
 
 class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     """ A class used to represent a User in Application """
-    login = models.CharField(
-        max_length=255, unique=True, verbose_name=_("Логин"))
+    email = models.EmailField(
+        max_length=255, null=True, blank=True, unique=True, db_index=True,
+        verbose_name=_("Почта"))
     avatar = models.ImageField(
         upload_to=avatar_path, blank=True, null=True, verbose_name=_("Фото"))
     first_name = models.CharField(
         max_length=255, verbose_name=_("Имя"))
     last_name = models.CharField(
-        max_length=255, verbose_name=_("Фамилия"))
+        blank=True, null=True, max_length=255, verbose_name=_("Фамилия"))
     firebase_token = models.CharField(
         blank=True, null=True, max_length=255,
         verbose_name=_("Токен firebase"))
+    address = models.CharField(
+        blank=True, null=True, max_length=100, verbose_name=_("Адрес"))
     role = models.PositiveSmallIntegerField(
-        choices=constants.USER_TYPES, default=0, verbose_name=_("Роль"))
-    email = models.EmailField(
-        max_length=255, null=True, blank=True, verbose_name=_("Почта"))
+        choices=constants.USER_TYPES, default=constants.STUDENT,
+        verbose_name=_("Роль"))
     phone = models.CharField(
         max_length=13, blank=True, null=True,
         validators=[validate_phone_number], verbose_name=_("Телефон"))
     password_changed_datetime = models.DateTimeField(
-        editable=False, null=True, verbose_name="")
+        editable=False, null=True, verbose_name="Время изменения пароля")
     is_active = models.BooleanField(
         default=False, verbose_name=_("Активность"))
     language = models.CharField(
-        choices=settings.LANGUAGES, max_length=32, default='ru',
-        verbose_name=_("Выбранный язык"))
+        choices=settings.LANGUAGES, max_length=32,
+        default=constants.SYSTEM_LANGUAGE, verbose_name=_("Выбранный язык"))
 
-    USERNAME_FIELD = 'login'
+    USERNAME_FIELD = 'email'
 
     objects = UserManager()
 
@@ -68,19 +70,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     def is_staff(self):
         # Anyone who is superuser can enter admin
         return self.is_superuser
-
-
-class RegistrationKey(TimestampMixin):
-    """ A class used to represent a Secret key for register method """
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             verbose_name=_("Пользователь"))
-    secret_key = models.CharField(max_length=20,
-                                  verbose_name=_("Секретный ключ"))
-
-    class Meta:
-        db_table = 'registration_key'
-        verbose_name = _("Ключ регистраций")
-        verbose_name_plural = _("Ключи регистраций")
 
 
 class UserPushNotification(TimestampMixin):
@@ -120,6 +109,6 @@ class UserPushNotification(TimestampMixin):
         return f'{self.title}'
 
     class Meta:
-        db_table = 'user_push_template'
+        db_table = 'user_push_notification'
         verbose_name = _("Шаблон уведомления")
         verbose_name_plural = _("Шаблоны уведомления")

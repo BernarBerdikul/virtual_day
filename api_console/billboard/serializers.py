@@ -7,10 +7,15 @@ from business_service.translation_service_serializer import (
 from virtual_day.core.models import Billboard
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils import constants
+from virtual_day.utils.validators import validate_image
 
 
 class BillboardListSerializer(serializers.ModelSerializer):
     """ Billboard serializer for short information in list """
+    image = serializers.ImageField(
+        max_length=None, use_url=True,
+        required=False, validators=[validate_image])
+
     class Meta:
         model = Billboard
         fields = ('id', 'title', 'image', 'type', 'enable', 'is_static')

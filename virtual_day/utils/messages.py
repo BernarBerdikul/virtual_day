@@ -14,7 +14,7 @@ EVENT_LENGTH_MAX = \
 FORBIDDEN = _("Доступ запрещен")
 PASSWORD_NOT_EQUAL = _("Пароли не совпадают")
 EMAIL_ALREADY_EXISTS = _("Пользователь с таким email уже существует в базе")
-WRONG_LOGIN_OR_PASSWORD = _("имя или пароль введены неправильно")
+WRONG_EMAIL_OR_PASSWORD = _("почта или пароль введены неправильно")
 SECRET_KEY_NOT_FOUND = _("Не найден секретый ключ")
 PHONE_INCORRECT = _("Номер телефона введен неверно")
 PASSWORD_INVALID = \
@@ -28,3 +28,5 @@ LOGIN_MIN_INVALID = \
     _(f"Логин должен быть больше {constants.LOGIN_MIN_LENGTH} символов")
 LOGIN_MAX_INVALID = \
     _(f"Логин должен быть меньше {constants.LOGIN_MAX_LENGTH} символов")
+MAX_IMAGE_SIZE = _(f"Максимально допустимый размер изображения - "
+                   f"{constants.MAX_IMAGE_SIZE} мб")

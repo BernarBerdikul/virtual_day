@@ -9,8 +9,9 @@ from translations.models import Translatable
 
 class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
-    title = models.CharField(blank=True, null=True, max_length=constants.TITLE_LENGTH_MAX,
-                             verbose_name=_("Заголовок билборда"))
+    title = models.CharField(
+        blank=True, null=True, max_length=constants.TITLE_LENGTH_MAX,
+        verbose_name=_("Заголовок билборда"))
     description = models.TextField(blank=True, null=True, verbose_name=_("Текст билборда"))
     image = models.ImageField(upload_to=billboard_image_path, blank=True, null=True, verbose_name=_("Фото"))
     type = models.PositiveSmallIntegerField(choices=constants.BILLBOARD_TYPES, default=constants.TEXT,

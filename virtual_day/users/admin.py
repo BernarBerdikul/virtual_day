@@ -8,14 +8,14 @@ from django.utils.translation import gettext_lazy as _
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """ A class used to represent a User model in admin page """
-    list_display = ['id', 'login', 'email', 'role']
-    list_display_links = ['id', 'login', 'email', 'role']
-    list_filter = ('login',)
+    list_display = ['id', 'email', 'role']
+    list_display_links = ['id', 'email', 'role']
+    list_filter = ('email',)
     fieldsets = (
-        (_('Основные поля'), {'fields': ('login',
+        (_('Основные поля'), {'fields': ('email',
                                          'first_name',
                                          'last_name',
-                                         'email',
+                                         'address',
                                          'role',
                                          'phone',
                                          'is_active',
@@ -27,10 +27,10 @@ class UserAdmin(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('login', 'password1', 'password2')}
+            'fields': ('password1', 'password2')}
          ),
     )
-    ordering = ['login']
-    search_fields = ['login']
+    ordering = ['email']
+    search_fields = ['email']
     list_per_page = OBJECTS_PER_PAGE_IN_ADMIN
     paginator = LargeTablePaginator

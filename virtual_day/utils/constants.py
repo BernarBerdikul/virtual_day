@@ -1,15 +1,11 @@
 from django.utils.translation import gettext_lazy as _
 
-ADMIN_CONSOLE_EMAIL = "akpayev.nadir@gmail.com"
-
-REGEX_FOR_FIRST_SYMBOL = r"^[a-z]"
-REGEX_FOR_LOGIN = r"^[a-zA-Z0-9_]+$"
-
 OBJECTS_PER_PAGE_IN_ADMIN = 100
 MAX_OBJECTS_IN_MODEL = 1
 PASSWORD_MIN_LENGTH = 8
 LOGIN_MIN_LENGTH = 5
 LOGIN_MAX_LENGTH = 35
+MAX_IMAGE_SIZE = 20  # in Mb
 
 STUDENT = 0
 ADMIN = 1
@@ -22,6 +18,8 @@ USER_TYPES = (
     (MODERATOR, 'MODERATOR'),
     (SUPER_ADMIN, 'SUPER_ADMIN'),
 )
+
+SYSTEM_LANGUAGE = "ru"
 
 DAYS_OF_THE_WEEK = (
     (1, _("ПН")),
