@@ -1,39 +1,27 @@
 from django.utils.decorators import method_decorator
-from rest_framework import viewsets, mixins
-from rest_framework.permissions import AllowAny
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
-from virtual_day.users.models import User
+from rest_framework.permissions import AllowAny
 from virtual_day.users.permissions import (
-    IsStudent, AnyPermissions, IsModerator
+    IsAdmin, IsSuperAdmin, AnyPermissions
 )
 from virtual_day.utils.decorators import query_debugger, response_wrapper
 from .serializers import (
-    RegisterSerializer, UserSerializer, LoginSerializer,
-    ChangePasswordSerializer, UpdateProfileSerializer,
+    UserSerializer, LoginSerializer, ChangePasswordSerializer,
+    UpdateProfileSerializer
 )
 from virtual_day.utils import constants
 
 
 @method_decorator(response_wrapper(), name='dispatch')
-class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin,
-                  viewsets.GenericViewSet):
+class ProfileViewSet(viewsets.ViewSet):
     """ ViewSet to work with User """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
     permission_classes = (AnyPermissions,)
-    any_permission_classes = [IsStudent, IsModerator]
+    any_permission_classes = [IsSuperAdmin, IsAdmin]
+    serializer_class = UserSerializer
     parser_classes = (MultiPartParser, JSONParser)
-
-    @query_debugger
-    @action(methods=['POST'], permission_classes=(AllowAny,), detail=False)
-    def register(self, request):
-        """ registration method for both console """
-        serializer = RegisterSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.register(request.data)
-        return Response(UserSerializer(user).data)
 
     @query_debugger
     @action(methods=['GET'], detail=False)
@@ -72,13 +60,3 @@ class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin,
         serializer.is_valid(raise_exception=True)
         user = serializer.change()
         return Response(UserSerializer(user).data)
-
-    # @query_debugger
-    # @action(methods=['POST'], detail=False)
-    # def update_email(self, request):
-    #     """ method to update user's email """
-    #     serializer = EnterEmailSerializer(
-    #         data=request.data, context={"user": request.user})
-    #     serializer.is_valid(raise_exception=True)
-    #     user = serializer.update_email()
-    #     return Response(UserSerializer(user).data)

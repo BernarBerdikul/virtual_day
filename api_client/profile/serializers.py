@@ -8,30 +8,35 @@ from datetime import datetime
 from virtual_day.utils import constants, messages, codes
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils.validators import (
-    validate_password, validate_image
+    validate_image, password_comparison
 )
-from django.contrib.auth.base_user import BaseUserManager
-from business_service.send_email_service import send_email
 from virtual_day.utils.decorators import query_debugger
-import asyncio
 
 
 class RegisterSerializer(serializers.ModelSerializer):
     """ Serializer for registration """
     class Meta:
         model = User
-        fields = ('email', 'phone', 'address', 'first_name', 'last_name')
+        fields = ('email', 'phone', 'address', 'first_name', 'last_name',
+                  'firebase_token')
 
     def register(self, validated_data):
         """ Register new user """
         """ generate password """
-        password = BaseUserManager.make_random_password(self)
-        user = User.objects.create(**validated_data)
+        password = password_comparison(validated_data)
+        user = User.objects.create(
+            email=validated_data.get('email'),
+            phone=validated_data.get('phone'),
+            address=validated_data.get('address'),
+            first_name=validated_data.get('first_name'),
+            last_name=validated_data.get('last_name'),
+            firebase_token=validated_data.get('firebase_token')
+        )
         user.set_password(password)
         user.save()
-        """ send mail for user with generated password """
-        asyncio.new_event_loop().run_until_complete(send_email(
-            user.first_name, user.email, password))
+        # """ send mail for user with generated password """
+        # asyncio.new_event_loop().run_until_complete(send_email(
+        #     user.first_name, user.email, password))
         return user
 
 
@@ -66,17 +71,9 @@ class ChangePasswordSerializer(serializers.Serializer):
     password = serializers.CharField()
     password_confirm = serializers.CharField()
 
-    def validate(self, attrs):
-        """ check if passwords are equal """
-        password = validate_password(attrs['password'])
-        password_confirm = validate_password(attrs['password'])
-        if password != password_confirm:
-            raise CommonException(code=codes.VALIDATION_ERROR, detail=messages.PASSWORD_NOT_EQUAL)
-        return attrs
-
     def change(self):
         user = self.context['user']
-        user.set_password(self.validated_data['password'])
+        user.set_password(password_comparison(self.validated_data))
         user.save()
         return user
 

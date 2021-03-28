@@ -1,40 +1,12 @@
 from rest_framework import serializers
 from virtual_day.authentication import get_token
 from virtual_day.users.models import User
-from virtual_day.utils.exceptions import (
-    CommonException, PreconditionFailedException
-)
+from virtual_day.utils.exceptions import PreconditionFailedException
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
 from virtual_day.utils.image_utils import get_full_url
-from virtual_day.utils.validators import validate_password
-from django.contrib.auth.base_user import BaseUserManager
-from business_service.send_email_service import (
-    send_email
-)
+from virtual_day.utils.validators import password_comparison, validate_image
 from virtual_day.utils.decorators import query_debugger
-import asyncio
-
-
-class CreateAdminSerializer(serializers.ModelSerializer):
-    """ Serializer for registration """
-    class Meta:
-        model = User
-        fields = ('email',)
-
-    @query_debugger
-    def create_admin(self, validated_data):
-        """ Register new user """
-        email = validated_data.get("email")
-        """ generate password """
-        password = BaseUserManager.make_random_password(self)
-        user = User.objects.create(email=email, role=constants.ADMIN)
-        user.set_password(password)
-        user.save()
-        """ send mail for admin with generated password """
-        asyncio.new_event_loop().run_until_complete(
-            send_email("Admin", user.email, password))
-        return user
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -53,23 +25,25 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
 
 
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    """ Serializer for update user's profile in client application """
+    avatar = serializers.ImageField(
+        max_length=None, use_url=True,
+        required=False, validators=[validate_image])
+
+    class Meta:
+        model = User
+        fields = ('avatar', 'phone', 'address', 'first_name', 'last_name')
+
+
 class ChangePasswordSerializer(serializers.Serializer):
     """ change password for user in admin console """
     password = serializers.CharField()
     password_confirm = serializers.CharField()
 
-    def validate(self, attrs):
-        """ check if passwords are equal """
-        password = validate_password(attrs['password'])
-        password_confirm = validate_password(attrs['password'])
-        if password != password_confirm:
-            raise CommonException(code=codes.VALIDATION_ERROR,
-                                  detail=messages.PASSWORD_NOT_EQUAL)
-        return attrs
-
     def change(self):
         user = self.context['user']
-        user.set_password(self.validated_data['password'])
+        user.set_password(password_comparison(self.validated_data))
         user.save()
         return user
 
