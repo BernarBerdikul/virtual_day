@@ -242,47 +242,47 @@ class BaseConfiguration(Configuration):
 
     SITE_URL = 'http://127.0.0.1:8000'
 
-    LOGS_BASE_DIR = os.getenv(BASE_DIR, "logs")
-
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'console': {
-                'format': '%(name)-12s %(levelname)-8s %(message)s'
-            },
-            'verbose': {
-                'format': '[%(levelname)s] %(asctime)s path: %(pathname)s module: %(module)s method: %(funcName)s  row: %(lineno)d message: %(message)s'
-            },
-        },
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.FileHandler',
-                'filename': os.path.join(LOGS_BASE_DIR, 'console.log'),
-                'formatter': 'console'
-            },
-            'file': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'filename': os.path.join(LOGS_BASE_DIR, 'info.log'),
-                'formatter': 'verbose',
-            },
-            'error': {
-                'level': 'ERROR',
-                'class': 'logging.FileHandler',
-                'filename': os.path.join(LOGS_BASE_DIR, 'error.log'),
-                'formatter': 'verbose',
-            },
-        },
-        'loggers': {
-            '': {
-                'handlers': ['console', 'file', 'error'],
-                'level': 'INFO',
-                'propagate': True
-            },
-        },
-    }
+    # LOGS_BASE_DIR = os.getenv(BASE_DIR, "logs")
+    #
+    # LOGGING = {
+    #     'version': 1,
+    #     'disable_existing_loggers': False,
+    #     'formatters': {
+    #         'console': {
+    #             'format': '%(name)-12s %(levelname)-8s %(message)s'
+    #         },
+    #         'verbose': {
+    #             'format': '[%(levelname)s] %(asctime)s path: %(pathname)s module: %(module)s method: %(funcName)s  row: %(lineno)d message: %(message)s'
+    #         },
+    #     },
+    #     'handlers': {
+    #         'console': {
+    #             'level': 'DEBUG',
+    #             'class': 'logging.FileHandler',
+    #             'filename': os.path.join(LOGS_BASE_DIR, 'console.log'),
+    #             'formatter': 'console'
+    #         },
+    #         'file': {
+    #             'level': 'INFO',
+    #             'class': 'logging.FileHandler',
+    #             'filename': os.path.join(LOGS_BASE_DIR, 'info.log'),
+    #             'formatter': 'verbose',
+    #         },
+    #         'error': {
+    #             'level': 'ERROR',
+    #             'class': 'logging.FileHandler',
+    #             'filename': os.path.join(LOGS_BASE_DIR, 'error.log'),
+    #             'formatter': 'verbose',
+    #         },
+    #     },
+    #     'loggers': {
+    #         '': {
+    #             'handlers': ['console', 'file', 'error'],
+    #             'level': 'INFO',
+    #             'propagate': True
+    #         },
+    #     },
+    # }
 
     EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
     EMAIL_HOST = os.getenv('EMAIL_HOST')
