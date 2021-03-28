@@ -6,7 +6,7 @@ user = 'root'
 limit_request_fields = 32000
 limit_request_fields_size = 0
 raw_env = ["DJANGO_SETTINGS_MODULE=virtual_day.settings",
-           "DJANGO_CONFIGURATION=BaseConfiguration",
+           "DJANGO_CONFIGURATION=Dev",
            'SECRET_KEY="hw^7polec^hp18%%stj8k=$v#gsl#zu$%^%bgg908cswiph^w%"',
 
            "DB_NAME=virtual_day",
