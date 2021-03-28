@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from virtual_day.authentication import get_token
 from virtual_day.users.models import User
-from virtual_day.utils.exceptions import CommonException, PreconditionFailedException
+from virtual_day.utils.exceptions import (
+    CommonException, PreconditionFailedException
+)
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils.validators import (
-    validate_password, validate_phone_number, validate_image
+    validate_password, validate_image
 )
 from django.contrib.auth.base_user import BaseUserManager
 from business_service.send_email_service import send_email
@@ -24,14 +26,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         """ Register new user """
         """ generate password """
         password = BaseUserManager.make_random_password(self)
-        manager = User.objects.create(
-            is_active=True, **validated_data)
-        manager.set_password(password)
-        manager.save()
+        user = User.objects.create(**validated_data)
+        user.set_password(password)
+        user.save()
         """ send mail for user with generated password """
         asyncio.new_event_loop().run_until_complete(send_email(
-            manager.first_name, manager.email, password))
-        return manager
+            user.first_name, user.email, password))
+        return user
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -94,9 +95,9 @@ class ChangePasswordSerializer(serializers.Serializer):
 #
 #     def update_email(self):
 #         """ method get User and update his email """
-#         manager = User.objects.get(id=self.context['user'].id)
-#         manager.email = self.validated_data['email']
-#         manager.save()
+#         user = User.objects.get(id=self.context['user'].id)
+#         user.email = self.validated_data['email']
+#         user.save()
 #         return manager
 
 

@@ -1,5 +1,5 @@
 from django.utils.decorators import method_decorator
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -9,7 +9,7 @@ from virtual_day.users.permissions import (
 )
 from virtual_day.utils.decorators import query_debugger, response_wrapper
 from .serializers import (
-    RegisterSerializer, UserSerializer, LoginSerializer,
+    CreateAdminSerializer, UserSerializer, LoginSerializer,
     ChangePasswordSerializer
 )
 from virtual_day.utils import constants
@@ -27,10 +27,11 @@ class UserViewSet(viewsets.ViewSet):
     @action(methods=['POST'], permission_classes=(IsSuperAdmin,), detail=False)
     def create_admin(self, request):
         """ method for create admin for admin console """
-        serializer = RegisterSerializer(data=request.data)
+        serializer = CreateAdminSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        manager = serializer.register(request.data)
-        return Response(UserSerializer(manager).data)
+        user = serializer.create_admin(request.data)
+        return Response({"email": user.email,
+                         "status": "success"})
 
     @query_debugger
     @action(methods=['GET'], detail=False)

@@ -20,7 +20,6 @@ class UserManager(BaseUserManager):
         user = self.model(email=email)
         user.set_password(password)
         user.is_superuser = True
-        user.is_active = True
         user.role = constants.SUPER_ADMIN
         user.language = constants.SYSTEM_LANGUAGE
         user.save(using=self._db)
@@ -52,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     password_changed_datetime = models.DateTimeField(
         editable=False, null=True, verbose_name="Время изменения пароля")
     is_active = models.BooleanField(
-        default=False, verbose_name=_("Активность"))
+        default=True, verbose_name=_("Активность"))
     language = models.CharField(
         choices=settings.LANGUAGES, max_length=32,
         default=constants.SYSTEM_LANGUAGE, verbose_name=_("Выбранный язык"))

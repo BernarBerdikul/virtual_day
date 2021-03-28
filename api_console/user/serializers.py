@@ -7,9 +7,7 @@ from virtual_day.utils.exceptions import (
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
 from virtual_day.utils.image_utils import get_full_url
-from virtual_day.utils.validators import (
-    validate_password, validate_phone_number
-)
+from virtual_day.utils.validators import validate_password
 from django.contrib.auth.base_user import BaseUserManager
 from business_service.send_email_service import (
     send_email
@@ -18,29 +16,25 @@ from virtual_day.utils.decorators import query_debugger
 import asyncio
 
 
-class RegisterSerializer(serializers.ModelSerializer):
+class CreateAdminSerializer(serializers.ModelSerializer):
     """ Serializer for registration """
     class Meta:
         model = User
-        fields = ('id', 'email', 'phone', 'language')
+        fields = ('email',)
 
     @query_debugger
-    def register(self, validated_data):
+    def create_admin(self, validated_data):
         """ Register new user """
         email = validated_data.get("email")
-        phone = validate_phone_number(validated_data.get("phone"))
-        language = validated_data.get("language")
         """ generate password """
         password = BaseUserManager.make_random_password(self)
-        manager = User.objects.create(
-             email=email, phone=phone,
-             role=constants.ADMIN, language=language)
-        manager.set_password(password)
-        manager.save()
-        """ send mail for user with generated password """
+        user = User.objects.create(email=email, role=constants.ADMIN)
+        user.set_password(password)
+        user.save()
+        """ send mail for admin with generated password """
         asyncio.new_event_loop().run_until_complete(
-            send_email(manager.login, manager.email, password))
-        return manager
+            send_email("Admin", user.email, password))
+        return user
 
 
 class UserSerializer(serializers.ModelSerializer):

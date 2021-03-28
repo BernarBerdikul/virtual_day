@@ -32,8 +32,8 @@ class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin,
         """ registration method for both console """
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        manager = serializer.register(request.data)
-        return Response(UserSerializer(manager).data)
+        user = serializer.register(request.data)
+        return Response(UserSerializer(user).data)
 
     @query_debugger
     @action(methods=['GET'], detail=False)
