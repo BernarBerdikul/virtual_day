@@ -9,11 +9,12 @@ from virtual_day.users.permissions import (
     IsStudent, AnyPermissions, IsModerator
 )
 from virtual_day.utils.decorators import query_debugger, response_wrapper
+from virtual_day.utils.exceptions import CommonException
 from .serializers import (
     RegisterSerializer, UserSerializer, LoginSerializer,
     ChangePasswordSerializer, UpdateProfileSerializer
 )
-from virtual_day.utils import constants
+from virtual_day.utils import constants, codes, messages
 
 
 @method_decorator(response_wrapper(), name='dispatch')
@@ -39,6 +40,15 @@ class ProfileViewSet(viewsets.ViewSet):
         """ method return user profile """
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
+
+    @query_debugger
+    @action(methods=['POST'], permission_classes=[AllowAny], detail=False)
+    def check_email(self, request):
+        """ method for check if email exists """
+        if User.objects.filter(email=request.data['email']).exists():
+            return Response({"exists": True})
+        else:
+            return Response({"exists": False})
 
     @query_debugger
     @action(methods=['POST'], permission_classes=[AllowAny], detail=False)
