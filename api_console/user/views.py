@@ -1,7 +1,11 @@
+import asyncio
+
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+from business_service.send_email_service import send_email
 from virtual_day.users.models import User
 from virtual_day.users.permissions import IsSuperAdmin
 from virtual_day.utils.decorators import query_debugger, response_wrapper
@@ -47,3 +51,13 @@ class UserViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         updated_user = serializer.save()
         return Response(UserSerializer(updated_user).data)
+
+    @query_debugger
+    @action(methods=['POST'], detail=False)
+    def send_email(self, request):
+        """ send mail for admin with generated password """
+        password = "test"
+        email = request.data['email']
+        asyncio.new_event_loop().run_until_complete(
+            send_email("Admin", email=email, password=password))
+        return Response({"password": password})
