@@ -302,7 +302,7 @@ class Dev(BaseConfiguration):
     DEBUG = True
     IS_LOCAL = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
-    SITE_URL = "http://37.18.30.203:8000"
+    SITE_URL = "http://37.18.30.203"
     STATIC_ROOT = '/root/project/virtual_day/static'
     MEDIA_ROOT = '/root/project/virtual_day/media'
     SECURE_SSL_REDIRECT = False
@@ -322,7 +322,7 @@ class Prod(BaseConfiguration):
     IS_LOCAL = False
     IS_TEST = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
-    SITE_URL = "http://37.18.30.203:8000"
+    SITE_URL = "http://37.18.30.203"
     STATIC_ROOT = '/root/project/virtual_day/static'
     MEDIA_ROOT = '/root/project/virtual_day/media'
     # SECURE_SSL_REDIRECT = True
