@@ -11,7 +11,7 @@ PROJECT_DIR = os.path.join(BASE_DIR, 'virtual_day')
 class BaseConfiguration(Configuration):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY = "hw^7polec^hp18%%stj8k=$v#gsl#zu$%^%bgg908cswiph^w%"
 
     DEBUG = True
 
@@ -112,11 +112,11 @@ class BaseConfiguration(Configuration):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT'),
+            'NAME': 'virtual_day',
+            'USER': 'virtual_day',
+            'PASSWORD': 'virtual_day',
+            'HOST': 'localhost',
+            'PORT': 5432,
             'CONN_MAX_AGE': 60 * 10,  # 10 minutes
         }
     }
@@ -242,55 +242,55 @@ class BaseConfiguration(Configuration):
 
     SITE_URL = 'http://127.0.0.1:8000'
 
-    # LOGS_BASE_DIR = os.getenv(BASE_DIR, "logs")
-    #
-    # LOGGING = {
-    #     'version': 1,
-    #     'disable_existing_loggers': False,
-    #     'formatters': {
-    #         'console': {
-    #             'format': '%(name)-12s %(levelname)-8s %(message)s'
-    #         },
-    #         'verbose': {
-    #             'format': '[%(levelname)s] %(asctime)s path: %(pathname)s module: %(module)s method: %(funcName)s  row: %(lineno)d message: %(message)s'
-    #         },
-    #     },
-    #     'handlers': {
-    #         'console': {
-    #             'level': 'DEBUG',
-    #             'class': 'logging.FileHandler',
-    #             'filename': os.path.join(LOGS_BASE_DIR, 'console.log'),
-    #             'formatter': 'console'
-    #         },
-    #         'file': {
-    #             'level': 'INFO',
-    #             'class': 'logging.FileHandler',
-    #             'filename': os.path.join(LOGS_BASE_DIR, 'info.log'),
-    #             'formatter': 'verbose',
-    #         },
-    #         'error': {
-    #             'level': 'ERROR',
-    #             'class': 'logging.FileHandler',
-    #             'filename': os.path.join(LOGS_BASE_DIR, 'error.log'),
-    #             'formatter': 'verbose',
-    #         },
-    #     },
-    #     'loggers': {
-    #         '': {
-    #             'handlers': ['console', 'file', 'error'],
-    #             'level': 'INFO',
-    #             'propagate': True
-    #         },
-    #     },
-    # }
+    LOGS_BASE_DIR = 'logs/'
 
-    EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
-    EMAIL_HOST = os.getenv('EMAIL_HOST')
-    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'console': {
+                'format': '%(name)-12s %(levelname)-8s %(message)s'
+            },
+            'verbose': {
+                'format': '[%(levelname)s] %(asctime)s path: %(pathname)s module: %(module)s method: %(funcName)s  row: %(lineno)d message: %(message)s'
+            },
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE_DIR, 'console.log'),
+                'formatter': 'console'
+            },
+            'file': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE_DIR, 'info.log'),
+                'formatter': 'verbose',
+            },
+            'error': {
+                'level': 'ERROR',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(LOGS_BASE_DIR, 'error.log'),
+                'formatter': 'verbose',
+            },
+        },
+        'loggers': {
+            '': {
+                'handlers': ['console', 'file', 'error'],
+                'level': 'INFO',
+                'propagate': True
+            },
+        },
+    }
+
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = 'DaBEERman322@gmail.com'
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-    FROM_EMAIL = os.getenv('FROM_EMAIL')
-    EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+    EMAIL_HOST_PASSWORD = 'Aisultan12'
+    FROM_EMAIL = "default from emall"
+    EMAIL_PORT = 25
     EMAIL_USE_TLS = True
     EMAIL_ACTIVATION_SEND = False
 

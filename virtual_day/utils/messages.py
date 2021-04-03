@@ -30,3 +30,6 @@ LOGIN_MAX_INVALID = \
     _(f"Логин должен быть меньше {constants.LOGIN_MAX_LENGTH} символов")
 MAX_IMAGE_SIZE = _(f"Максимально допустимый размер изображения - "
                    f"{constants.MAX_IMAGE_SIZE} мб")
+RESTAURANT_PUSH_ALREADY_SENT = \
+    _("Уведомление уже было отправлено и его нельзя изменить")
+PUSH_LIMIT_MESSAGE = _("Вы можете отправить только одно уведомление в день!")

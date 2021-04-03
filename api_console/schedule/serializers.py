@@ -5,22 +5,27 @@ from business_service.translation_service_serializer import (
     TranslationScheduleSerializer
 )
 from virtual_day.core.models import Schedule, Billboard
+from virtual_day.users.models import User
+
+
+class SpeakersSerializer(serializers.ModelSerializer):
+    """ Speakers list serializer for select in front """
+    value = serializers.IntegerField(source='id')
+    label = serializers.CharField(source='first_name')
+
+    class Meta:
+        model = User
+        fields = ('value', 'label',)
 
 
 class BillboardShortListSerializer(serializers.ModelSerializer):
     """ Billboard serializer for select in front """
-    value = serializers.SerializerMethodField()
-    label = serializers.SerializerMethodField()
+    value = serializers.IntegerField(source='id')
+    label = serializers.CharField(source='title')
 
     class Meta:
         model = Billboard
         fields = ('value', 'label',)
-
-    def get_value(self, obj):
-        return obj.id
-
-    def get_label(self, obj):
-        return obj.title
 
 
 class ScheduleListSerializer(serializers.ModelSerializer):

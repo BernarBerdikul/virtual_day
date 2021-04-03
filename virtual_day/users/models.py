@@ -80,15 +80,15 @@ class UserPushNotification(TimestampMixin):
     description = models.CharField(
         max_length=120, blank=True, null=True,
         verbose_name=_("Текст сообщения"))
+    description_detail = models.TextField(
+        max_length=1024,
+        blank=True, null=True, verbose_name=_("Текст детального сообщения"))
     image = models.ImageField(
         upload_to=image_push_notification_path, blank=True, null=True,
         verbose_name=_("Фото сообщения"))
     user_ids = ArrayField(
         models.IntegerField(), blank=True, null=True,
         verbose_name=_("ID-шники пользователей"))
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE,
-        related_name='pushes', verbose_name=_("Пользователь"))
     response = models.JSONField(
         blank=True, null=True, max_length=1000,
         default=None, verbose_name=_("Ответ"))
@@ -99,6 +99,8 @@ class UserPushNotification(TimestampMixin):
     users_count = models.PositiveIntegerField(
         blank=True, null=True, default=0,
         verbose_name=_("Число пользователей"))
+    views_count = models.PositiveIntegerField(
+        blank=True, null=True, default=0, verbose_name=_("Число просмотров"))
     data = models.JSONField(
         blank=True, null=True, max_length=1000, default=None,
         verbose_name=_("Данные уведомления"))
@@ -109,5 +111,5 @@ class UserPushNotification(TimestampMixin):
 
     class Meta:
         db_table = 'user_push_notification'
-        verbose_name = _("Шаблон уведомления")
-        verbose_name_plural = _("Шаблоны уведомления")
+        verbose_name = _("Уведомление")
+        verbose_name_plural = _("Уведомления")

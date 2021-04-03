@@ -12,11 +12,13 @@ from virtual_day.users.permissions import (
 )
 from .serializers import (
     ScheduleListSerializer, BillboardShortListSerializer,
-    ScheduleDetailSerializer,
+    ScheduleDetailSerializer, SpeakersSerializer
 )
 from virtual_day.utils.decorators import (
     query_debugger, except_data_error, response_wrapper
 )
+from virtual_day.users.models import User
+from virtual_day.utils import constants
 
 
 @method_decorator(response_wrapper(), name='dispatch')
@@ -31,10 +33,13 @@ class ScheduleViewSet(viewsets.ViewSet):
         schedules = Schedule.objects.all().translate(request.user.language)
         billboards = Billboard.objects.filter(
             enable=True).translate(request.user.language)
+        speakers = User.objects.filter(is_active=True, role=constants.MODERATOR)
         return Response(
             {"model": ScheduleListSerializer(schedules, many=True).data,
              "billboards": BillboardShortListSerializer(
                  billboards, many=True).data,
+             "speakers": SpeakersSerializer(
+                 speakers, many=True).data,
              "rules": schedule_rules_response})
 
     @query_debugger

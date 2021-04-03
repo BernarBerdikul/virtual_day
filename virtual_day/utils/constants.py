@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
+GOOGLE_APPLICATION_CREDENTIALS=r'D:\PycharmProjects\virtual_day\virtual_day\firebase\ServiceAccount.json'
+
 OBJECTS_PER_PAGE_IN_ADMIN = 100
 MAX_OBJECTS_IN_MODEL = 1
 PASSWORD_MIN_LENGTH = 8
