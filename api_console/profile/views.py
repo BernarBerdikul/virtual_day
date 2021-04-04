@@ -4,6 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+
+from business_service.generators import generate_list_language
 from virtual_day.users.permissions import (
     IsAdmin, IsSuperAdmin, AnyPermissions
 )
@@ -28,7 +30,8 @@ class ProfileViewSet(viewsets.ViewSet):
     def get_profile(self, request):
         """ method return user profile """
         serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        return Response({"model": serializer.data,
+                         "language_list": generate_list_language()})
 
     @query_debugger
     @action(methods=['POST'], permission_classes=[AllowAny], detail=False)

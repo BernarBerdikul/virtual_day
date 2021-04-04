@@ -1,6 +1,14 @@
 from django.utils.translation import gettext_lazy as _
 
-GOOGLE_APPLICATION_CREDENTIALS=r'D:\PycharmProjects\virtual_day\virtual_day\firebase\ServiceAccount.json'
+GOOGLE_APPLICATION_CREDENTIALS = \
+    r'D:\PycharmProjects\virtual_day\virtual_day\firebase\ServiceAccount.json'
+
+TRANSLATION_LANGUAGES = (
+    ('ru', _('Russian')),
+    ('en', _('English')),
+    ('kk', _('Kazakh')),
+    ('de', _('German')),
+)
 
 OBJECTS_PER_PAGE_IN_ADMIN = 100
 MAX_OBJECTS_IN_MODEL = 1

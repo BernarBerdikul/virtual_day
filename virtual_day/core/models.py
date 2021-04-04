@@ -9,6 +9,44 @@ from virtual_day.utils import constants
 from translations.models import Translatable
 
 
+class PDFForBillboard(TimestampMixin, ValidateErrorMixin):
+    pdf_file = models.FileField(
+        upload_to=pdf_file_image_path, blank=True, null=True,
+        verbose_name=_("Презентация"))
+    language = models.CharField(
+        max_length=2,
+        choices=constants.TRANSLATION_LANGUAGES,
+        verbose_name=_("язык перевода"))
+
+    def __str__(self):
+        """ Return language and pdf_file when calling object """
+        return f'{self.language} - {self.pdf_file}'
+
+    class Meta:
+        db_table = 'pdf_billboard'
+        verbose_name = _("Билборд")
+        verbose_name_plural = _("Билборды")
+
+
+class URLForBillboard(TimestampMixin, ValidateErrorMixin):
+    url_link = models.CharField(
+        max_length=500, null=True, blank=True,
+        verbose_name=_("Ссылка на видео"))
+    language = models.CharField(
+        max_length=2,
+        choices=constants.TRANSLATION_LANGUAGES,
+        verbose_name=_("язык перевода"))
+
+    def __str__(self):
+        """ Return language and url_link when calling object """
+        return f'{self.language} - {self.url_link}'
+
+    class Meta:
+        db_table = 'url_billboard'
+        verbose_name = _("Билборд")
+        verbose_name_plural = _("Билборды")
+
+
 class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     title = models.CharField(
@@ -29,11 +67,11 @@ class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
     unique_key = models.PositiveSmallIntegerField(
         choices=constants.UNIQUE_KEY_FOR_BILLBOARD, blank=True, null=True,
         verbose_name=_("ключ"))
-    pdf_file = models.FileField(
-        upload_to=pdf_file_image_path, blank=True, null=True,
+    pdf_file = models.ForeignKey(
+        PDFForBillboard, blank=True, null=True, on_delete=models.CASCADE,
         verbose_name=_("Презентация"))
-    url_link = models.CharField(
-        max_length=500, null=True, blank=True,
+    url_link = models.ForeignKey(
+        URLForBillboard, null=True, blank=True, on_delete=models.CASCADE,
         verbose_name=_("Ссылка на видео"))
 
     def billboard_image(self):
