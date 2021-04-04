@@ -9,7 +9,9 @@ from business_service.generators import generate_list_language
 from virtual_day.users.permissions import (
     IsAdmin, IsSuperAdmin, AnyPermissions
 )
-from virtual_day.utils.decorators import query_debugger, response_wrapper
+from virtual_day.utils.decorators import (
+    query_debugger, response_wrapper
+)
 from .serializers import (
     UserSerializer, LoginSerializer, ChangePasswordSerializer,
     UpdateProfileSerializer

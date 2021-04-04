@@ -1,11 +1,15 @@
 from rest_framework import serializers
 from virtual_day.authentication import get_token
 from virtual_day.users.models import User
-from virtual_day.utils.exceptions import PreconditionFailedException
+from virtual_day.utils.exceptions import (
+    PreconditionFailedException
+)
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
 from virtual_day.utils.image_utils import get_full_url
-from virtual_day.utils.validators import password_comparison, validate_image
+from virtual_day.utils.validators import (
+    password_comparison, validate_image
+)
 from virtual_day.utils.decorators import query_debugger
 
 

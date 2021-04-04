@@ -2,7 +2,7 @@ from rest_framework import serializers
 from virtual_day.authentication import get_token
 from virtual_day.users.models import User
 from virtual_day.utils.exceptions import (
-    CommonException, PreconditionFailedException
+    PreconditionFailedException
 )
 from datetime import datetime
 from virtual_day.utils import constants, messages, codes
@@ -41,15 +41,16 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """ User Serializer in client application """
+    """ User Serializer in admin console """
 
     class Meta:
         model = User
-        fields = ('email', 'role', 'avatar', 'phone', 'address',
-                  'first_name', 'last_name')
+        fields = ('id', 'email', 'role', 'avatar', 'phone', 'address',
+                  'first_name', 'last_name', 'language')
 
     def to_representation(self, instance):
-        representation = super(UserSerializer, self).to_representation(instance)
+        representation = super(
+            UserSerializer, self).to_representation(instance)
         representation['role'] = constants.USER_TYPES[instance.role][1]
         representation['avatar'] = get_full_url(instance.avatar)
         return representation
@@ -63,7 +64,14 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('avatar', 'phone', 'address', 'first_name', 'last_name')
+        fields = ('avatar', 'phone', 'address',
+                  'first_name', 'last_name', 'language')
+
+    def to_representation(self, instance):
+        representation = super(
+            UpdateProfileSerializer, self).to_representation(instance)
+        representation['avatar'] = get_full_url(instance.avatar)
+        return representation
 
 
 class ChangePasswordSerializer(serializers.Serializer):

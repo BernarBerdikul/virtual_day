@@ -13,6 +13,7 @@ from .serializers import (
     ChangeUserRoleSerializer, ChangeUserActiveSerializer
 )
 from rest_framework.generics import get_object_or_404
+from virtual_day.utils import constants
 
 
 @method_decorator(response_wrapper(), name='dispatch')
@@ -44,7 +45,7 @@ class UserViewSet(viewsets.ViewSet):
     @query_debugger
     def partial_update(self, request, pk=None):
         """ return users by role """
-        users = User.objects.all()
+        users = User.objects.exclude(role=constants.SUPER_ADMIN)
         instance = get_object_or_404(users, pk=pk)
         serializer = ChangeUserActiveSerializer(
             instance, data=request.data, partial=True)

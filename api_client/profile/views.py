@@ -1,20 +1,22 @@
 from django.utils.decorators import method_decorator
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
+from business_service.generators import generate_list_language
 from virtual_day.users.models import User
 from virtual_day.users.permissions import (
     IsStudent, AnyPermissions, IsModerator
 )
-from virtual_day.utils.decorators import query_debugger, response_wrapper
-from virtual_day.utils.exceptions import CommonException
+from virtual_day.utils.decorators import (
+    query_debugger, response_wrapper
+)
 from .serializers import (
     RegisterSerializer, UserSerializer, LoginSerializer,
     ChangePasswordSerializer, UpdateProfileSerializer
 )
-from virtual_day.utils import constants, codes, messages
+from virtual_day.utils import constants
 
 
 @method_decorator(response_wrapper(), name='dispatch')
@@ -39,7 +41,8 @@ class ProfileViewSet(viewsets.ViewSet):
     def get_profile(self, request):
         """ method return user profile """
         serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        return Response({"model": serializer.data,
+                         "language_list": generate_list_language()})
 
     @query_debugger
     @action(methods=['POST'], permission_classes=[AllowAny], detail=False)
