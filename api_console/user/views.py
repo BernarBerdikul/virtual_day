@@ -1,18 +1,17 @@
 import asyncio
-
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from business_service.generators import generate_list_roles
 from business_service.send_email_service import send_email
 from virtual_day.users.models import User
 from virtual_day.users.permissions import IsSuperAdmin
 from virtual_day.utils.decorators import query_debugger, response_wrapper
 from .serializers import (
-    CreateAdminSerializer, UserSerializer, ChangeUserRoleSerializer
+    CreateAdminSerializer, UserSerializer,
+    ChangeUserRoleSerializer, ChangeUserActiveSerializer
 )
-from virtual_day.utils import constants
 from rest_framework.generics import get_object_or_404
 
 
@@ -38,7 +37,20 @@ class UserViewSet(viewsets.ViewSet):
         role = request.query_params.get('role', None)
         if role:
             users = User.objects.filter(role=role)
-        return Response(UserSerializer(users, many=True).data)
+        return Response(
+            {"model": UserSerializer(users, many=True).data,
+             "roles": generate_list_roles()})
+
+    @query_debugger
+    def partial_update(self, request, pk=None):
+        """ return users by role """
+        users = User.objects.all()
+        instance = get_object_or_404(users, pk=pk)
+        serializer = ChangeUserActiveSerializer(
+            instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response(UserSerializer(user).data)
 
     @query_debugger
     @action(methods=['POST'], detail=False)

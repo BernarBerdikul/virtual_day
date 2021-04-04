@@ -33,7 +33,14 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('avatar', 'phone', 'address', 'first_name', 'last_name')
+        fields = ('avatar', 'phone', 'address',
+                  'first_name', 'last_name', 'language')
+
+    def to_representation(self, instance):
+        representation = super(
+            UpdateProfileSerializer, self).to_representation(instance)
+        representation['avatar'] = get_full_url(instance.avatar)
+        return representation
 
 
 class ChangePasswordSerializer(serializers.Serializer):

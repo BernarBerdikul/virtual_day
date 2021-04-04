@@ -39,7 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'role', 'avatar', 'phone', 'address',
-                  'first_name', 'last_name')
+                  'first_name', 'last_name', 'is_active')
 
     def to_representation(self, instance):
         representation = super(
@@ -54,3 +54,11 @@ class ChangeUserRoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('role',)
+
+
+class ChangeUserActiveSerializer(serializers.ModelSerializer):
+    """ Serializer for change user is_active field in admin console """
+
+    class Meta:
+        model = User
+        fields = ('is_active',)
