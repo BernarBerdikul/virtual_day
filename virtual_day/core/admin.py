@@ -1,9 +1,14 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from translations.admin import TranslationInline, TranslatableAdmin
-from .models import Billboard, Schedule
+from .models import Billboard, Schedule, StaticBillboard
 from django.utils.translation import gettext_lazy as _
 from ..mixins.paginator import LargeTablePaginator
+
+
+@admin.register(StaticBillboard)
+class StaticBillboardAdmin(TranslatableAdmin):
+    pass
 
 
 @admin.register(Billboard)
@@ -14,15 +19,17 @@ class BillboardAdmin(TranslatableAdmin):
     search_fields = ('title',)
     fields = ('title', 'description', 'type', 'url_link',
               'billboard_image_in_detail', 'image', 'enable',
-              'is_static', 'unique_key', 'pdf_file')
+              'is_static',)
     readonly_fields = ('billboard_image_in_detail',)
     paginator = LargeTablePaginator
     inlines = [TranslationInline]
 
     def billboard_image_in_detail(self, obj):
-        """ function for representing billboard's image on admin change/add page """
+        """ function for representing billboard's
+            image on admin change/add page """
         if obj.image:
-            return mark_safe(f'<img src="{obj.image.url}" width="320px" height="240px" />')
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="320px" height="240px" />')
 
     billboard_image_in_detail.short_description = _('Изображение для билборда')
 
@@ -33,6 +40,7 @@ class ScheduleAdmin(TranslatableAdmin):
     list_display = ['id', 'event', 'speaker_id']
     list_display_links = ['id', 'event', 'speaker_id']
     list_filter = ('period_start', 'period_end')
-    fields = ('period_start', 'period_end', 'event', 'billboard', 'speaker_id',)
+    fields = ('period_start', 'period_end', 'event', 'billboard',
+              'speaker_id',)
     paginator = LargeTablePaginator
     inlines = [TranslationInline]
