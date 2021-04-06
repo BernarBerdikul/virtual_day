@@ -303,8 +303,8 @@ class Dev(BaseConfiguration):
     IS_LOCAL = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
     SITE_URL = "http://37.18.30.203"
-    STATIC_ROOT = '/root/project/virtual_day/static'
-    MEDIA_ROOT = '/root/project/virtual_day/media'
+    STATIC_ROOT = '/root/project/virtual_day/static/'
+    MEDIA_ROOT = '/root/project/virtual_day/media/'
     SECURE_SSL_REDIRECT = False
 
     CHANNEL_LAYERS = {
@@ -323,8 +323,8 @@ class Prod(BaseConfiguration):
     IS_TEST = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
     SITE_URL = "http://37.18.30.203"
-    STATIC_ROOT = '/root/project/virtual_day/static'
-    MEDIA_ROOT = '/root/project/virtual_day/media'
+    STATIC_ROOT = '/root/project/virtual_day/static/'
+    MEDIA_ROOT = '/root/project/virtual_day/media/'
     # SECURE_SSL_REDIRECT = True
 
     CHANNEL_LAYERS = {
