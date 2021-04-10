@@ -1,8 +1,9 @@
 from . import codes
 from rest_framework.views import exception_handler
 from rest_framework.exceptions import APIException, NotFound
-from rest_framework.status import (HTTP_401_UNAUTHORIZED, HTTP_412_PRECONDITION_FAILED, HTTP_403_FORBIDDEN,
-                                   HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST)
+from rest_framework.status import (
+    HTTP_401_UNAUTHORIZED, HTTP_412_PRECONDITION_FAILED, HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST)
 import logging
 import traceback
 

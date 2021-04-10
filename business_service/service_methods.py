@@ -9,21 +9,16 @@ def create_translation(model: object, translations: list,
                        object_id: int) -> None:
     """ create translations objects for model which get from params """
     model_type_id = ContentType.objects.get_for_model(model).id
-    list_for_create = []
-    billboard_static_list_create = []
+    list_for_create, billboard_static_list_create = [], []
     for translation, number in zip(translations, range(len(translations))):
         if model is Billboard:
             if 'url_link' in translation:
-                billboard_static_list_create.append(
-                    StaticBillboard(
-                        billboard_id=object_id,
-                        url_link=translation['url_link'],
+                billboard_static_list_create.append(StaticBillboard(
+                        billboard_id=object_id, url_link=translation['url_link'],
                         language=translation['language']))
             elif 'pdf_file' in translation:
-                billboard_static_list_create.append(
-                    StaticBillboard(
-                        billboard_id=object_id,
-                        pdf_file=translation['pdf_file'],
+                billboard_static_list_create.append(StaticBillboard(
+                        billboard_id=object_id, pdf_file=translation['pdf_file'],
                         language=translation['language']))
         # special translation model's fields
         for field in model.TranslatableMeta.fields:
@@ -31,7 +26,6 @@ def create_translation(model: object, translations: list,
                 text=translation[field], object_id=object_id,
                 field=field, language=translation['language'],
                 content_type_id=model_type_id))
-
     # multiple create
     Translation.objects.bulk_create(list_for_create)
     StaticBillboard.objects.bulk_create(billboard_static_list_create)

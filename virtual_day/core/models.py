@@ -70,15 +70,15 @@ class StaticBillboard(TimestampMixin, ValidateErrorMixin):
 
     class Meta:
         db_table = 'static_billboard'
-        verbose_name = _("Билборд")
-        verbose_name_plural = _("Билборды")
+        verbose_name = _("Статика билборда")
+        verbose_name_plural = _("Статика билбордов")
 
 
 class Schedule(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
-    period_start = models.PositiveIntegerField(
+    period_start = models.TimeField(
         verbose_name=_("Время начала показа"))
-    period_end = models.PositiveIntegerField(
+    period_end = models.TimeField(
         verbose_name=_("Время конца показа"))
     event = models.CharField(
         blank=True, null=True, max_length=constants.EVENT_LENGTH_MAX,

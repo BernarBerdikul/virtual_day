@@ -1,14 +1,10 @@
+from django.contrib.auth.base_user import BaseUserManager
 from rest_framework import serializers
-from virtual_day.authentication import get_token
+from business_service.send_email_service import send_email
 from virtual_day.users.models import User
-from virtual_day.utils.exceptions import (
-    CommonException, PreconditionFailedException
-)
-from datetime import datetime
-from virtual_day.utils import constants, messages, codes
-from virtual_day.utils.image_utils import get_full_url
-from virtual_day.utils.validators import password_comparison
+from virtual_day.utils import constants
 from virtual_day.utils.decorators import query_debugger
+from asgiref.sync import sync_to_async
 
 
 class CreateAdminSerializer(serializers.ModelSerializer):
@@ -22,14 +18,12 @@ class CreateAdminSerializer(serializers.ModelSerializer):
         """ Register new user """
         email = validated_data.get("email")
         """ comparison of password """
-        password = password_comparison(validated_data)
-        # password = BaseUserManager.make_random_password(self)
+        password = BaseUserManager.make_random_password(self)
         user = User.objects.create(email=email, role=constants.ADMIN)
         user.set_password(password)
         user.save()
-        # """ send mail for admin with generated password """
-        # asyncio.new_event_loop().run_until_complete(
-        #     send_email("Admin", user.email, password))
+        """ send mail for admin with generated password """
+        sync_to_async(send_email("Admin", user.email, password))
         return user
 
 

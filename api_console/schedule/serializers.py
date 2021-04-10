@@ -33,11 +33,13 @@ class ScheduleListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Schedule
-        fields = ('id', 'period_start', 'period_end', 'event', 'speaker_id')
+        fields = ('id', 'period_start', 'period_end', 'event',
+                  'billboard', 'speaker_id')
 
     def to_representation(self, instance):
         representation = super(
             ScheduleListSerializer, self).to_representation(instance)
+        representation['billboard'] = instance.billboard.title
         return representation
 
 

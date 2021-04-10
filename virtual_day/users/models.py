@@ -29,8 +29,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     """ A class used to represent a User in Application """
     email = models.EmailField(
-        max_length=255, null=True, blank=True, unique=True, db_index=True,
-        verbose_name=_("Почта"))
+        max_length=255, null=True, blank=True, unique=True,
+        db_index=True, verbose_name=_("Почта"))
     avatar = models.ImageField(
         upload_to=avatar_path, blank=True, null=True, verbose_name=_("Фото"))
     first_name = models.CharField(
@@ -38,8 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     last_name = models.CharField(
         blank=True, null=True, max_length=255, verbose_name=_("Фамилия"))
     firebase_token = models.CharField(
-        blank=True, null=True, max_length=255,
-        verbose_name=_("Токен firebase"))
+        blank=True, null=True, max_length=255, verbose_name=_("Токен firebase"))
     address = models.CharField(
         blank=True, null=True, max_length=100, verbose_name=_("Адрес"))
     role = models.PositiveSmallIntegerField(

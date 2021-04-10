@@ -30,7 +30,9 @@ class ScheduleViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         """ return all schedules """
-        schedules = Schedule.objects.all().translate(request.user.language)
+        schedules = Schedule.objects.all().translate_related(
+            'billboard'
+        ).translate(request.user.language)
         billboards = Billboard.objects.filter(
             enable=True).translate(request.user.language)
         speakers = User.objects.filter(is_active=True, role=constants.MODERATOR)
@@ -68,7 +70,7 @@ class ScheduleViewSet(viewsets.ViewSet):
     @except_data_error
     def partial_update(self, request, pk=None):
         """ update schedule with translations """
-        schedules = Billboard.objects.filter(id=pk)
+        schedules = Schedule.objects.filter(id=pk)
         instance = get_object_or_404(schedules, pk=pk)
         serializer = ScheduleDetailSerializer(
             instance, data=request.data, partial=True)

@@ -22,6 +22,7 @@ from virtual_day.utils.decorators import (
 from business_rules.billboard_rules import billboard_rules_response
 from virtual_day.utils import constants, codes, messages
 from virtual_day.utils.exceptions import CommonException
+import json
 
 
 @method_decorator(response_wrapper(), name='dispatch')
@@ -64,8 +65,9 @@ class BillboardViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         billboard = serializer.save()
         """ create translations """
-        create_translation(translations=request.data['translations'],
-                           object_id=billboard.id, model=Billboard)
+        create_translation(
+            translations=json.loads(request.data['translations']),
+            object_id=billboard.id, model=Billboard)
         result_billboard = Billboard.objects.translate(
             request.user.language).get(id=billboard.id)
         return Response(BillboardListSerializer(result_billboard).data)
@@ -81,8 +83,9 @@ class BillboardViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         billboard = serializer.save()
         """ create translations """
-        update_translation(translations=request.data['translations'],
-                           model=Billboard, object_id=pk)
+        update_translation(
+            translations=json.loads(request.data['translations']),
+            model=Billboard, object_id=pk)
         result_billboard = Billboard.objects.translate(
             request.user.language).get(id=billboard.id)
         return Response(BillboardListSerializer(result_billboard).data)
