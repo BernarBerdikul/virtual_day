@@ -27,9 +27,13 @@ class BillboardViewSet(viewsets.ViewSet):
         dynamic_billboards = billboards.filter(is_static=False)
         return Response(
             {"static_billboards": BillboardListSerializer(
-                static_billboards, many=True).data,
+                static_billboards, many=True,
+                context={"language": language}
+            ).data,
              "dynamic_billboards": BillboardListSerializer(
-                 dynamic_billboards, many=True).data})
+                 dynamic_billboards, many=True,
+                 context={"language": language}
+             ).data})
 
     @query_debugger
     def retrieve(self, request, pk=None):
@@ -38,4 +42,5 @@ class BillboardViewSet(viewsets.ViewSet):
         billboards = Billboard.objects.filter(
             id=pk, enable=True).translate(language)
         billboard = get_object_or_404(billboards, pk=pk)
-        return Response(BillboardDetailSerializer(billboard).data)
+        return Response(BillboardDetailSerializer(
+            billboard, context={"language": language}).data)

@@ -39,7 +39,8 @@ class ScheduleListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(
             ScheduleListSerializer, self).to_representation(instance)
-        representation['billboard'] = instance.billboard.title
+        if instance.billboard is not None:
+            representation['billboard'] = instance.billboard.title
         return representation
 
 

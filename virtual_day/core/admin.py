@@ -7,7 +7,7 @@ from ..mixins.paginator import LargeTablePaginator
 
 
 @admin.register(StaticBillboard)
-class StaticBillboardAdmin(TranslatableAdmin):
+class StaticBillboardAdmin(admin.ModelAdmin):
     pass
 
 

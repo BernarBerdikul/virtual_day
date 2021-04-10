@@ -2,7 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from translations.models import Translation
 from business_service.translation_service_serializer import (
-    TranslationSerializer
+    TranslationBillBoardSerializer
 )
 from virtual_day.core.models import Billboard
 from virtual_day.utils.image_utils import get_full_url
@@ -40,8 +40,10 @@ class BillboardDetailSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(
             BillboardDetailSerializer, self).to_representation(instance)
-        representation['type'] = constants.BILLBOARD_TYPES[instance.type][1]
+        # representation['type'] = constants.BILLBOARD_TYPES[instance.type][1]
         representation['image'] = get_full_url(instance.image)
+        # representation['unique_key'] = \
+        #     constants.UNIQUE_KEY_FOR_BILLBOARD[instance.unique_key][1]
         return representation
 
     def get_translations(self, obj):
@@ -50,9 +52,10 @@ class BillboardDetailSerializer(serializers.ModelSerializer):
         translations = Translation.objects.filter(
             object_id=obj.id, content_type_id=model_type_id
         ).distinct('language')
-        return TranslationSerializer(
+        return TranslationBillBoardSerializer(
             translations, many=True,
-            context={"model_type_id": model_type_id}).data
+            context={"model_type_id": model_type_id,
+                     'billboard_id': obj.id}).data
 
 
 class BillboardCreateVideoSerializer(serializers.ModelSerializer):
