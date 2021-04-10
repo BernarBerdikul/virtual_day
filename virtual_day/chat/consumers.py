@@ -1,33 +1,33 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-from .models import Message
-from .views import get_last_10_messages, get_user_contact, get_current_chat
+# from .models import Message
+# from .views import get_last_10_messages, get_user_contact, get_current_chat
 
 
 class ChatConsumer(WebsocketConsumer):
 
-    def fetch_messages(self, data):
-        messages = get_last_10_messages(data['chatId'])
-        content = {
-            'command': 'messages',
-            'messages': self.messages_to_json(messages)
-        }
-        self.send_message(content)
-
-    def new_message(self, data):
-        user_contact = get_user_contact(data['from'])
-        message = Message.objects.create(
-            contact=user_contact,
-            content=data['message'])
-        current_chat = get_current_chat(data['chatId'])
-        current_chat.messages.add(message)
-        current_chat.save()
-        content = {
-            'command': 'new_message',
-            'message': self.message_to_json(message)
-        }
-        return self.send_chat_message(content)
+    # def fetch_messages(self, data):
+    #     messages = get_last_10_messages(data['chatId'])
+    #     content = {
+    #         'command': 'messages',
+    #         'messages': self.messages_to_json(messages)
+    #     }
+    #     self.send_message(content)
+    #
+    # def new_message(self, data):
+    #     user_contact = get_user_contact(data['from'])
+    #     message = Message.objects.create(
+    #         contact=user_contact,
+    #         content=data['message'])
+    #     current_chat = get_current_chat(data['chatId'])
+    #     current_chat.messages.add(message)
+    #     current_chat.save()
+    #     content = {
+    #         'command': 'new_message',
+    #         'message': self.message_to_json(message)
+    #     }
+    #     return self.send_chat_message(content)
 
     def messages_to_json(self, messages):
         result = []
@@ -43,10 +43,10 @@ class ChatConsumer(WebsocketConsumer):
             'timestamp': str(message.timestamp)
         }
 
-    commands = {
-        'fetch_messages': fetch_messages,
-        'new_message': new_message
-    }
+    # commands = {
+    #     'fetch_messages': fetch_messages,
+    #     'new_message': new_message
+    # }
 
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']

@@ -46,7 +46,7 @@ class BaseConfiguration(Configuration):
         # project apps
         'virtual_day.users',
         'virtual_day.core',
-        # 'virtual_day.chat',
+        'virtual_day.chat',
     ]
 
     MIDDLEWARE = [
