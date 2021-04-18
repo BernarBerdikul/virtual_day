@@ -12,8 +12,10 @@ class TimestampMixin(models.Model):
     updated_at: datetime
         date and time when object was updated
     """
-    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Время создания')
-    updated_at = models.DateTimeField(auto_now=True, null=True, verbose_name='Время последнего изменения')
+    created_at = models.DateTimeField(
+        auto_now_add=True, null=True, verbose_name='Время создания')
+    updated_at = models.DateTimeField(
+        auto_now=True, null=True, verbose_name='Время последнего изменения')
 
     class Meta:
         abstract = True

@@ -17,16 +17,18 @@ LOGIN_MIN_LENGTH = 5
 LOGIN_MAX_LENGTH = 35
 MAX_IMAGE_SIZE = 20  # in Mb
 
-STUDENT = 0
+SUPER_ADMIN = 0
 ADMIN = 1
 MODERATOR = 2
-SUPER_ADMIN = 3
+SPEAKER = 3
+STUDENT = 4
 
 USER_TYPES = (
-    (STUDENT, 'STUDENT'),
+    (SUPER_ADMIN, 'SUPER_ADMIN'),
     (ADMIN, 'ADMIN'),
     (MODERATOR, 'MODERATOR'),
-    (SUPER_ADMIN, 'SUPER_ADMIN'),
+    (SPEAKER, 'SPEAKER'),
+    (STUDENT, 'STUDENT'),
 )
 
 SYSTEM_LANGUAGE = "ru"
@@ -78,7 +80,7 @@ TEXT = 1
 
 BILLBOARD_TYPES = (
     (VIDEO, 'VIDEO'),
-    (TEXT, 'TEXT'),
+    (TEXT, 'PDF'),
 )
 
 MAJOR1 = 1
@@ -88,6 +90,24 @@ MAJOR4 = 4
 MAJOR5 = 5
 MAJOR6 = 6
 MAJOR7 = 7
+
+CLASS_ROOM = (
+    (0, _("Аудитория 1")),
+    (1, _("Аудитория 2")),
+    (2, _("Аудитория 3")),
+    (3, _("Аудитория 4")),
+    (4, _("Аудитория 5")),
+    (5, _("Аудитория 6")),
+    (6, _("Аудитория 7")),
+)
+
+TYPE_LECTURE = 0
+TYPE_BILLBOARD = 1
+
+EVENT_TYPE = (
+    (TYPE_LECTURE, _("Лекция")),
+    (TYPE_BILLBOARD, _("Билборд")),
+)
 
 UNIQUE_KEY_FOR_BILLBOARD = (
     (MAJOR1, _("Информационные системы")),

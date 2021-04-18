@@ -5,6 +5,7 @@ from virtual_day.users.models import User
 from virtual_day.utils import constants
 from virtual_day.utils.decorators import query_debugger
 from asgiref.sync import sync_to_async
+from virtual_day.utils.image_utils import get_full_url
 
 
 class CreateAdminSerializer(serializers.ModelSerializer):
@@ -39,6 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
         representation = super(
             UserSerializer, self).to_representation(instance)
         representation['role'] = constants.USER_TYPES[instance.role][1]
+        representation['avatar'] = get_full_url(instance.avatar)
         return representation
 
 

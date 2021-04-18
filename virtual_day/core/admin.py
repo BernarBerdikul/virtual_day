@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from translations.admin import TranslationInline, TranslatableAdmin
-from .models import Billboard, Schedule, StaticBillboard
+from .models import Billboard, Event, MediaBillboard
 from django.utils.translation import gettext_lazy as _
 from ..mixins.paginator import LargeTablePaginator
 
 
-@admin.register(StaticBillboard)
-class StaticBillboardAdmin(admin.ModelAdmin):
+@admin.register(MediaBillboard)
+class MediaBillboardAdmin(admin.ModelAdmin):
     pass
 
 
@@ -17,7 +17,7 @@ class BillboardAdmin(TranslatableAdmin):
     list_display = ['id', 'title', 'enable', 'billboard_image']
     list_display_links = ['id', 'title', 'enable', 'billboard_image']
     search_fields = ('title',)
-    fields = ('title', 'description', 'type', 'url_link',
+    fields = ('title', 'description', 'type',
               'billboard_image_in_detail', 'image', 'enable',
               'is_static',)
     readonly_fields = ('billboard_image_in_detail',)
@@ -34,13 +34,12 @@ class BillboardAdmin(TranslatableAdmin):
     billboard_image_in_detail.short_description = _('Изображение для билборда')
 
 
-@admin.register(Schedule)
-class ScheduleAdmin(TranslatableAdmin):
-    """ A class used to represent a Schedule model in admin page """
-    list_display = ['id', 'event', 'speaker_id']
-    list_display_links = ['id', 'event', 'speaker_id']
+@admin.register(Event)
+class EventAdmin(TranslatableAdmin):
+    """ A class used to represent a Event model in admin page """
+    list_display = ['id', 'title']
+    list_display_links = ['id', 'title']
     list_filter = ('period_start', 'period_end')
-    fields = ('period_start', 'period_end', 'event', 'billboard',
-              'speaker_id',)
+    fields = ('period_start', 'period_end', 'title',)
     paginator = LargeTablePaginator
     inlines = [TranslationInline]

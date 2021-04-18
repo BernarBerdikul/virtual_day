@@ -25,6 +25,8 @@ class BillboardListSerializer(serializers.ModelSerializer):
             BillboardListSerializer, self).to_representation(instance)
         representation['type'] = constants.BILLBOARD_TYPES[instance.type][1]
         representation['image'] = get_full_url(instance.image)
+        representation['unique_key'] = \
+            constants.UNIQUE_KEY_FOR_BILLBOARD[instance.unique_key][1]
         return representation
 
 
@@ -35,7 +37,7 @@ class BillboardDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Billboard
         fields = ('id', 'image', 'is_static', 'unique_key',
-                  'type', 'enable', 'translations')
+                  'type', 'enable', 'event', 'translations')
 
     def to_representation(self, instance):
         representation = super(

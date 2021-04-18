@@ -36,9 +36,6 @@ class BillboardViewSet(viewsets.ViewSet):
     def list(self, request):
         """ return all billboards """
         billboards = Billboard.objects.all().translate(request.user.language)
-        unique_keys = [
-            {"value": value, "label": label}
-            for value, label in constants.UNIQUE_KEY_FOR_BILLBOARD]
         return Response(
             {"model": BillboardListSerializer(billboards, many=True).data,
              "rules": billboard_rules_response,

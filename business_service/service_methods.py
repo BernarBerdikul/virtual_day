@@ -1,5 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
-from virtual_day.core.models import Billboard, StaticBillboard
+from virtual_day.core.models import Billboard, MediaBillboard
 from virtual_day.utils.exceptions import CommonException, ForbiddenException
 from virtual_day.utils import messages, codes, constants
 from translations.models import Translation
@@ -13,11 +13,11 @@ def create_translation(model: object, translations: list,
     for translation, number in zip(translations, range(len(translations))):
         if model is Billboard:
             if 'url_link' in translation:
-                billboard_static_list_create.append(StaticBillboard(
+                billboard_static_list_create.append(MediaBillboard(
                         billboard_id=object_id, url_link=translation['url_link'],
                         language=translation['language']))
             elif 'pdf_file' in translation:
-                billboard_static_list_create.append(StaticBillboard(
+                billboard_static_list_create.append(MediaBillboard(
                         billboard_id=object_id, pdf_file=translation['pdf_file'],
                         language=translation['language']))
         # special translation model's fields
@@ -28,7 +28,8 @@ def create_translation(model: object, translations: list,
                 content_type_id=model_type_id))
     # multiple create
     Translation.objects.bulk_create(list_for_create)
-    StaticBillboard.objects.bulk_create(billboard_static_list_create)
+    if model is Billboard:
+        MediaBillboard.objects.bulk_create(billboard_static_list_create)
     return None
 
 
@@ -57,7 +58,7 @@ def update_translation(model: object, translations: list,
     for translation, number in zip(translations, range(len(translations))):
         if model is Billboard:
             try:
-                billboard_static = StaticBillboard.objects.get(
+                billboard_static = MediaBillboard.objects.get(
                     language=translation['language'],
                     billboard_id=object_id
                 )
@@ -69,16 +70,16 @@ def update_translation(model: object, translations: list,
                     billboard_static_list_update.append(
                         Translation(id=billboard_static.id,
                                     pdf_file=translation['pdf_file']))
-            except StaticBillboard.DoesNotExist:
+            except MediaBillboard.DoesNotExist:
                 if 'url_link' in translation:
                     billboard_static_list_create.append(
-                        StaticBillboard(
+                        MediaBillboard(
                             billboard_id=object_id,
                             url_link=translation['url_link'],
                             language=translation['language']))
                 elif 'pdf_file' in translation:
                     billboard_static_list_create.append(
-                        StaticBillboard(
+                        MediaBillboard(
                             billboard_id=object_id,
                             pdf_file=translation['pdf_file'],
                             language=translation['language']))
@@ -106,8 +107,9 @@ def update_translation(model: object, translations: list,
     Translation.objects.bulk_create(
         list_for_create)
 
-    StaticBillboard.objects.bulk_update(
-        billboard_static_list_update, ['url_link', 'pdf_file'])
-    StaticBillboard.objects.bulk_create(
-        billboard_static_list_create)
+    if model is Billboard:
+        MediaBillboard.objects.bulk_update(
+            billboard_static_list_update, ['url_link', 'pdf_file'])
+        MediaBillboard.objects.bulk_create(
+            billboard_static_list_create)
     return None

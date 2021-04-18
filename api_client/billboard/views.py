@@ -26,11 +26,11 @@ class BillboardViewSet(viewsets.ViewSet):
         static_billboards = billboards.filter(is_static=True)
         dynamic_billboards = billboards.filter(is_static=False)
         return Response(
-            {"static_billboards": BillboardListSerializer(
+            {"static_billboards": BillboardDetailSerializer(
                 static_billboards, many=True,
                 context={"language": language}
             ).data,
-             "dynamic_billboards": BillboardListSerializer(
+             "dynamic_billboards": BillboardDetailSerializer(
                  dynamic_billboards, many=True,
                  context={"language": language}
              ).data})

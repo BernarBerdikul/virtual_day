@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from translations.models import Translation
-from virtual_day.core.models import StaticBillboard
+from virtual_day.core.models import MediaBillboard
 
 
 class TranslationBillBoardSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class TranslationBillBoardSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super(
             TranslationBillBoardSerializer, self).to_representation(instance)
-        static_billboard = StaticBillboard.objects.get(
+        static_billboard = MediaBillboard.objects.get(
             billboard_id=self.context['billboard_id'],
             language=instance.language)
         if static_billboard.pdf_file != '':
@@ -42,19 +42,19 @@ class TranslationBillBoardSerializer(serializers.ModelSerializer):
         return description.text
 
 
-class TranslationScheduleSerializer(serializers.ModelSerializer):
+class TranslationEventSerializer(serializers.ModelSerializer):
     """ Translation Serializer for create/update/get
-        objects in Schedule model """
-    event = serializers.SerializerMethodField()
+        objects in Event model """
+    title = serializers.SerializerMethodField()
 
     class Meta:
         model = Translation
-        fields = ('event', 'language',)
+        fields = ('title', 'language',)
 
-    def get_event(self, obj):
-        event = Translation.objects.filter(
-            object_id=obj.object_id, field='event', language=obj.language,
+    def get_title(self, obj):
+        title = Translation.objects.filter(
+            object_id=obj.object_id, field='title', language=obj.language,
             content_type_id=self.context['model_type_id']).first()
-        if event is None:
+        if title is None:
             return None
-        return event.text
+        return title.text

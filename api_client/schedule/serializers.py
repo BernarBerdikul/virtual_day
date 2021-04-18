@@ -1,42 +1,31 @@
 from rest_framework import serializers
-from virtual_day.core.models import Schedule, Billboard
+from virtual_day.core.models import Event, Billboard
 from virtual_day.users.models import User
 
 
-class ScheduleListSerializer(serializers.ModelSerializer):
-    """ Schedule serializer for short information in list """
+class EventListSerializer(serializers.ModelSerializer):
+    """ Event serializer for short information in list """
 
     class Meta:
-        model = Schedule
-        fields = ('id', 'period_start', 'period_end', 'event', 'billboard')
+        model = Event
+        fields = ('id', 'period_start', 'period_end', 'title')
 
     def to_representation(self, instance):
         representation = super(
-            ScheduleListSerializer, self).to_representation(instance)
-        if instance.speaker_id is not None:
-            representation['speaker'] = \
-                User.objects.get(id=instance.speaker_id).first_name
-        else:
-            representation['speaker'] = None
-        """ return billboard title """
-        if instance.billboard is not None:
-            representation['billboard'] = instance.billboard.title
-        else:
-            representation['billboard'] = None
+            EventListSerializer, self).to_representation(instance)
         return representation
 
 
-class ScheduleDetailSerializer(serializers.ModelSerializer):
+class EventDetailSerializer(serializers.ModelSerializer):
     """ Schedule serializer for detail information """
 
     class Meta:
-        model = Schedule
-        fields = ('id', 'period_start', 'period_end', 'event', 'billboard',
-                  'speaker_id')
+        model = Event
+        fields = ('id', 'period_start', 'period_end', 'title',)
 
     def to_representation(self, instance):
         representation = super(
-            ScheduleDetailSerializer, self).to_representation(instance)
+            EventDetailSerializer, self).to_representation(instance)
         return representation
 
 

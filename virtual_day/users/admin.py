@@ -19,6 +19,7 @@ class UserAdmin(admin.ModelAdmin):
                                          'role',
                                          'phone',
                                          'is_active',
+                                         'ban',
                                          'language')
                               }
          ),

@@ -1,4 +1,3 @@
-import datetime
 from datetime import datetime
 from rest_framework import viewsets, status
 from rest_framework.generics import get_object_or_404
@@ -14,7 +13,9 @@ from .serializers import (
 from business_rules.user_push_notification_rules import (
     user_push_notification_rules_response
 )
-from .service import check_push_is_not_sent, calculate_pushes_info
+from .service import (
+    check_push_is_not_sent, calculate_pushes_info, send_push_now
+)
 
 
 class UserPushNotificationViewSet(viewsets.ViewSet):
@@ -57,6 +58,8 @@ class UserPushNotificationViewSet(viewsets.ViewSet):
             serializer_image.is_valid(raise_exception=True)
             serializer_image.save()
         calculated_push = calculate_pushes_info(push_notification=push)
+        if len(request.data['date_publication']) == 0:
+            send_push_now(push=calculated_push)
         return Response(PushListSerializer(calculated_push).data,
                         status=status.HTTP_201_CREATED)
 
@@ -64,7 +67,7 @@ class UserPushNotificationViewSet(viewsets.ViewSet):
     @except_data_error
     def partial_update(self, request, pk):
         """ method for update push with translations """
-        pushes = UserPushNotification.objects.filter(id=pk)
+        pushes = UserPushNotification.objects.filter(id=pk, is_sent=False)
         instance = get_object_or_404(pushes, pk=pk)
         """ check if push already sent """
         check_push_is_not_sent(push=instance)
@@ -78,6 +81,8 @@ class UserPushNotificationViewSet(viewsets.ViewSet):
             serializer_image.is_valid(raise_exception=True)
             serializer_image.save()
         calculated_push = calculate_pushes_info(push_notification=push)
+        if len(request.data['date_publication']) == 0:
+            send_push_now(push=calculated_push)
         return Response(PushListSerializer(calculated_push).data)
 
     @query_debugger

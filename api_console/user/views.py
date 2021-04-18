@@ -31,8 +31,15 @@ class UserViewSet(viewsets.ViewSet):
         return Response(UserSerializer(user).data)
 
     @query_debugger
+    @action(methods=['POST'], detail=False)
+    def search(self, request):
+        """ search users by email """
+        users = User.objects.filter(email__icontains=request.data['title'])
+        return Response(UserSerializer(users, many=True).data)
+
+    @query_debugger
     def list(self, request):
-        """ return users by role """
+        """ return all users or by role """
         users = User.objects.all()
         role = request.query_params.get('role', None)
         if role:
@@ -44,7 +51,7 @@ class UserViewSet(viewsets.ViewSet):
     @query_debugger
     def update(self, request, pk=None):
         """ method for change user role """
-        users = User.objects.filter(id=pk)
+        users = User.objects.exclude(role=constants.SUPER_ADMIN)
         user = get_object_or_404(users, pk=pk)
         serializer = ChangeUserRoleSerializer(
             user, data=request.data, partial=True)
@@ -54,7 +61,7 @@ class UserViewSet(viewsets.ViewSet):
 
     @query_debugger
     def partial_update(self, request, pk=None):
-        """ return users by role """
+        """ change user's is_active status """
         users = User.objects.exclude(role=constants.SUPER_ADMIN)
         instance = get_object_or_404(users, pk=pk)
         serializer = ChangeUserActiveSerializer(
@@ -62,18 +69,6 @@ class UserViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response(UserSerializer(user).data)
-
-    # @query_debugger
-    # @action(methods=['POST'], detail=False)
-    # def change_role(self, request):
-    #     """ method for change user role """
-    #     users = User.objects.filter(id=request.data['user_id'])
-    #     user = get_object_or_404(users, pk=request.data['user_id'])
-    #     serializer = ChangeUserRoleSerializer(
-    #         user, data=request.data, partial=True)
-    #     serializer.is_valid(raise_exception=True)
-    #     updated_user = serializer.save()
-    #     return Response(UserSerializer(updated_user).data)
 
     @query_debugger
     @action(methods=['GET'], detail=False)

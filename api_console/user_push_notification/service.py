@@ -2,6 +2,28 @@ from django.db.models import Q
 from virtual_day.utils import messages, codes, constants
 from virtual_day.utils.exceptions import CommonException
 from virtual_day.users.models import User
+from firebase import FCMManager as fcm
+import time
+
+
+def send_push_now(push: object) -> None:
+    users = User.objects.exclude(
+        Q(role=constants.SUPER_ADMIN) & Q(role=constants.ADMIN))
+    token_list = [user.firebase_token for user in users]
+    response = fcm.sendPush(title=push.title,
+                            msg=push.description,
+                            image=push.image_path,
+                            registration_token=token_list,
+                            data_object=push.data)
+    push.response = {
+        "message_id": response.responses,
+        "success_count": response.success_count,
+        "failure_count": response.failure_count
+    }
+    push.date_publication = int(time.time())
+    push.is_sent = True
+    push.save()
+    return None
 
 
 def check_push_is_not_sent(push: object) -> object:

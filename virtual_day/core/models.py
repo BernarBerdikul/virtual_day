@@ -9,6 +9,52 @@ from virtual_day.utils import constants
 from translations.models import Translatable
 
 
+class DodDay(Translatable, TimestampMixin, ValidateErrorMixin):
+    """ A class used to represent an Billboard in application """
+    day_date = models.DateField(verbose_name=_("Дата дня"))
+    enable = models.BooleanField(
+        default=True, verbose_name=_("Активен"))
+
+    def __str__(self):
+        """ Return period_start, period_end and event when calling object """
+        return f'{self.day_date}'
+
+    class Meta:
+        db_table = 'dod_day'
+        verbose_name = _("День ДОДа")
+        verbose_name_plural = _("Дни ДОДа")
+
+
+class Event(Translatable, TimestampMixin, ValidateErrorMixin):
+    """ A class used to represent an Billboard in application """
+    period_start = models.TimeField(
+        verbose_name=_("Время начала показа"))
+    period_end = models.TimeField(
+        verbose_name=_("Время конца показа"))
+    title = models.CharField(
+        blank=True, null=True, max_length=constants.EVENT_LENGTH_MAX,
+        verbose_name=_("Название события"))
+    dod_day = models.ForeignKey(
+        DodDay, on_delete=models.CASCADE, verbose_name=_("День ДОДа"))
+    event_type = models.PositiveSmallIntegerField(
+        choices=constants.EVENT_TYPE, verbose_name=_("Тип события"))
+    enable = models.BooleanField(
+        default=True, verbose_name=_("Активен"))
+
+    def __str__(self):
+        """ Return period_start, period_end and event when calling object """
+        return f'{self.period_start} - {self.period_end} - {self.event}'
+
+    class Meta:
+        db_table = 'event'
+        verbose_name = _("Событие")
+        verbose_name_plural = _("События")
+
+    class TranslatableMeta:
+        """ field that is translated in the database """
+        fields = ['title']
+
+
 class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     title = models.CharField(
@@ -24,6 +70,8 @@ class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
         verbose_name=_("Тип билборда"))
     enable = models.BooleanField(
         default=True, verbose_name=_("Активен"))
+    event = models.ForeignKey(
+        Event, on_delete=models.PROTECT, verbose_name=_("Событие"))
     is_static = models.BooleanField(
         default=True, verbose_name=_("Статичный"))
     unique_key = models.PositiveSmallIntegerField(
@@ -49,7 +97,7 @@ class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
         fields = ['title', 'description']
 
 
-class StaticBillboard(TimestampMixin, ValidateErrorMixin):
+class MediaBillboard(TimestampMixin, ValidateErrorMixin):
     billboard = models.ForeignKey(
         Billboard, on_delete=models.CASCADE,
         related_name='billboard_statics', verbose_name=_("Билборд"))
@@ -69,35 +117,28 @@ class StaticBillboard(TimestampMixin, ValidateErrorMixin):
         return f'{self.billboard} - {self.language}'
 
     class Meta:
-        db_table = 'static_billboard'
+        db_table = 'media_billboard'
         verbose_name = _("Статика билборда")
         verbose_name_plural = _("Статика билбордов")
 
 
-class Schedule(Translatable, TimestampMixin, ValidateErrorMixin):
+class Lecture(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
-    period_start = models.TimeField(
-        verbose_name=_("Время начала показа"))
-    period_end = models.TimeField(
-        verbose_name=_("Время конца показа"))
-    event = models.CharField(
-        blank=True, null=True, max_length=constants.EVENT_LENGTH_MAX,
-        verbose_name=_("Событие"))
-    billboard = models.ForeignKey(
-        Billboard, on_delete=models.CASCADE, related_name='schedules',
-        blank=True, null=True, verbose_name=_("Билборд"))
-    speaker_id = models.PositiveIntegerField(
-        blank=True, null=True, verbose_name=_("ID спикера"))
+    class_room = models.CharField(
+        max_length=30,
+        choices=constants.CLASS_ROOM, verbose_name=_("Дата дня"))
+    speaker = models.ForeignKey(
+        "users.User", on_delete=models.PROTECT, verbose_name=_("Спикер"))
+    event = models.OneToOneField(
+        Event, on_delete=models.PROTECT, verbose_name=_("Событие"))
+    enable = models.BooleanField(
+        default=True, verbose_name=_("Активен"))
 
     def __str__(self):
-        """ Return period_start, period_end and event when calling object """
-        return f'{self.period_start} - {self.period_end} - {self.event}'
+        """ Return class_room when calling object """
+        return f'{self.class_room}'
 
     class Meta:
-        db_table = 'schedule'
-        verbose_name = _("Расписание")
-        verbose_name_plural = _("Расписание")
-
-    class TranslatableMeta:
-        """ field that is translated in the database """
-        fields = ['event']
+        db_table = 'lecture'
+        verbose_name = _("Лекция")
+        verbose_name_plural = _("Лекции")

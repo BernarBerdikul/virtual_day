@@ -51,6 +51,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
         editable=False, null=True, verbose_name="Время изменения пароля")
     is_active = models.BooleanField(
         default=True, verbose_name=_("Активность"))
+    ban = models.BooleanField(
+        default=False, verbose_name=_("Пользователь забанен"))
     language = models.CharField(
         choices=settings.LANGUAGES, max_length=32,
         default=constants.SYSTEM_LANGUAGE, verbose_name=_("Выбранный язык"))
