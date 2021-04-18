@@ -21,19 +21,27 @@ class IsSuperAdmin(BasePermission):
 
 
 @permission_classes([IsAuthenticated])
-class IsStudent(BasePermission):
-    """ Permissions for Student """
-    def has_permission(self, request, view):
-        return User.objects.filter(id=request.user.id, is_active=True,
-                                   role=constants.STUDENT).exists()
-
-
-@permission_classes([IsAuthenticated])
 class IsModerator(BasePermission):
     """ Permissions for Moderator """
     def has_permission(self, request, view):
         return User.objects.filter(id=request.user.id, is_active=True,
                                    role=constants.MODERATOR).exists()
+
+
+@permission_classes([IsAuthenticated])
+class IsSpeaker(BasePermission):
+    """ Permissions for Speaker """
+    def has_permission(self, request, view):
+        return User.objects.filter(id=request.user.id, is_active=True,
+                                   role=constants.SPEAKER).exists()
+
+
+@permission_classes([IsAuthenticated])
+class IsStudent(BasePermission):
+    """ Permissions for Student """
+    def has_permission(self, request, view):
+        return User.objects.filter(id=request.user.id, is_active=True,
+                                   role=constants.STUDENT).exists()
 
 
 class AnyPermissions(BasePermission):

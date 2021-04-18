@@ -20,7 +20,9 @@ class DodDayViewSet(viewsets.ViewSet):
 
     @query_debugger
     def list(self, request):
-        dod_days = DodDay.objects.all()
+        offset = int(request.query_params.get('offset', 0))
+        limit = int(request.query_params.get('limit', 10))
+        dod_days = DodDay.objects.all()[offset: offset + limit]
         return Response(DodDaySerializer(dod_days, many=True).data)
 
     @query_debugger

@@ -3,25 +3,25 @@ from rest_framework import viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
-from business_service.generators import generate_list_type_billboard, \
-    generate_list_unique_keys
+from business_service.generators import (
+    generate_list_type_billboard, generate_list_unique_keys
+)
 from business_service.service_methods import (
     create_translation, update_translation
 )
-from virtual_day.core.models import Billboard
+from virtual_day.core.models import Billboard, Event
 from virtual_day.users.permissions import (
     IsAdmin, IsSuperAdmin, AnyPermissions
 )
 from .serializers import (
     BillboardListSerializer, BillboardDetailSerializer,
+    EventSelectSerializer,
     BillboardCreateVideoSerializer, BillboardCreateTextSerializer
 )
 from virtual_day.utils.decorators import (
     query_debugger, except_data_error, response_wrapper
 )
 from business_rules.billboard_rules import billboard_rules_response
-from virtual_day.utils import constants, codes, messages
-from virtual_day.utils.exceptions import CommonException
 import json
 
 
@@ -35,11 +35,18 @@ class BillboardViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         """ return all billboards """
-        billboards = Billboard.objects.all().translate(request.user.language)
+        offset = int(request.query_params.get('offset', 0))
+        limit = int(request.query_params.get('limit', 10))
+        billboards = Billboard.objects.translate(
+            request.user.language)[offset: offset + limit]
+        """ get events for select """
+        events = Event.objects.filter(enable=True).translate(
+            request.user.language)
         return Response(
             {"model": BillboardListSerializer(billboards, many=True).data,
              "rules": billboard_rules_response,
              "type_billboard": generate_list_type_billboard(),
+             "events": EventSelectSerializer(events, many=True).data,
              "unique_keys": generate_list_unique_keys()})
 
     @query_debugger
@@ -48,10 +55,14 @@ class BillboardViewSet(viewsets.ViewSet):
         billboards = Billboard.objects.filter(
             id=pk).translate(request.user.language)
         billboard = get_object_or_404(billboards, pk=pk)
+        """ get events for select """
+        events = Event.objects.filter(enable=True).translate(
+            request.user.language)
         return Response(
             {"model": BillboardDetailSerializer(billboard).data,
              "rules": billboard_rules_response,
              "type_billboard": generate_list_type_billboard(),
+             "events": EventSelectSerializer(events, many=True).data,
              "unique_keys": generate_list_unique_keys()})
 
     @query_debugger

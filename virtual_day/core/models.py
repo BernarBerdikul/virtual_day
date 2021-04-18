@@ -124,13 +124,13 @@ class MediaBillboard(TimestampMixin, ValidateErrorMixin):
 
 class Lecture(Translatable, TimestampMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
-    class_room = models.CharField(
-        max_length=30,
+    class_room = models.PositiveSmallIntegerField(
         choices=constants.CLASS_ROOM, verbose_name=_("Дата дня"))
     speaker = models.ForeignKey(
         "users.User", on_delete=models.PROTECT, verbose_name=_("Спикер"))
     event = models.OneToOneField(
-        Event, on_delete=models.PROTECT, verbose_name=_("Событие"))
+        Event, on_delete=models.PROTECT, related_name='lecture',
+        verbose_name=_("Событие"))
     enable = models.BooleanField(
         default=True, verbose_name=_("Активен"))
 

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from business_service.generators import generate_list_language
 from virtual_day.users.models import User
 from virtual_day.users.permissions import (
-    IsStudent, AnyPermissions, IsModerator
+    IsStudent, AnyPermissions, IsModerator, IsSpeaker
 )
 from virtual_day.utils.decorators import (
     query_debugger, response_wrapper
@@ -24,7 +24,7 @@ class ProfileViewSet(viewsets.ViewSet):
     """ ViewSet to work with User """
     serializer_class = UserSerializer
     permission_classes = (AnyPermissions,)
-    any_permission_classes = [IsStudent, IsModerator]
+    any_permission_classes = [IsStudent, IsModerator, IsSpeaker]
     parser_classes = (MultiPartParser, JSONParser)
 
     @query_debugger

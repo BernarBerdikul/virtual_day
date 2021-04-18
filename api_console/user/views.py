@@ -40,7 +40,9 @@ class UserViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         """ return all users or by role """
-        users = User.objects.all()
+        offset = int(request.query_params.get('offset', 0))
+        limit = int(request.query_params.get('limit', 10))
+        users = User.objects.all()[offset: offset + limit]
         role = request.query_params.get('role', None)
         if role:
             users = User.objects.filter(role=role)

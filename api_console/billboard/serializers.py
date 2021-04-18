@@ -4,10 +4,20 @@ from translations.models import Translation
 from business_service.translation_service_serializer import (
     TranslationBillBoardSerializer
 )
-from virtual_day.core.models import Billboard
+from virtual_day.core.models import Billboard, Event
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils import constants
 from virtual_day.utils.validators import validate_image
+
+
+class EventSelectSerializer(serializers.ModelSerializer):
+    """ Serializer for Event to create billboard in admin console """
+    value = serializers.IntegerField(source='id')
+    label = serializers.CharField(source='title')
+
+    class Meta:
+        model = Event
+        fields = ('value', 'label')
 
 
 class BillboardListSerializer(serializers.ModelSerializer):

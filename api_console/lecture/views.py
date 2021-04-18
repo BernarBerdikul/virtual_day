@@ -1,5 +1,6 @@
 from django.utils.decorators import method_decorator
 from rest_framework import viewsets
+from business_service.generators import generate_class_rooms
 from virtual_day.users.permissions import (
     IsAdmin, IsSuperAdmin, AnyPermissions
 )
@@ -26,11 +27,13 @@ class LectureViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         """ get lectures """
+        offset = int(request.query_params.get('offset', 0))
+        limit = int(request.query_params.get('limit', 10))
         lectures = Lecture.objects.select_related(
             'speaker', 'event'
         ).translate_related(
             'event'
-        ).translate(request.user.language).all()
+        ).translate(request.user.language)[offset: offset + limit]
         """ get speakers """
         speakers = User.objects.filter(
             role=constants.SPEAKER, is_active=True,
@@ -42,7 +45,8 @@ class LectureViewSet(viewsets.ViewSet):
         return Response(
             {"model": LectureListSerializer(lectures, many=True).data,
              "speakers": SpeakerSerializer(speakers, many=True).data,
-             "events": EventSerializer(events, many=True).data})
+             "events": EventSerializer(events, many=True).data,
+             "class_room": generate_class_rooms()})
 
     @query_debugger
     def retrieve(self, request, pk=None):

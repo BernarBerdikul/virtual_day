@@ -30,7 +30,10 @@ class EventViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         """ return all events """
-        events = Event.objects.select_related('dod_day').all().translate(request.user.language)
+        offset = int(request.query_params.get('offset', 0))
+        limit = int(request.query_params.get('limit', 10))
+        events = Event.objects.select_related('dod_day').translate(
+            request.user.language)[offset: offset + limit]
         dod_days = DodDay.objects.all()
         event_types = [{"value": value, "label": label}
                        for value, label in constants.EVENT_TYPE]

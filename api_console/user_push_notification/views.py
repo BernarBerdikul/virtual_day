@@ -26,6 +26,8 @@ class UserPushNotificationViewSet(viewsets.ViewSet):
     @query_debugger
     def list(self, request):
         archive = bool(request.query_params.get('archive', False))
+        offset = int(request.query_params.get('offset', 0))
+        limit = int(request.query_params.get('limit', 10))
         now_in_seconds = datetime.timestamp(datetime.now())
         if archive is True:
             pushes = UserPushNotification.objects.filter(
@@ -34,7 +36,8 @@ class UserPushNotificationViewSet(viewsets.ViewSet):
             pushes = UserPushNotification.objects.filter(
                 date_publication__gte=now_in_seconds, is_sent=False)
         return Response(
-            {"model": PushListSerializer(pushes, many=True).data,
+            {"model": PushListSerializer(
+                pushes[offset: offset + limit], many=True).data,
              "rules": user_push_notification_rules_response})
 
     @query_debugger
