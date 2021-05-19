@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
-from virtual_day.mixins.models import TimestampMixin
+from virtual_day.mixins.models import DateTimeMixin
 from virtual_day.utils.image_utils import (
     avatar_path, image_push_notification_path
 )
@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
+class User(AbstractBaseUser, PermissionsMixin, DateTimeMixin):
     """ A class used to represent a User in Application """
     email = models.EmailField(
         max_length=255, null=True, blank=True, unique=True,
@@ -38,7 +38,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
     last_name = models.CharField(
         blank=True, null=True, max_length=255, verbose_name=_("Фамилия"))
     firebase_token = models.CharField(
-        blank=True, null=True, max_length=255, verbose_name=_("Токен firebase"))
+        blank=True, null=True, max_length=255,
+        verbose_name=_("Токен firebase"))
     address = models.CharField(
         blank=True, null=True, max_length=100, verbose_name=_("Адрес"))
     role = models.PositiveSmallIntegerField(
@@ -72,7 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampMixin):
         return self.is_superuser
 
 
-class UserPushNotification(TimestampMixin):
+class UserPushNotification(DateTimeMixin):
     """ A class used to represent a Push Notifications
         to user in Application """
     title = models.CharField(

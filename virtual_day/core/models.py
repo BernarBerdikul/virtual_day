@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.safestring import mark_safe
-from virtual_day.mixins.models import TimestampMixin, ValidateErrorMixin
+from virtual_day.mixins.models import DateTimeMixin, ValidateErrorMixin
 from virtual_day.utils.image_utils import (
     billboard_image_path, pdf_file_image_path
 )
@@ -9,7 +9,7 @@ from virtual_day.utils import constants
 from translations.models import Translatable
 
 
-class DodDay(Translatable, TimestampMixin, ValidateErrorMixin):
+class DodDay(Translatable, DateTimeMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     day_date = models.DateField(verbose_name=_("Дата дня"))
     enable = models.BooleanField(
@@ -25,7 +25,7 @@ class DodDay(Translatable, TimestampMixin, ValidateErrorMixin):
         verbose_name_plural = _("Дни ДОДа")
 
 
-class Event(Translatable, TimestampMixin, ValidateErrorMixin):
+class Event(Translatable, DateTimeMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     period_start = models.TimeField(
         verbose_name=_("Время начала показа"))
@@ -55,7 +55,7 @@ class Event(Translatable, TimestampMixin, ValidateErrorMixin):
         fields = ['title']
 
 
-class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
+class Billboard(Translatable, DateTimeMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     title = models.CharField(
         blank=True, null=True, max_length=constants.TITLE_LENGTH_MAX,
@@ -97,7 +97,7 @@ class Billboard(Translatable, TimestampMixin, ValidateErrorMixin):
         fields = ['title', 'description']
 
 
-class MediaBillboard(TimestampMixin, ValidateErrorMixin):
+class MediaBillboard(DateTimeMixin, ValidateErrorMixin):
     billboard = models.ForeignKey(
         Billboard, on_delete=models.CASCADE,
         related_name='billboard_statics', verbose_name=_("Билборд"))
@@ -122,7 +122,7 @@ class MediaBillboard(TimestampMixin, ValidateErrorMixin):
         verbose_name_plural = _("Статика билбордов")
 
 
-class Lecture(Translatable, TimestampMixin, ValidateErrorMixin):
+class Lecture(Translatable, DateTimeMixin, ValidateErrorMixin):
     """ A class used to represent an Billboard in application """
     class_room = models.PositiveSmallIntegerField(
         choices=constants.CLASS_ROOM, verbose_name=_("Дата дня"))

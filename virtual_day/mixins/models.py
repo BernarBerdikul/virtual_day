@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class TimestampMixin(models.Model):
+class DateTimeMixin(models.Model):
     """
     A class used to represent an TimestampMixin
     ...

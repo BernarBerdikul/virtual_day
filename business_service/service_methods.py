@@ -58,18 +58,16 @@ def update_translation(model: object, translations: list,
     for translation, number in zip(translations, range(len(translations))):
         if model is Billboard:
             try:
-                billboard_static = MediaBillboard.objects.get(
-                    language=translation['language'],
-                    billboard_id=object_id
-                )
                 if 'url_link' in translation:
-                    billboard_static_list_update.append(
-                        Translation(id=billboard_static.id,
-                                    url_link=translation['url_link']))
+                    billboard_static_list_create.append(MediaBillboard(
+                        billboard_id=object_id,
+                        url_link=translation['url_link'],
+                        language=translation['language']))
                 elif 'pdf_file' in translation:
-                    billboard_static_list_update.append(
-                        Translation(id=billboard_static.id,
-                                    pdf_file=translation['pdf_file']))
+                    billboard_static_list_create.append(MediaBillboard(
+                        billboard_id=object_id,
+                        pdf_file=translation['pdf_file'],
+                        language=translation['language']))
             except MediaBillboard.DoesNotExist:
                 if 'url_link' in translation:
                     billboard_static_list_create.append(

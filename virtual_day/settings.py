@@ -65,15 +65,6 @@ class BaseConfiguration(Configuration):
 
     DRF_API_LOGGER_DATABASE = True
 
-    X_FRAME_OPTIONS = 'DENY'
-
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_HSTS_SECONDS = 300
-
     ROOT_URLCONF = 'virtual_day.urls'
 
     TEMPLATES = [
@@ -215,7 +206,7 @@ class BaseConfiguration(Configuration):
 
     LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
-    TIME_ZONE = 'UTC'
+    TIME_ZONE = 'Asia/Almaty'
 
     USE_I18N = True
 
@@ -304,6 +295,16 @@ class Dev(BaseConfiguration):
     SITE_URL = "http://37.18.30.203"
     STATIC_ROOT = '/root/project/virtual_day/static/'
     MEDIA_ROOT = '/root/project/virtual_day/media/'
+
+    X_FRAME_OPTIONS = 'DENY'
+
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
+    # SECURE_HSTS_SECONDS = 300
+
     SECURE_SSL_REDIRECT = False
 
     CHANNEL_LAYERS = {
@@ -324,6 +325,16 @@ class Prod(BaseConfiguration):
     SITE_URL = "http://37.18.30.203"
     STATIC_ROOT = '/root/project/virtual_day/static/'
     MEDIA_ROOT = '/root/project/virtual_day/media/'
+
+    X_FRAME_OPTIONS = 'DENY'
+
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # SECURE_HSTS_PRELOAD = True
+    # SECURE_HSTS_SECONDS = 300
+
     # SECURE_SSL_REDIRECT = True
 
     CHANNEL_LAYERS = {

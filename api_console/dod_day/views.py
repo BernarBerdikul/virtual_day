@@ -41,10 +41,10 @@ class DodDayViewSet(viewsets.ViewSet):
 
     @query_debugger
     @except_data_error
-    def update(self, request, pk=None):
+    def partial_update(self, request, pk=None):
         dod_days = DodDay.objects.filter(pk=pk)
         dod_day = get_object_or_404(dod_days, pk=pk)
-        serializer = DodDaySerializer(dod_day, data=request.data)
+        serializer = DodDaySerializer(dod_day, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

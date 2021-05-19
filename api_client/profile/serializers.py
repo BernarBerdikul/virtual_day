@@ -41,7 +41,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """ User Serializer in admin console """
+    """ User Serializer in client application """
 
     class Meta:
         model = User

@@ -19,7 +19,6 @@ from .service import export_excel_file
 class UserViewSet(viewsets.ViewSet):
     """ ViewSet to work with User """
     permission_classes = (IsSuperAdmin,)
-    serializer_class = UserSerializer
 
     @query_debugger
     @action(methods=['POST'], detail=False)
