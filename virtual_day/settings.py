@@ -1,6 +1,6 @@
 import os
-from configurations import Configuration
 from dotenv import load_dotenv
+from configurations import Configuration
 
 load_dotenv()
 
@@ -20,7 +20,6 @@ class BaseConfiguration(Configuration):
     INSTALLED_APPS = [
         'modeltranslation',
         'translations',
-        'channels',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -85,21 +84,13 @@ class BaseConfiguration(Configuration):
 
     WSGI_APPLICATION = 'virtual_day.wsgi.application'
 
-    # Channels
-    ASGI_APPLICATION = "virtual_day.asgi.application"
-
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": [('127.0.0.1', 6379)],
-            },
-        },
-    }
-
     AUTH_USER_MODEL = 'users.User'
 
     DATABASES = {
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.sqlite3',
+        #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # }
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': os.getenv('DB_NAME'),
@@ -110,6 +101,7 @@ class BaseConfiguration(Configuration):
             'CONN_MAX_AGE': 60 * 10,  # 10 minutes
         }
     }
+
     # from rest_framework_jwt.authentication import JSONWebTokenAuthentication
     REST_FRAMEWORK = {
         'DEFAULT_RENDERER_CLASSES': (
@@ -156,18 +148,17 @@ class BaseConfiguration(Configuration):
         },
     ]
 
-    CACHES = {
-        "default": {
-            'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-            'LOCATION': 'virtual_day_cache',
-        },
-    }
+    # CACHES = {
+    #     "default": {
+    #         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+    #         'LOCATION': 'virtual_day_cache',
+    #     },
+    # }
 
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
         "http://localhost:3000",
-        "http://78.140.223.130:8000",
     ]
 
     CORS_ALLOW_METHODS = [
@@ -293,8 +284,8 @@ class Dev(BaseConfiguration):
     IS_LOCAL = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
     SITE_URL = "http://37.18.30.203"
-    STATIC_ROOT = '/root/project/virtual_day/static/'
-    MEDIA_ROOT = '/root/project/virtual_day/media/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
     X_FRAME_OPTIONS = 'DENY'
 
@@ -307,15 +298,6 @@ class Dev(BaseConfiguration):
 
     SECURE_SSL_REDIRECT = False
 
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": [('37.18.30.203', 6379)],
-            },
-        },
-    }
-
 
 class Prod(BaseConfiguration):
     DEBUG = False
@@ -323,8 +305,8 @@ class Prod(BaseConfiguration):
     IS_TEST = False
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
     SITE_URL = "http://37.18.30.203"
-    STATIC_ROOT = '/root/project/virtual_day/static/'
-    MEDIA_ROOT = '/root/project/virtual_day/media/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
     X_FRAME_OPTIONS = 'DENY'
 
@@ -336,12 +318,3 @@ class Prod(BaseConfiguration):
     # SECURE_HSTS_SECONDS = 300
 
     # SECURE_SSL_REDIRECT = True
-
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": [('37.18.30.203', 6379)],
-            },
-        },
-    }

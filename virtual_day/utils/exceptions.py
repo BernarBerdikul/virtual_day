@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 def custom_exception_handler(exc, context):
     """ overwrite custom exception """
     response = exception_handler(exc, context)
-    logger.error(''.join(traceback.format_exception(etype=type(exc),
-                                                    value=exc, tb=exc.__traceback__)))
+    logger.error(''.join(traceback.format_exception(
+        etype=type(exc), value=exc, tb=exc.__traceback__)))
     if response:
         errors = {}
         for field, value in response.data.items():
@@ -51,7 +51,8 @@ class CommonException(APIException):
     detail = None
     code = None
 
-    def __init__(self, status_code=HTTP_400_BAD_REQUEST, code=codes.BAD_REQUEST, detail='Common exception'):
+    def __init__(self, status_code=HTTP_400_BAD_REQUEST,
+                 code=codes.BAD_REQUEST, detail='Common exception'):
         self.status_code = status_code
         self.code = code
         self.detail = detail
@@ -61,7 +62,8 @@ class NotFoundException(NotFound):
     detail = None
     code = None
 
-    def __init__(self, status_code=HTTP_404_NOT_FOUND, code=codes.NOT_FOUND, detail='Not found exception'):
+    def __init__(self, status_code=HTTP_404_NOT_FOUND,
+                 code=codes.NOT_FOUND, detail='Not found exception'):
         self.status_code = status_code
         self.code = code
         self.detail = detail
@@ -72,7 +74,8 @@ class PreconditionFailedException(APIException):
     code = None
     redirect = None
 
-    def __init__(self, status_code=HTTP_412_PRECONDITION_FAILED, code=codes.PRECONDITION_FAILED,
+    def __init__(self, status_code=HTTP_412_PRECONDITION_FAILED,
+                 code=codes.PRECONDITION_FAILED,
                  detail='precondition failed exception', redirect=None):
         self.status_code = status_code
         self.code = code
@@ -85,7 +88,8 @@ class ForbiddenException(APIException):
     code = None
     redirect = None
 
-    def __init__(self, status_code=HTTP_403_FORBIDDEN, code=codes.FORBIDDEN, detail='forbidden', redirect=None):
+    def __init__(self, status_code=HTTP_403_FORBIDDEN,
+                 code=codes.FORBIDDEN, detail='forbidden', redirect=None):
         self.status_code = status_code
         self.code = code
         self.detail = detail
