@@ -18,6 +18,7 @@ django-translations==1.2.0
 djangorestframework==3.12.4
 djangorestframework-jwt==1.11.0
 drf-api-logger==1.0.6
+et-xmlfile==1.1.0
 firebase-admin==5.0.0
 flake8==3.9.2
 google-api-core==1.27.0
@@ -42,6 +43,7 @@ MarkupSafe==2.0.1
 matplotlib-inline==0.1.2
 mccabe==0.6.1
 msgpack==1.0.2
+openpyxl==3.0.7
 packaging==20.9
 parso==0.8.2
 phonenumbers==8.12.23
