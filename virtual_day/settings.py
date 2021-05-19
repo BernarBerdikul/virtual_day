@@ -144,12 +144,12 @@ class BaseConfiguration(Configuration):
         },
     ]
 
-    # CACHES = {
-    #     "default": {
-    #         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-    #         'LOCATION': 'virtual_day_cache',
-    #     },
-    # }
+    CACHES = {
+        "default": {
+            'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+            'LOCATION': 'virtual_day_cache',
+        },
+    }
 
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:8000",

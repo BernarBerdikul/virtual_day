@@ -72,11 +72,12 @@ class LoginSerializer(serializers.Serializer):
             if not user.check_password(self.validated_data['password']):
                 raise PreconditionFailedException(
                     detail={"password": messages.WRONG_EMAIL_OR_PASSWORD},
-                    code=codes.AUTH_ERROR)
+                    code=codes.AUTH_ERROR, redirect=constants.REDIRECT_TO_LOGIN
+                )
         except User.DoesNotExist:
             raise PreconditionFailedException(
                 detail={"password": messages.WRONG_EMAIL_OR_PASSWORD},
-                code=codes.AUTH_ERROR)
+                code=codes.AUTH_ERROR, redirect=constants.REDIRECT_TO_LOGIN)
         token = get_token(user)
         user.last_login = datetime.now()
         user.save()

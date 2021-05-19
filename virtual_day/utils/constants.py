@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
+REDIRECT_TO_LOGIN = "/login"
+
 GOOGLE_APPLICATION_CREDENTIALS = \
     r'D:\PycharmProjects\virtual_day\virtual_day\firebase\ServiceAccount.json'
 
