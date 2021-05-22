@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
-from virtual_day.users.permissions import IsSuperAdmin, IsAdmin, AnyPermissions
+from virtual_day.users.permissions import IsSuperAdmin
 from virtual_day.users.models import UserPushNotification
 from virtual_day.utils.decorators import except_data_error, query_debugger
 from .serializers import (
@@ -19,8 +19,7 @@ from .service import (
 
 
 class UserPushNotificationViewSet(viewsets.ViewSet):
-    permission_classes = (AnyPermissions,)
-    any_permission_classes = [IsSuperAdmin, IsAdmin]
+    permission_classes = (IsSuperAdmin,)
     parser_classes = (MultiPartParser, JSONParser)
 
     @query_debugger
