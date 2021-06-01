@@ -13,7 +13,6 @@ decorator==5.0.9
 Django==3.1.7
 django-configurations==2.2
 django-cors-headers==3.7.0
-django-modeltranslation==0.17.1
 django-translations==1.2.0
 djangorestframework==3.12.4
 djangorestframework-jwt==1.11.0

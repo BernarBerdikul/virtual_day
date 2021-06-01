@@ -18,7 +18,6 @@ class BaseConfiguration(Configuration):
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "*"]
 
     INSTALLED_APPS = [
-        'modeltranslation',
         'translations',
         'django.contrib.admin',
         'django.contrib.auth',

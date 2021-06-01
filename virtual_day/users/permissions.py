@@ -11,7 +11,6 @@ class IsAdmin(BasePermission):
         return User.objects.filter(id=request.user.id, is_active=True,
                                    role=constants.ADMIN).exists()
 
-
 @permission_classes([IsAuthenticated])
 class IsSuperAdmin(BasePermission):
     """ Permissions for super Admin """
