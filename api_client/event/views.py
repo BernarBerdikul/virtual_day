@@ -29,10 +29,8 @@ class EventViewSet(viewsets.ViewSet):
         dod_days = DodDay.objects.filter(
             day_date=today_date, enable=True)
         dod_day = get_object_or_404(dod_days, day_date=today_date)
-        language = request.query_params.get(
-            'language', constants.SYSTEM_LANGUAGE)
-        events = Event.objects.filter(dod_day=dod_day).select_related(
-            'lecture').translate(language)
+        language = request.headers.get('Accept-Language')
+        events = Event.objects.filter(dod_day=dod_day).translate(language)
         return Response(EventListSerializer(events, many=True).data)
 
     @query_debugger
@@ -43,8 +41,7 @@ class EventViewSet(viewsets.ViewSet):
         dod_days = DodDay.objects.filter(
             day_date=today_date, enable=True)
         dod_day = get_object_or_404(dod_days, day_date=today_date)
-        language = request.query_params.get(
-            'language', constants.SYSTEM_LANGUAGE)
+        language = request.headers.get('Accept-Language')
         events = Event.objects.filter(
             id=pk, dod_day=dod_day).translate(language)
         event = get_object_or_404(events, pk=pk)

@@ -7,7 +7,7 @@ from business_service.generators import (
     generate_list_type_billboard, generate_list_unique_keys
 )
 from business_service.service_methods import (
-    create_translation, update_translation
+    create_translation, update_translation, json_multipart_checker
 )
 from virtual_day.core.models import Billboard, Event
 from virtual_day.users.permissions import (
@@ -22,7 +22,6 @@ from virtual_day.utils.decorators import (
     query_debugger, except_data_error, response_wrapper
 )
 from business_rules.billboard_rules import billboard_rules_response
-import json
 
 
 @method_decorator(response_wrapper(), name='dispatch')
@@ -75,7 +74,7 @@ class BillboardViewSet(viewsets.ViewSet):
         billboard = serializer.save()
         """ create translations """
         create_translation(
-            translations=json.loads(request.data['translations']),
+            translations=json_multipart_checker(request.data['translations']),
             object_id=billboard.id, model=Billboard)
         result_billboard = Billboard.objects.translate(
             request.user.language).get(id=billboard.id)
@@ -93,7 +92,7 @@ class BillboardViewSet(viewsets.ViewSet):
         billboard = serializer.save()
         """ create translations """
         update_translation(
-            translations=json.loads(request.data['translations']),
+            translations=json_multipart_checker(request.data['translations']),
             model=Billboard, object_id=pk)
         result_billboard = Billboard.objects.translate(
             request.user.language).get(id=billboard.id)

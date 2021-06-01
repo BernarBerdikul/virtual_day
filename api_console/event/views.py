@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from business_rules.schedule_rules import schedule_rules_response
 from business_service.service_methods import (
-    create_translation, update_translation
+    create_translation, update_translation, json_multipart_checker
 )
 from virtual_day.core.models import Event, DodDay
 from virtual_day.users.permissions import (
@@ -59,8 +59,9 @@ class EventViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         event = serializer.save()
         """ create translations """
-        create_translation(translations=request.data['translations'],
-                           model=Event, object_id=event.id)
+        create_translation(
+            translations=json_multipart_checker(request.data['translations']),
+            model=Event, object_id=event.id)
         result_schedule = Event.objects.translate(
             request.user.language).get(id=event.id)
         return Response(EventListSerializer(result_schedule).data)
@@ -77,8 +78,9 @@ class EventViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         """ update translations """
-        update_translation(translations=request.data['translations'],
-                           model=Event, object_id=pk)
+        update_translation(
+            translations=json_multipart_checker(request.data['translations']),
+            model=Event, object_id=pk)
         event = Event.objects.translate(request.user.language).get(id=pk)
         return Response(EventListSerializer(event).data)
 

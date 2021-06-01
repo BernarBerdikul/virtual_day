@@ -3,6 +3,16 @@ from virtual_day.core.models import Billboard, MediaBillboard
 from virtual_day.utils.exceptions import CommonException, ForbiddenException
 from virtual_day.utils import messages, constants
 from translations.models import Translation
+import json
+
+
+def json_multipart_checker(translations: object) -> list:
+    """ check if request with multipart or json raw """
+    if isinstance(translations, str):
+        print(type(json.loads(translations)))
+        return json.loads(translations)
+    elif isinstance(translations, list):
+        return translations
 
 
 def create_translation(model: object, translations: list,

@@ -51,8 +51,9 @@ class EventListSerializer(serializers.ModelSerializer):
         representation['event_type'] = \
             constants.EVENT_TYPE[instance.event_type][1]
         if instance.event_type == constants.TYPE_LECTURE:
-            representation['lecture'] = \
-                LectureSerializer(instance.lecture).data
+            lecture = Lecture.objects.filter(event_id=instance.id)
+            if lecture.exists():
+                representation['lecture'] = LectureSerializer(lecture).data
         return representation
 
 

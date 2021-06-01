@@ -1,7 +1,5 @@
 from . import constants
 from rest_framework.views import exception_handler
-from api_client.apps import ApiClientConfig
-from api_console.apps import ApiConsoleConfig
 from rest_framework.exceptions import APIException, NotFound
 from rest_framework.status import (
     HTTP_412_PRECONDITION_FAILED,
@@ -18,26 +16,22 @@ logger = logging.getLogger(__name__)
 
 def custom_exception_handler(exc, context):
     """ overwrite custom exception """
-    current_url = str(context['request'].path).split('/')[1]
     logger.error(''.join(traceback.format_exception(
         etype=type(exc), value=exc, tb=exc.__traceback__)))
-    """ api_console and api_client """
-    if current_url == ApiClientConfig.name and \
-            current_url == ApiConsoleConfig.name:
-        response = exception_handler(exc, context)
-        if response:
-            errors = {}
-            for field, value in response.data.items():
-                if isinstance(value, list):
-                    errors[f'{field}'] = f'{value[0]}'
-            response.data = {"success": False}
-            if hasattr(exc, 'detail'):
-                response.data['errors'] = exc.detail
-            if hasattr(exc, 'redirect'):
-                response.data['redirect'] = exc.redirect
-            if hasattr(exc, 'notifications'):
-                response.data['notifications'] = exc.notifications
-        return response
+    response = exception_handler(exc, context)
+    if response:
+        errors = {}
+        for field, value in response.data.items():
+            if isinstance(value, list):
+                errors[f'{field}'] = f'{value[0]}'
+        response.data = {"success": False}
+        if hasattr(exc, 'detail'):
+            response.data['errors'] = exc.detail
+        if hasattr(exc, 'redirect'):
+            response.data['redirect'] = exc.redirect
+        if hasattr(exc, 'notifications'):
+            response.data['notifications'] = exc.notifications
+    return response
 
 
 def notifications_wrapper(title, notice_type: int, description=None) -> dict:

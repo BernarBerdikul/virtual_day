@@ -6,11 +6,8 @@ from virtual_day.core.models import Billboard, DodDay
 from virtual_day.users.permissions import (
     IsStudent, IsModerator, AnyPermissions, IsSpeaker
 )
-from .serializers import (
-    BillboardListSerializer, BillboardDetailSerializer
-)
+from .serializers import BillboardDetailSerializer
 from virtual_day.utils.decorators import query_debugger, response_wrapper
-from virtual_day.utils import constants
 from datetime import datetime
 
 
@@ -27,10 +24,11 @@ class BillboardViewSet(viewsets.ViewSet):
         dod_days = DodDay.objects.filter(
             day_date=today_date, enable=True)
         dod_day = get_object_or_404(dod_days, day_date=today_date)
-
-        language = request.query_params.get(
-            'language', constants.SYSTEM_LANGUAGE)
-        billboards = Billboard.objects.filter(enable=True).translate(language)
+        """ get billboards """
+        language = request.headers.get('Accept-Language')
+        billboards = Billboard.objects.filter(
+            enable=True, event__dod_day=dod_day
+        ).translate(language)
         static_billboards = billboards.filter(is_static=True)
         dynamic_billboards = billboards.filter(is_static=False)
         return Response(
@@ -51,11 +49,11 @@ class BillboardViewSet(viewsets.ViewSet):
         dod_days = DodDay.objects.filter(
             day_date=today_date, enable=True)
         dod_day = get_object_or_404(dod_days, day_date=today_date)
-
-        language = request.query_params.get(
-            'language', constants.SYSTEM_LANGUAGE)
+        """ get billboard """
+        language = request.headers.get('Accept-Language')
         billboards = Billboard.objects.filter(
-            id=pk, enable=True).translate(language)
+            id=pk, enable=True, event__dod_day=dod_day
+        ).translate(language)
         billboard = get_object_or_404(billboards, pk=pk)
         return Response(BillboardDetailSerializer(
             billboard, context={"language": language}).data)

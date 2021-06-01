@@ -4,30 +4,11 @@ from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils import constants
 
 
-class BillboardListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Billboard
-        fields = ('id', 'title', 'description', 'image',)
-
-    def to_representation(self, instance):
-        representation = super(BillboardListSerializer, self).to_representation(instance)
-        representation['image'] = get_full_url(instance.image)
-        static_billboard = MediaBillboard.objects.get(
-            billboard_id=instance.id,
-            language=self.context['language'])
-        if static_billboard.pdf_file != '':
-            representation['pdf_file'] = None
-        elif static_billboard.url_link is not None:
-            representation['url_link'] = static_billboard.url_link
-        return representation
-
-
 class BillboardDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Billboard
         fields = ('id', 'title', 'description', 'image',
-                  'is_static', 'unique_key', 'type', 'enable',)
+                  'unique_key', 'type', 'enable',)
 
     def to_representation(self, instance):
         representation = super(

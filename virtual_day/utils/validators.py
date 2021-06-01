@@ -23,7 +23,7 @@ def validate_phone_number(value):
 def validate_password(value):
     """ validator check password's length """
     if len(value) < constants.PASSWORD_MIN_LENGTH:
-        raise CommonException(
+        raise ValidationException(
             detail={"password": messages.PASSWORD_INVALID})
     return value
 
@@ -31,7 +31,8 @@ def validate_password(value):
 def password_comparison(validated_data):
     """ comparison of passwords """
     password = validate_password(validated_data.get('password'))
-    password_confirm = validate_password(validated_data.get('password_confirm'))
+    password_confirm = \
+        validate_password(validated_data.get('password_confirm'))
     if password != password_confirm:
         notifications = [notifications_wrapper(
             title=messages.PASSWORD_NOT_EQUAL,
