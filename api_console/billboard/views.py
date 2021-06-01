@@ -15,7 +15,7 @@ from virtual_day.users.permissions import (
 )
 from .serializers import (
     BillboardListSerializer, BillboardDetailSerializer,
-    EventSelectSerializer,
+    EventSelectSerializer, BillboardCreateSerializer,
     BillboardCreateVideoSerializer, BillboardCreateTextSerializer
 )
 from virtual_day.utils.decorators import (
@@ -37,6 +37,7 @@ class BillboardViewSet(viewsets.ViewSet):
         """ return all billboards """
         offset = int(request.query_params.get('offset', 0))
         limit = int(request.query_params.get('limit', 10))
+        """ get billboards """
         billboards = Billboard.objects.translate(
             request.user.language)[offset: offset + limit]
         """ get events for select """
@@ -69,7 +70,7 @@ class BillboardViewSet(viewsets.ViewSet):
     @except_data_error
     def create(self, request):
         """ create billboard with translations """
-        serializer = BillboardDetailSerializer(data=request.data)
+        serializer = BillboardCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         billboard = serializer.save()
         """ create translations """

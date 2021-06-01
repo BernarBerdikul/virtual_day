@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from virtual_day.core.models import Billboard, MediaBillboard
 from virtual_day.utils.exceptions import CommonException, ForbiddenException
-from virtual_day.utils import messages, codes, constants
+from virtual_day.utils import messages, constants
 from translations.models import Translation
 
 

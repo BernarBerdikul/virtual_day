@@ -143,13 +143,6 @@ class BaseConfiguration(Configuration):
         },
     ]
 
-    CACHES = {
-        "default": {
-            'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-            'LOCATION': 'virtual_day_cache',
-        },
-    }
-
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
@@ -277,8 +270,8 @@ class BaseConfiguration(Configuration):
 class Dev(BaseConfiguration):
     DEBUG = True
     IS_LOCAL = False
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
-    SITE_URL = "http://37.18.30.203"
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "185.125.46.59"]
+    SITE_URL = "http://185.125.46.59"
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -291,15 +284,13 @@ class Dev(BaseConfiguration):
     # SECURE_HSTS_PRELOAD = True
     # SECURE_HSTS_SECONDS = 300
 
-    SECURE_SSL_REDIRECT = False
-
 
 class Prod(BaseConfiguration):
     DEBUG = False
     IS_LOCAL = False
     IS_TEST = False
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "37.18.30.203"]
-    SITE_URL = "http://37.18.30.203"
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "185.125.46.59"]
+    SITE_URL = "http://185.125.46.59"
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

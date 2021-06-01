@@ -1,5 +1,16 @@
 from django.utils.translation import gettext_lazy as _
+###############################################################################
+""" NOTIFY TYPES """
+NOTIFY_SUCCESS = 0
+NOTIFY_WARNING = 1
+NOTIFY_ERROR = 2
 
+NOTIFY_TYPES = (
+    (NOTIFY_SUCCESS, "success"),
+    (NOTIFY_WARNING, "warning"),
+    (NOTIFY_SUCCESS, "error"),
+)
+###############################################################################
 REDIRECT_TO_LOGIN = "/login"
 
 GOOGLE_APPLICATION_CREDENTIALS = \

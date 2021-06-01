@@ -8,6 +8,8 @@ from virtual_day.core.models import Billboard, Event
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils import constants
 from virtual_day.utils.validators import validate_image
+from virtual_day.utils.exceptions import ValidationException
+from virtual_day.utils import messages
 
 
 class EventSelectSerializer(serializers.ModelSerializer):
@@ -38,6 +40,22 @@ class BillboardListSerializer(serializers.ModelSerializer):
         representation['unique_key'] = \
             constants.UNIQUE_KEY_FOR_BILLBOARD[instance.unique_key][1]
         return representation
+
+
+class BillboardCreateSerializer(serializers.ModelSerializer):
+    """ Billboard serializer for detail information """
+    unique_key = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Billboard
+        fields = ('id', 'type', 'enable', 'event', 'is_static', 'image',
+                  'unique_key')
+
+    def validate(self, attrs):
+        if attrs['is_static'] is True and attrs['unique_key'] is not None:
+            raise ValidationException(
+                detail={"unique_key": messages.BILLBOARD_STATIC_MESSAGE})
+        return attrs
 
 
 class BillboardDetailSerializer(serializers.ModelSerializer):

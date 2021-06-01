@@ -1,5 +1,5 @@
 from django.db.models import Q
-from virtual_day.utils import messages, codes, constants
+from virtual_day.utils import messages, constants
 from virtual_day.utils.exceptions import CommonException
 from virtual_day.users.models import User
 from firebase import FCMManager as fcm
@@ -30,8 +30,7 @@ def check_push_is_not_sent(push: object) -> object:
     """ check if push already sent, even is true, than raise exception """
     if push.is_sent is True:
         raise CommonException(
-            detail=messages.RESTAURANT_PUSH_ALREADY_SENT,
-            code=codes.BAD_REQUEST)
+            detail=messages.RESTAURANT_PUSH_ALREADY_SENT)
     return push
 
 

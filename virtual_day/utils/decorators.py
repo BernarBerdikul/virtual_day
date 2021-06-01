@@ -1,7 +1,6 @@
 from copy import deepcopy
 from functools import wraps
 from rest_framework.status import is_success
-from . import codes
 from django.db import connection, reset_queries
 import time
 import functools
@@ -18,9 +17,16 @@ def response_wrapper():
         @wraps(func)
         def inner(request, *args, **kwargs):
             response = func(request, *args, **kwargs)
-            if is_success(response.status_code):
-                data = deepcopy(response.data)
-                response.data = {'data': data, 'message': codes.OK}
+            if response.data is not None:
+                if "errors" not in response.data:
+                    data = deepcopy(response.data)
+                    if "notifications" in response.data:
+                        notifications = data.pop("notifications")
+                    else:
+                        notifications = []
+                    response.data = \
+                        {**{"success": True, "notifications": notifications},
+                         **{"data": data}}
             return response
         return inner
     return decorator

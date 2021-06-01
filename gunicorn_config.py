@@ -1,5 +1,5 @@
-command = '/root/project/env/bin/gunicorn virtual_day.wsgi:application'
-pythonpath = '/root/project/virtual_day'
+command = '/srv/www/env/bin/gunicorn virtual_day.wsgi:application'
+pythonpath = '/srv/www/virtual_day'
 bind = '127.0.0.1:8001'
 workers = 3
 user = 'root'

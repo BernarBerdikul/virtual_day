@@ -5,7 +5,7 @@ from virtual_day.utils.exceptions import (
     PreconditionFailedException
 )
 from datetime import datetime
-from virtual_day.utils import constants, messages, codes
+from virtual_day.utils import constants, messages
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils.validators import (
     validate_image, password_comparison
@@ -94,7 +94,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 #         """ validate the email if email already exist in database """
 #         if User.objects.filter(email=attrs['email']).exclude(
 #                 id=self.context['user'].id).count() > 0:
-#             raise CommonException(code=codes.ALREADY_EXISTS,
+#             raise CommonException(
 #                                   detail=messages.EMAIL_ALREADY_EXISTS)
 #         return attrs
 #
@@ -118,12 +118,10 @@ class LoginSerializer(serializers.Serializer):
             user = User.objects.get(email=self.validated_data['email'])
             if not user.check_password(self.validated_data['password']):
                 raise PreconditionFailedException(
-                    detail={"password": messages.WRONG_EMAIL_OR_PASSWORD},
-                    code=codes.AUTH_ERROR)
+                    detail={"password": messages.WRONG_EMAIL_OR_PASSWORD})
         except User.DoesNotExist:
             raise PreconditionFailedException(
-                detail={"password": messages.WRONG_EMAIL_OR_PASSWORD},
-                code=codes.AUTH_ERROR)
+                detail={"password": messages.WRONG_EMAIL_OR_PASSWORD})
         token = get_token(user)
         user.last_login = datetime.now()
         user.save()

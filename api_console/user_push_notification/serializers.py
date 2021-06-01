@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, time
 from rest_framework import serializers
 from virtual_day.users.models import UserPushNotification
-from virtual_day.utils import messages, codes
+from virtual_day.utils import messages
 from virtual_day.utils.image_utils import get_full_url
 from virtual_day.utils.validators import validate_image
 from virtual_day.utils.exceptions import CommonException
@@ -57,7 +57,6 @@ class PushCreateSerializer(PushDetailSerializer):
     #             created_at__lte=today_end,
     #             created_at__gte=today_start).exists():
     #         raise CommonException(
-    #             code=codes.VALIDATION_ERROR,
     #             detail=messages.PUSH_LIMIT_MESSAGE)
     #     return attrs
 

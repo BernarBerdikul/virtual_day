@@ -1,9 +1,15 @@
-from . import codes
+from . import constants
 from rest_framework.views import exception_handler
+from api_client.apps import ApiClientConfig
+from api_console.apps import ApiConsoleConfig
 from rest_framework.exceptions import APIException, NotFound
 from rest_framework.status import (
-    HTTP_401_UNAUTHORIZED, HTTP_412_PRECONDITION_FAILED, HTTP_403_FORBIDDEN,
-    HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST)
+    HTTP_412_PRECONDITION_FAILED,
+    HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
+    HTTP_400_BAD_REQUEST,
+    HTTP_200_OK
+)
 import logging
 import traceback
 
@@ -12,85 +18,72 @@ logger = logging.getLogger(__name__)
 
 def custom_exception_handler(exc, context):
     """ overwrite custom exception """
-    response = exception_handler(exc, context)
+    current_url = str(context['request'].path).split('/')[1]
     logger.error(''.join(traceback.format_exception(
         etype=type(exc), value=exc, tb=exc.__traceback__)))
-    if response:
-        errors = {}
-        for field, value in response.data.items():
-            if isinstance(value, list):
-                errors[f'{field}'] = f'{value[0]}'
-        response.data = {}
-        if hasattr(exc, 'code'):
-            response.data['code'] = exc.code
-        else:
-            if response.status_code == HTTP_401_UNAUTHORIZED:
-                response.data['code'] = response.status_code
-            else:
-                response.data['code'] = codes.BAD_REQUEST
+    """ api_console and api_client """
+    if current_url == ApiClientConfig.name and \
+            current_url == ApiConsoleConfig.name:
+        response = exception_handler(exc, context)
+        if response:
+            errors = {}
+            for field, value in response.data.items():
+                if isinstance(value, list):
+                    errors[f'{field}'] = f'{value[0]}'
+            response.data = {"success": False}
+            if hasattr(exc, 'detail'):
+                response.data['errors'] = exc.detail
+            if hasattr(exc, 'redirect'):
+                response.data['redirect'] = exc.redirect
+            if hasattr(exc, 'notifications'):
+                response.data['notifications'] = exc.notifications
+        return response
 
-        if hasattr(exc, 'detail'):
-            response.data['message'] = exc.detail
-            response.data['errors'] = {"global": exc.detail}
 
-        if hasattr(exc, 'redirect'):
-            response.data['redirect'] = exc.redirect
+def notifications_wrapper(title, notice_type: int, description=None) -> dict:
+    return {"title": title,
+            "description": description,
+            "type": constants.NOTIFY_TYPES[notice_type][1]}
 
-        if len(errors) > 0:
-            if isinstance(errors, dict):
-                for key in errors:
-                    response.data['message'] = ''.join(errors[key])
-            else:
-                response.data['message'] = errors
 
-            response.data['errors'] = errors
-    return response
+class ValidationException(APIException):
+    status_code = HTTP_200_OK
+
+    def __init__(self, detail={}, notifications=None):
+        self.detail = detail
+        self.notifications = notifications
 
 
 class CommonException(APIException):
-    detail = None
-    code = None
 
     def __init__(self, status_code=HTTP_400_BAD_REQUEST,
-                 code=codes.BAD_REQUEST, detail='Common exception'):
+                 detail={}, notifications=None):
         self.status_code = status_code
-        self.code = code
         self.detail = detail
+        self.notifications = notifications
 
 
 class NotFoundException(NotFound):
-    detail = None
-    code = None
+    status_code = HTTP_404_NOT_FOUND
 
-    def __init__(self, status_code=HTTP_404_NOT_FOUND,
-                 code=codes.NOT_FOUND, detail='Not found exception'):
-        self.status_code = status_code
-        self.code = code
+    def __init__(self, detail={}, notifications=None):
         self.detail = detail
+        self.notifications = notifications
 
 
 class PreconditionFailedException(APIException):
-    detail = None
-    code = None
-    redirect = None
+    status_code = HTTP_412_PRECONDITION_FAILED
 
-    def __init__(self, status_code=HTTP_412_PRECONDITION_FAILED,
-                 code=codes.PRECONDITION_FAILED,
-                 detail='precondition failed exception', redirect=None):
-        self.status_code = status_code
-        self.code = code
+    def __init__(self, detail={}, redirect=None, notifications=None):
         self.detail = detail
         self.redirect = redirect
+        self.notifications = notifications
 
 
 class ForbiddenException(APIException):
-    detail = None
-    code = None
-    redirect = None
+    status_code = HTTP_403_FORBIDDEN,
 
-    def __init__(self, status_code=HTTP_403_FORBIDDEN,
-                 code=codes.FORBIDDEN, detail='forbidden', redirect=None):
-        self.status_code = status_code
-        self.code = code
+    def __init__(self, detail={}, redirect=None, notifications=None):
         self.detail = detail
         self.redirect = redirect
+        self.notifications = notifications

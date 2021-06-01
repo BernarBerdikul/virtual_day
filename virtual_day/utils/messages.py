@@ -1,6 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 from . import constants
 
+BILLBOARD_STATIC_MESSAGE = _("Это статичный 'стэнд', указывать ключ не надо")
+
 REQUIRED_FIELD = _("Поле обязательно для заполнения")
 # WRONG_REQUEST_BODY_PDF = \
 #     _("Ошибочное тело запроса, требуется файл с презентацией")
