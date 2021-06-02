@@ -1,9 +1,19 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from translations.admin import TranslationInline, TranslatableAdmin
-from .models import Billboard, Event, MediaBillboard
+from .models import (Billboard, Event, MediaBillboard, Lecture, DodDay)
 from django.utils.translation import gettext_lazy as _
 from ..mixins.paginator import LargeTablePaginator
+
+
+@admin.register(Lecture)
+class LectureAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(DodDay)
+class DodDayAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(MediaBillboard)
