@@ -27,9 +27,8 @@ class BillboardAdmin(TranslatableAdmin):
     list_display = ['id', 'title', 'enable', 'billboard_image']
     list_display_links = ['id', 'title', 'enable', 'billboard_image']
     search_fields = ('title',)
-    fields = ('title', 'description', 'type',
-              'billboard_image_in_detail', 'image', 'enable',
-              'is_static',)
+    fields = ('type', 'billboard_image_in_detail', 'image', 'enable',
+              'event', 'is_static', 'unique_key')
     readonly_fields = ('billboard_image_in_detail',)
     paginator = LargeTablePaginator
     inlines = [TranslationInline]
@@ -50,6 +49,6 @@ class EventAdmin(TranslatableAdmin):
     list_display = ['id', 'title']
     list_display_links = ['id', 'title']
     list_filter = ('period_start', 'period_end')
-    fields = ('period_start', 'period_end', 'title',)
+    fields = ('period_start', 'period_end', 'dod_day', 'event_type', 'enable')
     paginator = LargeTablePaginator
     inlines = [TranslationInline]
