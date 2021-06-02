@@ -43,7 +43,7 @@ class Event(Translatable, DateTimeMixin, ValidateErrorMixin):
 
     def __str__(self):
         """ Return period_start, period_end and event when calling object """
-        return f'{self.period_start} - {self.period_end} - {self.event}'
+        return f'{self.pk} - {self.period_start} - {self.period_end} - {self.event_type}'
 
     class Meta:
         db_table = 'event'
@@ -85,7 +85,7 @@ class Billboard(Translatable, DateTimeMixin, ValidateErrorMixin):
 
     def __str__(self):
         """ Return billboard title and enable status when calling object """
-        return f'{self.title} - {self.enable}'
+        return f'{self.pk} - {self.type} - {self.enable}'
 
     class Meta:
         db_table = 'billboard'
@@ -114,7 +114,7 @@ class MediaBillboard(DateTimeMixin, ValidateErrorMixin):
 
     def __str__(self):
         """ Return billboard and language when calling object """
-        return f'{self.billboard} - {self.language}'
+        return f'{self.pk} - {self.billboard} - {self.language}'
 
     class Meta:
         db_table = 'media_billboard'
@@ -136,7 +136,7 @@ class Lecture(Translatable, DateTimeMixin, ValidateErrorMixin):
 
     def __str__(self):
         """ Return class_room when calling object """
-        return f'{self.class_room}'
+        return f'{self.pk} - {self.class_room}'
 
     class Meta:
         db_table = 'lecture'
