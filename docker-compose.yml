@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  django:
+    container_name: django
+    build:
+      context: ./virtual_day
+    entrypoint: ./wsgi-entrypoint.sh
+    volumes:
+      #- ./menushka:/usr/src/app
+      - ./django_static:/usr/src/app/django_static
+      - /srv/www/virtual_day/menushka/media:/usr/src/app/media
+      - /srv/www/virtual_day/menushka/logs:/usr/src/app/logs
+    ports:
+      - 8000:8000
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./virtual_day_front
+    command: [ "npm", "run-script", "build" ]
+      volumes:
+        #- ./menushka-frontend/build:/app/menushka-frontend/build
+        - ./build_folder:/app/virtual_day_front/build
+        #- ./menushka-frontend:/app/menushka-frontend
+        #ports:
+        # - 3000:3000
