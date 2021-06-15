@@ -207,7 +207,7 @@ X_FRAME_OPTIONS = 'DENY'
 IS_LOCAL = True
 IS_TEST = True
 
-SITE_URL = "http://127.0.0.1"
+SITE_URL = "http://127.0.0.1:8000"
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
 EMAIL_HOST = os.getenv('EMAIL_HOST')
