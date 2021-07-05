@@ -9,8 +9,8 @@ services:
     volumes:
       #- ./menushka:/usr/src/app
       - ./django_static:/usr/src/app/django_static
-      - /srv/www/virtual_day/menushka/media:/usr/src/app/media
-      - /srv/www/virtual_day/menushka/logs:/usr/src/app/logs
+      - /srv/www/virtual_day/media:/usr/src/app/media
+      - /srv/www/virtual_day/logs:/usr/src/app/logs
     ports:
       - 8000:8000
 
