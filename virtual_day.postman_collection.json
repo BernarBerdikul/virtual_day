@@ -1,0 +1,1629 @@
+{
+	"info": {
+		"_postman_id": "e16d58d8-f99f-4445-a5aa-0e0fe027dced",
+		"name": "virtual_day",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api console",
+			"item": [
+				{
+					"name": "billboard",
+					"item": [
+						{
+							"name": "get billboard",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/billboard/?limit=10&offset=0",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"billboard",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create billboard url",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": 0,\r\n    \"enable\": true,\r\n    \"event\": 2,\r\n    \"is_static\": false,\r\n    \"unique_key\": 1,\r\n    \"translations\": [\r\n        {\r\n            \"title\": \"Стенд 1\",\r\n            \"description\": \"Стенд 1\",\r\n            \"url_link\": \"https://www.youtube.com/watch?v=kHBKbRSFDjE\",\r\n            \"language\": \"ru\"\r\n        },\r\n        {\r\n            \"title\": \"Stand 1\",\r\n            \"description\": \"Stand 1\",\r\n            \"url_link\": \"https://www.youtube.com/watch?v=kHBKbRSFDjE\",\r\n            \"language\": \"en\"\r\n        },\r\n        {\r\n            \"title\": \"Стенд бир\",\r\n            \"description\": \"Стенд бир\",\r\n            \"url_link\": \"https://www.youtube.com/watch?v=kHBKbRSFDjE\",\r\n            \"language\": \"kk\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/billboard/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"billboard",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update billboard url",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/D:/PycharmProjects/menushka/картинки/новости/7f49068e4d5b1dc505a9ab8b2d86f486.jpg"
+										},
+										{
+											"key": "type",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "enable",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "event",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "is_static",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "unique_key",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "translations",
+											"value": "[\n        {\n            \"title\": \"Специальность будущего\",\n            \"description\": \"Сайт рыбатекст поможет дизайнеру, верстальщику, вебь несколькератор поможет дизайнеру, верстальщику, вебь \",\n            \"url_link\": \"https://www.youtube.com/watch?v=2_bWhf5SdtI\",\n            \"language\": \"ru\"\n        },\n        {\n            \"title\": \"Future major\",\n            \"description\": \"Lorem Ipsum is simply dummy text of tnting and types Lorem simply dummy text of the printining and types\",\n            \"url_link\": \"https://www.youtube.com/watch?v=2_bWhf5SdtI\",\n            \"language\": \"en\"\n        },\n        {\n            \"title\": \"Болашак мамандык\",\n            \"description\": \"Сайт рыбатекст поможет дизайнеру, верстальщику,ля визуально-слухового восприятия.\",\n            \"url_link\": \"https://www.youtube.com/watch?v=2_bWhf5SdtI\",\n            \"language\": \"kk\"\n        }\n    ]",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/billboard/1/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"billboard",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create billboard pdf",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"image\": null,\r\n    \"type\": 1,\r\n    \"enable\": true,\r\n    \"event\": 3,\r\n    \"is_static\": true,\r\n    \"unique_key\": 1,\r\n    \"translations\": [\r\n        {\r\n            \"title\": \"Меню не барное\",\r\n            \"description\": \"Сайт рыбатекст поможет дизайнеру, верстальщику, вебь несколькератор поможет дизайнеру, верстальщику, вебь \",\r\n            \"pdf_file\": \"\",\r\n            \"language\": \"ru\"\r\n        },\r\n        {\r\n            \"title\": \"Bar menu\",\r\n            \"description\": \"Lorem Ipsum is simply dummy text of tnting and types Lorem simply dummy text of the printining and types\",\r\n            \"pdf_file\": \"\",\r\n            \"language\": \"en\"\r\n        },\r\n        {\r\n            \"title\": \"Жолақ мәзірі\",\r\n            \"description\": \"Сайт рыбатекст поможет дизайнеру, верстальщику,ля визуально-слухового восприятия.\",\r\n            \"pdf_file\": \"\",\r\n            \"language\": \"kk\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/billboard/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"billboard",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete billboard",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/billboard/2/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"billboard",
+										"2",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "push notification",
+					"item": [
+						{
+							"name": "get pushes",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/push_notification/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"push_notification",
+										""
+									],
+									"query": [
+										{
+											"key": "archive",
+											"value": "True",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create push",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "JWT {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/D:/обои2/thumb-1920-1097647.jpg"
+										},
+										{
+											"key": "title",
+											"value": "вот такая у меня новость",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "уплений в домашних условиях. При созданиесколько абзацев более м, а начинающему оратору отточить на",
+											"type": "text"
+										},
+										{
+											"key": "date_publication",
+											"value": "1700000000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/push_notification/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"push_notification",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update push",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "JWT {{admin_token}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/D:/обои2/thumb-1920-1105606.jpg"
+										},
+										{
+											"key": "title",
+											"value": "вот такая у меня новость",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "уплений в домашних условиях. При созданиесколько абзацев более м, а начинающему оратору отточить наaaaaaaa",
+											"type": "text"
+										},
+										{
+											"key": "date_publication",
+											"value": "1700000000",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/push_notification/3/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"push_notification",
+										"3",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete push",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/push_notification/2/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"push_notification",
+										"2",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "dod day",
+					"item": [
+						{
+							"name": "get dod days",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/dod_day/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"dod_day",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create dod day",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "day_date",
+											"value": "2021-06-15",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/dod_day/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"dod_day",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update dod day",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "day_date",
+											"value": "2021-05-04",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/dod_day/2/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"dod_day",
+										"2",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete dod day",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/dod_day/1/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"dod_day",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "lectures",
+					"item": [
+						{
+							"name": "get lectures",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/lecture/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"lecture",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create lecture",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "class_room",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "speaker",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "event",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "enable",
+											"value": "false",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/lecture/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"lecture",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update lecture",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "day_date",
+											"value": "2000-05-22",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/lecture/1/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"lecture",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete lecture",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/lecture/1/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"lecture",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "event",
+					"item": [
+						{
+							"name": "get event",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/event/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"event",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create event",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"period_start\": \"9:00\",\r\n    \"period_end\": \"11:00\",\r\n    \"dod_day\": 2,\r\n    \"event_type\": 0,\r\n    \"translations\": [\r\n        {\r\n            \"title\": \"Событие 2\",\r\n            \"language\": \"ru\"\r\n        },\r\n        {\r\n            \"title\": \"Event 2\",\r\n            \"language\": \"en\"\r\n        },\r\n        {\r\n            \"title\": \"Какое то событие каз 2\",\r\n            \"language\": \"kk\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/event/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"event",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "udpate event",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"period_start\": \"7:00\",\r\n    \"period_end\": \"18:00\",\r\n    \"dod_day\": 3,\r\n    \"event_type\": 0,\r\n    \"translations\": [\r\n        {\r\n            \"title\": \"Какое то событие\",\r\n            \"language\": \"ru\"\r\n        },\r\n        {\r\n            \"title\": \"Test222222\",\r\n            \"language\": \"en\"\r\n        },\r\n        {\r\n            \"title\": \"Какое то событие каз\",\r\n            \"language\": \"kk\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/event/4/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"event",
+										"4",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete event",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/event/2/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"event",
+										"2",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "profile",
+					"item": [
+						{
+							"name": "get my profile",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/profile/get_profile/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"profile",
+										"get_profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update profile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "JWT {{admin_token}}"
+									},
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "avatar",
+											"type": "file",
+											"src": "/D:/PycharmProjects/menushka/картинки/7f49068e4d5b1dc505a9ab8b2d86f486.jpg"
+										},
+										{
+											"key": "phone",
+											"value": "+78005553535",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Almaty/OraOra/130",
+											"type": "text"
+										},
+										{
+											"key": "first_name",
+											"value": "Slava",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Serebro",
+											"type": "text"
+										},
+										{
+											"key": "language",
+											"value": "ru",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/profile/update_profile/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"profile",
+										"update_profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", res.result.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"followRedirects": true,
+								"followOriginalHttpMethod": false
+							},
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@mail.ru\",\r\n    \"password\": \"qwerty123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/profile/login/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"profile",
+										"login",
+										""
+									]
+								},
+								"description": "POST request for authentication. \\\r\nURL: iqanat.codebusters.team/auth/users/login/\\\r\nBody:<pre>\r\n{\r\n    \"bin\": \"12\",\r\n    \"password\": \"ghbdtn1234\"\r\n}</pre>\r\nOutput:<pre>\r\n{\r\n    \"result\": {\r\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IjEyIiwiZXhwIjozMzkzOTMxNTg4LCJiaW4iOiIxMiIsIm9yaWdfaWF0IjoxNTkzOTMxNTg4fQ.39OrMgKe9UzcgGue3UzpK_AxFO9HOoj5EXBiVVo585I\"\r\n    },\r\n    \"code\": 0\r\n}</pre>"
+							},
+							"response": []
+						},
+						{
+							"name": "update password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"qwerty123\",\r\n    \"password_confirm\": \"qwerty123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/profile/update_password/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"profile",
+										"update_password",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "get users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/user/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"user",
+										""
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "download excel",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/user/export_users_excel/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"user",
+										"export_users_excel",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "make user inacitve",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"is_active\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/user/3/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"user",
+										"3",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change user's role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"role\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/user/3/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"user",
+										"3",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create_admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"email\": \"pr_zoom@mail.ru\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/user/create_admin/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"user",
+										"create_admin",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{admin_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "bern",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_console/user/search/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_console",
+										"user",
+										"search",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "api client",
+			"item": [
+				{
+					"name": "billboard",
+					"item": [
+						{
+							"name": "get billboard",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{user}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ru",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/billboard/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"billboard",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "event",
+					"item": [
+						{
+							"name": "get event",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{user}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "ru",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/event/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"event",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "profile",
+					"item": [
+						{
+							"name": "get my profile",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{user}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/profile/get_profile/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"profile",
+										"get_profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update profile",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "JWT {{user}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"phone\": \"+77074958782\",\r\n    \"address\": \"Almaty\",\r\n    \"first_name\": \"Bernard\",\r\n    \"last_name\": \"Berdikul\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/profile/update_profile/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"profile",
+										"update_profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", res.result.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"followRedirects": true,
+								"followOriginalHttpMethod": false
+							},
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"bernar.berdikul@mail.ru\",\r\n    \"password\": \"qwerty123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/profile/login/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"profile",
+										"login",
+										""
+									]
+								},
+								"description": "POST request for authentication. \\\r\nURL: iqanat.codebusters.team/auth/users/login/\\\r\nBody:<pre>\r\n{\r\n    \"bin\": \"12\",\r\n    \"password\": \"ghbdtn1234\"\r\n}</pre>\r\nOutput:<pre>\r\n{\r\n    \"result\": {\r\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IjEyIiwiZXhwIjozMzkzOTMxNTg4LCJiaW4iOiIxMiIsIm9yaWdfaWF0IjoxNTkzOTMxNTg4fQ.39OrMgKe9UzcgGue3UzpK_AxFO9HOoj5EXBiVVo585I\"\r\n    },\r\n    \"code\": 0\r\n}</pre>"
+							},
+							"response": []
+						},
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"bernar2.berdikul@mail.ru\",\r\n    \"phone\": \"+77074958782\",\r\n    \"address\": \"Almaty Samal-2, 86\",\r\n    \"first_name\": \"Bernar\",\r\n    \"last_name\": \"Berdikul\",\r\n    \"password\": \"qwerty123\",\r\n    \"password_confirm\": \"qwerty123\",\r\n    \"firebase_token\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/profile/register/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"profile",
+										"register",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "check email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"token\", res.result.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"followRedirects": true,
+								"followOriginalHttpMethod": false
+							},
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"bernar.berdikul@mail.ru\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/profile/check_email/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"profile",
+										"check_email",
+										""
+									]
+								},
+								"description": "POST request for authentication. \\\r\nURL: iqanat.codebusters.team/auth/users/login/\\\r\nBody:<pre>\r\n{\r\n    \"bin\": \"12\",\r\n    \"password\": \"ghbdtn1234\"\r\n}</pre>\r\nOutput:<pre>\r\n{\r\n    \"result\": {\r\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IjEyIiwiZXhwIjozMzkzOTMxNTg4LCJiaW4iOiIxMiIsIm9yaWdfaWF0IjoxNTkzOTMxNTg4fQ.39OrMgKe9UzcgGue3UzpK_AxFO9HOoj5EXBiVVo585I\"\r\n    },\r\n    \"code\": 0\r\n}</pre>"
+							},
+							"response": []
+						},
+						{
+							"name": "update password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{user}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"qwerty123\",\r\n    \"password_confirm\": \"qwerty123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/profile/update_password/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"profile",
+										"update_password",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "make user inacitve",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{user}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"is_active\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/user/3/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"user",
+										"3",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get speaker lectures",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT {{user}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"is_active\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api_client/user/my_lectures/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api_client",
+										"user",
+										"my_lectures",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "firebase user",
+			"item": [
+				{
+					"name": "get user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT PzkUnhoANAQ4adD8l1S9bUGbMQs1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{LOCAL_URL}}/core/user/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"core",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bernar.berdikul@mail.ru\",\r\n    \"password\": \"Elefant132435\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/core/user/login/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"core",
+								"user",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
